@@ -7,6 +7,9 @@ import { FirebaseConfig } from '../environments/firebase.config';
 import { AngularFirestore } from 'angularfire2/firestore';
 
 import { MaterialModule } from './material/material.module';
+import { CoreModule } from './core/core.module';
+import { CommonsModule } from './commons/commons.module';
+import { LoginModule } from './login/login.module';
 import { AppRoutes } from './app.routes';
 
 import { AppComponent } from './app.component';
@@ -25,7 +28,10 @@ import { Home } from './home/home.component';
     FormsModule,
     AppRoutes,
     AngularFireModule.initializeApp(FirebaseConfig.firebase),
-    MaterialModule
+    MaterialModule,
+    CoreModule,
+    LoginModule,
+    CommonsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
