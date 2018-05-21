@@ -15,12 +15,14 @@ import { AppRoutes } from './app.routes';
 import { AppComponent } from './app.component';
 import { MainNavComponent } from './main-nav/main-nav.component';
 import { Home } from './home/home.component';
+import { Admin } from './admin/admin.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MainNavComponent,
-    Home
+    Home,
+    Admin
   ],
   imports: [
     BrowserModule,

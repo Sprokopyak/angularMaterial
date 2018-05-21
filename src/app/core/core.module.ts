@@ -6,6 +6,7 @@ import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database-deprecated';
 
 import { AuthService } from './auth-service/auth.service';
+import { AdminGuard } from './admin-guard/admin.guard';
 import { LoginGuard } from './login-guard/login.guard';
 
 @NgModule({
@@ -14,7 +15,7 @@ import { LoginGuard } from './login-guard/login.guard';
     AngularFireAuthModule,
     AngularFireDatabaseModule
   ],
-  providers: [LoginGuard, AuthService, AngularFireDatabase]
+  providers: [AdminGuard, LoginGuard, AuthService, AngularFireDatabase]
 })
 
 export class CoreModule { }
