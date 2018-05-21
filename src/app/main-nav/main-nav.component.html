@@ -3,7 +3,13 @@
     [mode]="(isHandset | async)!.matches ? 'over' : 'side'" [opened]="!(isHandset | async)!.matches">
     <mat-toolbar color="primary">Menu</mat-toolbar>
     <mat-nav-list>
-      <a mat-list-item routerLink="home" routerLinkActive="active">Home</a>
+      <a mat-list-item *ngIf="!auth.isLogedIn" routerLink="/sign-up" routerLinkActive="active">Зареєструватись</a>
+      <a mat-list-item *ngIf="!auth.isLogedIn" routerLink="/sign-in" routerLinkActive="active">
+        <mat-icon>exit_to_app</mat-icon> Увійти
+      </a>
+      <a mat-list-item *ngIf="auth.user | async as user" (click)="auth.signOut()">Вийти
+        <mat-icon>exit_to_app</mat-icon>
+      </a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -14,7 +20,13 @@
       <a routerLink="home" routerLinkActive="active">Application Title</a>
       <span class="spacer"></span>
       <span *ngIf="!(isHandset | async)!.matches">
-        <a routerLink="home" routerLinkActive="active">Home</a>
+        <a *ngIf="!auth.isLogedIn" routerLink="/sign-up" routerLinkActive="active">Зареєструватись</a>
+        <a *ngIf="!auth.isLogedIn" routerLink="/sign-in" routerLinkActive="active">
+          <mat-icon>exit_to_app</mat-icon> Увійти
+        </a>
+        <a *ngIf="auth.isLogedIn" (click)="auth.signOut()">Вийти
+          <mat-icon>exit_to_app</mat-icon>
+        </a>
       </span>
     </mat-toolbar>
     <ng-content></ng-content>

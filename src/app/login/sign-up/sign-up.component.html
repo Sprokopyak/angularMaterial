@@ -1,0 +1,36 @@
+<div class="login-page-body">
+  <div class="sign-container">
+    <div class="sign-info-container">
+      <h3>Easy book</h3>
+      <button routerLinkActive="active" routerLink="/sign-in" mat-raised-button color="primary">Увійти</button>
+      <p>Вже маєте аккаунт?</p>
+    </div>
+    <div class="or-container">or</div>
+    <div class="sign-form-container">
+      <div class="social-icons-container">
+        <i (click)="auth.googleSignUp()" class="fa fa-google"></i>
+        <i (click)="auth.facebookSignUp()" class="fa fa-facebook-f"></i>
+      </div>
+
+      <form [formGroup]="signupForm" (ngSubmit)="signup()">
+        <mat-form-field>
+          <input type="email" matInput required placeholder="Ваш емейл" formControlName="email">
+          <mat-hint>Введіть ваш емейл.</mat-hint>
+          <mat-error>Невірний формат емейлу.</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input type="password" matInput required placeholder="Ваш пароль" formControlName="password">
+          <mat-hint>Введіть ваш пароль.</mat-hint>
+          <mat-error>Пароль повинен складатись не менше ніж з 6 символів.</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input type="password" matInput required placeholder="Підтвердити пароль" formControlName="confirmPassword">
+          <mat-hint>Введіть ваш пароль ще раз.</mat-hint>
+          <mat-error >Паролі не збігаються</mat-error>
+        </mat-form-field>
+        <button id="send" *ngIf="!isLoading" type="submit" mat-raised-button color="primary" [disabled]="signupForm.invalid">Зареєструватись</button>
+        <mat-spinner [diameter]="60" *ngIf="isLoading"></mat-spinner>
+      </form>
+    </div>
+  </div>
+</div>

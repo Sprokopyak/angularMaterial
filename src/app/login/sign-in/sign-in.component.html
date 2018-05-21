@@ -1,0 +1,46 @@
+<div class="login-page-body">
+  <div class="sign-container">
+    <div class="sign-form-container">
+      <div class="social-icons-container">
+        <i (click)="auth.googleLogin()" class="fa fa-google"></i>
+        <i (click)="auth.facebookLogin()" class="fa fa-facebook-f"></i>
+      </div>
+      <div *ngIf="!showResetPassword; then logIn else resetPassword"></div>
+      <ng-template #logIn>
+        <form class="sign" [formGroup]="loginForm" (ngSubmit)="signin()">
+          <mat-form-field>
+            <input type="email" matInput required placeholder="Your email" formControlName="email">
+            <mat-hint>Введіть ваш емейл.</mat-hint>
+            <mat-error>Невірний формат емейлу.</mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input type="password" matInput required placeholder="Your password" formControlName="password">
+            <mat-hint>Введіть ваш пароль.</mat-hint>
+            <mat-error>Пароль повинен складатись не менше ніж з 6 символів.</mat-error>
+          </mat-form-field>
+          <button id="send" *ngIf="!isLoading" type="submit" mat-raised-button color="primary" [disabled]="loginForm.invalid">Увійти</button>
+          <mat-spinner [diameter]="60" *ngIf="isLoading"></mat-spinner>
+          <a *ngIf="!isLoading" (click)="showResetPassword = true">Забули пароль?</a>
+        </form>
+      </ng-template>
+      <ng-template #resetPassword>
+        <a class="back-btn" (click)="showResetPassword = false">
+          <i class="glyphicon glyphicon-chevron-left"></i>Назад</a>
+        <form [formGroup]="resetPass" (ngSubmit)="reset()">
+          <mat-form-field>
+            <input type="email" matInput required placeholder="Your email" formControlName="email">
+            <mat-hint>Введіть ваш емейл.</mat-hint>
+            <mat-error>Невірний формат емейлу.</mat-error>
+          </mat-form-field>
+          <button id="send" type="submit" mat-raised-button color="primary" [disabled]="resetPass.invalid">Відновити</button>
+        </form>
+      </ng-template>
+    </div>
+    <div class="sign-info-container">
+      <h3>Easy book</h3>
+      <button routerLinkActive="active" routerLink="/sign-up" mat-raised-button color="primary">Зареєструватись</button>
+      <p>Ще не маєте аккаунта?</p>
+    </div>
+    <div class="or-container">or</div>
+  </div>
+</div>
