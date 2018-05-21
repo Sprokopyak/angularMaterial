@@ -7,17 +7,23 @@ import { FirebaseConfig } from '../environments/firebase.config';
 import { AngularFirestore } from 'angularfire2/firestore';
 
 import { MaterialModule } from './material/material.module';
+import { AppRoutes } from './app.routes';
 
 import { AppComponent } from './app.component';
+import { MainNavComponent } from './main-nav/main-nav.component';
+import { Home } from './home/home.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    MainNavComponent,
+    Home
   ],
   imports: [
     BrowserModule,
     ReactiveFormsModule,
     FormsModule,
+    AppRoutes,
     AngularFireModule.initializeApp(FirebaseConfig.firebase),
     MaterialModule
   ],
