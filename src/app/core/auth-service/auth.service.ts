@@ -11,6 +11,8 @@ import { switchMap, map } from 'rxjs/operators';
 import { User } from '../models/user.model';
 import { of } from 'rxjs';
 
+import { MatDialog } from '@angular/material';
+import { MessageDialog } from '../../commons/message-dialog/message-dialog.component';
 
 @Injectable()
 export class AuthService {
@@ -20,7 +22,8 @@ export class AuthService {
   constructor(public afAuth: AngularFireAuth,
     public afs: AngularFirestore,
     public db: AngularFireDatabase,
-    private router: Router) {
+    private router: Router,
+    private dialog: MatDialog) {
 
 
     this.user = this.afAuth.authState.pipe(
@@ -44,6 +47,13 @@ export class AuthService {
     });
   }
 
+  showMessageDialog(message: string): void {
+    this.dialog.open(MessageDialog, {
+      width: '450px',
+      data: message
+    });
+  }
+
   get isLogedIn(): boolean {
     return this.authState !== null;
   }
@@ -51,16 +61,10 @@ export class AuthService {
   emailSignUp(email: string, password: string) {
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
       .then(user => {
-        return this.setUserDoc(user) // create initial user document
+        return this.setUserDoc(user)
       }).then(() => { this.router.navigate(['/home']) })
   }
 
-  // Update properties on the user document
-  updateUser(user: User, data: any) {
-    return this.afs.doc(`users/${user.uid}`).update(data)
-  }
-
-  // Sets user data to firestore after succesful login
   private setUserDoc(user: any) {
     const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${user.uid}`);
     const data: User = {
@@ -78,45 +82,50 @@ export class AuthService {
       .then(() => {
         this.router.navigate(['/home']);
       })
+      .catch((error) => {
+        this.showMessageDialog('Ви ввели невірний емейл або пароль')
+      })
   }
 
   resetPassword(email: string) {
     const fbAuth = firebase.auth();
     return fbAuth.sendPasswordResetEmail(email)
+      .then(() => this.showMessageDialog('Детеалі з відновленням паролю були відправлені на ваш емайл: ' + email))
+      .catch(error => this.showMessageDialog(error.message));
   }
 
   signOut() {
     this.afAuth.auth.signOut()
       .then(() => { this.router.navigate(['/home']) })
-      .catch(error => console.log(error));
+      .catch(error => this.showMessageDialog(error.message));
   }
 
   googleSignUp() {
     const provider = new firebase.auth.GoogleAuthProvider()
     return this.oAuthSignUp(provider)
       .then(() => { this.router.navigate(['/home']) })
-      .catch(error => console.log(error));
+      .catch(error => this.showMessageDialog(error.message));
   }
 
   googleLogin() {
     const provider = new firebase.auth.GoogleAuthProvider()
     return this.oAuthLogin(provider)
       .then(() => { this.router.navigate(['/home']) })
-      .catch(error => console.log(error));
+      .catch(error => this.showMessageDialog(error.message));
   }
 
   facebookSignUp() {
     const provider = new firebase.auth.FacebookAuthProvider()
     return this.oAuthSignUp(provider)
       .then(() => { this.router.navigate(['/home']) })
-      .catch(error => console.log(error));
+      .catch(error => this.showMessageDialog(error.message));
   }
 
   facebookLogin() {
     const provider = new firebase.auth.FacebookAuthProvider()
     return this.oAuthLogin(provider)
       .then(() => { this.router.navigate(['/home']) })
-      .catch(error => console.log(error));
+      .catch(error => this.showMessageDialog(error.message));
   }
 
   private oAuthLogin(provider: any) {

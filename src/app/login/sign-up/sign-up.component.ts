@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../core/auth-service/auth.service';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
-import { MatDialog } from '@angular/material';
-import { MessageDialog } from '../../commons/message-dialog/message-dialog.component';
 
 @Component({
   selector: 'sign-up',
@@ -16,8 +14,7 @@ export class SignUp implements OnInit {
 
   constructor(
     public fb: FormBuilder,
-    public auth: AuthService,
-    public dialog: MatDialog) {
+    public auth: AuthService) {
     this.signupForm = this.fb.group({
       'email': ['', [Validators.required, Validators.email]],
       'password': ['', [Validators.required, Validators.minLength(6)]],
@@ -26,13 +23,6 @@ export class SignUp implements OnInit {
   }
 
   ngOnInit() { }
-
-  showMessageDialog(message: string): void {
-    this.dialog.open(MessageDialog, {
-      width: '450px',
-      data: message
-    });
-  }
 
   passwordConfirming(c: AbstractControl): any {
     if (!c.parent || !c) return;
@@ -57,9 +47,6 @@ export class SignUp implements OnInit {
     return this.auth.emailSignUp(this.email.value, this.password.value)
       .then(() => {
         this.isLoading = false;
-      })
-      .catch((error) => {
-        this.showMessageDialog(error.message)
       })
   }
 }

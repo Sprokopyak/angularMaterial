@@ -5,9 +5,7 @@
     <mat-nav-list>
       <a mat-list-item routerLink="admin" routerLinkActive="admin">Admin</a>
       <a mat-list-item *ngIf="!auth.isLogedIn" routerLink="/sign-up" routerLinkActive="active">Зареєструватись</a>
-      <a mat-list-item *ngIf="!auth.isLogedIn" routerLink="/sign-in" routerLinkActive="active">
-        <mat-icon>exit_to_app</mat-icon> Увійти
-      </a>
+      <a mat-list-item *ngIf="!auth.isLogedIn" routerLink="/sign-in" routerLinkActive="active">Увійти</a>
       <a mat-list-item *ngIf="auth.user | async as user" (click)="auth.signOut()">Вийти
         <mat-icon>exit_to_app</mat-icon>
       </a>
@@ -23,9 +21,7 @@
       <span *ngIf="!(isHandset | async)!.matches">
         <a routerLink="admin" routerLinkActive="admin">Admin</a>
         <a *ngIf="!auth.isLogedIn" routerLink="/sign-up" routerLinkActive="active">Зареєструватись</a>
-        <a *ngIf="!auth.isLogedIn" routerLink="/sign-in" routerLinkActive="active">
-          <mat-icon>exit_to_app</mat-icon> Увійти
-        </a>
+        <a *ngIf="!auth.isLogedIn" routerLink="/sign-in" routerLinkActive="active">Увійти</a>
         <a *ngIf="auth.isLogedIn" (click)="auth.signOut()">Вийти
           <mat-icon>exit_to_app</mat-icon>
         </a>
