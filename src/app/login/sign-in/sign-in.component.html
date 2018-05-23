@@ -32,7 +32,8 @@
             <mat-hint>Введіть ваш емейл.</mat-hint>
             <mat-error>Невірний формат емейлу.</mat-error>
           </mat-form-field>
-          <button id="send" type="submit" mat-raised-button color="primary" [disabled]="resetPass.invalid">Відновити</button>
+          <button id="send" *ngIf="!isLoading" type="submit" mat-raised-button color="primary" [disabled]="resetPass.invalid">Відновити</button>
+          <mat-spinner [diameter]="60" *ngIf="isLoading"></mat-spinner>
         </form>
       </ng-template>
     </div>
