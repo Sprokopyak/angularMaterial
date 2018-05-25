@@ -22,7 +22,7 @@
         <a routerLink="admin" routerLinkActive="admin">Admin</a>
         <a *ngIf="!auth.isLogedIn" routerLink="/sign-up" routerLinkActive="active">Зареєструватись</a>
         <a *ngIf="!auth.isLogedIn" routerLink="/sign-in" routerLinkActive="active">Увійти</a>
-        <a *ngIf="auth.isLogedIn" (click)="auth.signOut()">Вийти
+        <a *ngIf="auth.isLogedIn" (click)="auth.signOut()" matTooltip="Вийти">
           <mat-icon>exit_to_app</mat-icon>
         </a>
       </span>

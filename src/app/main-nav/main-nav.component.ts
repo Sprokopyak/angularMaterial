@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { AuthService } from '../core/auth-service/auth.service';
 
 @Component({
-  selector: 'main-nav',
+  selector: 'app-main-nav',
   templateUrl: './main-nav.component.html',
   styleUrls: ['./main-nav.component.scss']
 })
