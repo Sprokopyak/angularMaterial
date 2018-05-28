@@ -1,0 +1,74 @@
+<div class="details-page__wrapper-dark">
+  <svg class="background-gradient__circle" viewBox="4572 73 1328 1328">
+    <defs>
+      <linearGradient gradientUnits="objectBoundingBox" id="ddd" x2="0" y2="1">
+        <stop offset="0" stop-color="#ff8b8b"></stop>
+        <stop offset="1" stop-color="#6676ff"></stop>
+      </linearGradient>
+    </defs>
+    <circle cx="664" cy="664" fill="url(#ddd)" r="664" transform="translate(4572 73)"></circle>
+  </svg>
+
+  <div class="container">
+    <div class="content-container">
+      <div class="title-container">
+      </div>
+      <form>
+        <mat-form-field>
+          <input type="text" matInput required placeholder="Назва кафе">
+          <mat-hint>Введіть назву кафе.</mat-hint>
+          <mat-error>Назва кафе повинна складатись не менше ніж з 2 символів.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-select placeholder="Тип закладу" required>
+            <mat-option *ngFor="let cafe of cafeTypes" [value]="cafe.value">
+              {{cafe.viewValue}}
+            </mat-option>
+          </mat-select>
+          <mat-hint>Виберіть тип закладу</mat-hint>
+          <mat-error>Виберіть тип закладу</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input type="search" matInput required placeholder="Розташування закладу" autocorrect="off" autocapitalize="off" spellcheck="off"
+            class="form-control" #search [formControl]="searchControl">
+          <mat-hint>Введіть місце розташування закладу.</mat-hint>
+          <mat-error>Введіть місце розташування закладу.</mat-error>
+          <!-- <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="false" [zoom]="zoom">
+            <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
+          </agm-map> -->
+        </mat-form-field>
+
+        <div class="tables-quantity" [formGroup]="tablesForm">
+          <mat-form-field class="demo-chip-list">
+            <mat-chip-list #chipList>
+              <input placeholder="Кількість столиків" matInput required [matChipInputFor]="chipList" formControlName="tablesNumber"
+                (matChipInputTokenEnd)="add($event)" />
+            </mat-chip-list>
+          </mat-form-field>
+
+          <mat-form-field class="demo-chip-list">
+            <mat-chip-list #chipList>
+              <input placeholder="Кількість відвідувачів за столиком" matInput required [matChipInputFor]="chipList" formControlName="visitorsNumber"
+                (matChipInputTokenEnd)="add($event)" />
+            </mat-chip-list>
+          </mat-form-field>
+        </div>
+
+        
+
+        <mat-chip *ngFor="let fruit of fruits" [selectable]="selectable" [removable]="removable" (removed)="remove(fruit)">
+          {{fruit.name}} кількість столиків
+          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+        </mat-chip>
+
+        <mat-form-field>
+          <textarea matInput placeholder="Опис закладу"></textarea>
+          <mat-hint>Введіть короткий опис закладу</mat-hint>
+        </mat-form-field>
+        <button type="submit" mat-raised-button color="primary">Додати</button>
+      </form>
+    </div>
+  </div>
+</div>
