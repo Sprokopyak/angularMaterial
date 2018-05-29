@@ -3,11 +3,10 @@ import { AuthService } from '../../core/auth-service/auth.service';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 
 @Component({
-  selector: 'sign-up',
+  selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.scss']
 })
-
 export class SignUp implements OnInit {
   public signupForm: FormGroup;
   isLoading = false;

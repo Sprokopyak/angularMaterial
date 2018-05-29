@@ -3,11 +3,10 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../core/auth-service/auth.service';
 
 @Component({
-  selector: 'sign-in',
+  selector: 'app-sign-in',
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.scss']
 })
-
 export class SignIn implements OnInit {
   isLoading = false;
   public loginForm: FormGroup;
