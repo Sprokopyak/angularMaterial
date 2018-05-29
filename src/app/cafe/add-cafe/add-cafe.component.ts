@@ -12,8 +12,6 @@ import {MatChipInputEvent} from '@angular/material';
   styleUrls: ["./add-cafe.component.scss"]
 })
 export class AddCafe implements OnInit {
-  selectable: boolean = true;
-  removable: boolean = true;
   public tablesForm: FormGroup;
 
   public latitude: number;
@@ -45,7 +43,6 @@ export class AddCafe implements OnInit {
           if (place.geometry === undefined || place.geometry === null) {
             return;
           }
-
           this.latitude = place.geometry.location.lat();
           this.longitude = place.geometry.location.lng();
           console.log(this.latitude, this.longitude); 
@@ -64,40 +61,25 @@ export class AddCafe implements OnInit {
     { value: "nightClub", viewValue: "Нічний клуб" }
   ];
 
-  fruits = [
-    { name: 'Lemon' },
-    { name: 'Lime' },
-    { name: 'Apple' },
+  tables = [
+    { tablesNumber: 1, visitorsNumber: 5 },
+    { tablesNumber: 4, visitorsNumber: 2 },
+    { tablesNumber: 3, visitorsNumber: 4 },
   ];
 
-  get tablesNumber() {
-    return this.tablesForm.get('tablesNumber')
-  }
-  get visitorsNumber() {
-    return this.tablesForm.get('visitorsNumber')
-  }
-
-  add(event: MatChipInputEvent): void {
-    let input = event.input;
-    let value = event.value;
-
-    // Add our fruit
-    if ((value || '').trim()) {
-      console.log(   this.tablesForm.getRawValue());
-      this.fruits.push({ name: value });
-    }
-    console.log(this.fruits)
-
-    // Reset the input value
-    if (input) {
-      input.value = '';
+  onAdd( tablesNumber, visitorsNumber){
+    if (tablesNumber.value !== '' && visitorsNumber.value !== '' ) {
+      this.tables.push({ tablesNumber: tablesNumber.value, visitorsNumber: visitorsNumber.value })
+      console.log(this.tables)
+      tablesNumber.value=''; 
+      visitorsNumber.value='';
     }
   }
 
   remove(fruit: any): void {
-    let index = this.fruits.indexOf(fruit);
+    let index = this.tables.indexOf(fruit);
     if (index >= 0) {
-      this.fruits.splice(index, 1);
+      this.tables.splice(index, 1);
     }
   }
 }

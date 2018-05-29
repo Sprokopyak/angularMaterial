@@ -40,27 +40,27 @@
           </agm-map> -->
         </mat-form-field>
 
-        <div class="tables-quantity" [formGroup]="tablesForm">
-          <mat-form-field class="demo-chip-list">
-            <mat-chip-list #chipList>
-              <input placeholder="Кількість столиків" matInput required [matChipInputFor]="chipList" formControlName="tablesNumber"
-                (matChipInputTokenEnd)="add($event)" />
-            </mat-chip-list>
-          </mat-form-field>
+        <div class="tables-quantity">
+          <mat-chip-list #chipList>
+            <mat-form-field>
+              <input type="number" matInput required #tablesNumber placeholder="Кількість столів">
+              <mat-hint>Введіть кількість столів.</mat-hint>
+              <mat-error>Заповніть два поля.</mat-error>
+            </mat-form-field>
 
-          <mat-form-field class="demo-chip-list">
-            <mat-chip-list #chipList>
-              <input placeholder="Кількість відвідувачів за столиком" matInput required [matChipInputFor]="chipList" formControlName="visitorsNumber"
-                (matChipInputTokenEnd)="add($event)" />
-            </mat-chip-list>
-          </mat-form-field>
+            <mat-form-field>
+              <input type="number" matInput required #visitorsNumber placeholder="Кількість гостей">
+              <mat-hint>Введіть кількість гостей, яку вміщає один такий стіл.</mat-hint>
+              <mat-error>Заповніть два поля.</mat-error>
+            </mat-form-field>
+
+          </mat-chip-list>
+          <mat-chip color="primary" selected="true" (click)="onAdd(tablesNumber, visitorsNumber)">Додати</mat-chip>
         </div>
 
-        
-
-        <mat-chip *ngFor="let fruit of fruits" [selectable]="selectable" [removable]="removable" (removed)="remove(fruit)">
-          {{fruit.name}} кількість столиків
-          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+        <mat-chip *ngFor="let table of tables" (removed)="remove(fruit)">
+          {{table.tablesNumber}} столи, віміщає {{table.visitorsNumber}} гостей
+          <mat-icon matChipRemove>cancel</mat-icon>
         </mat-chip>
 
         <mat-form-field>
