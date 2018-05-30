@@ -15,17 +15,26 @@
       </div>
       <form>
 
-         
-            
-  <!-- <button mat-raised-button color="primary" (click)="fileInput.click()">Click</button>
-          <input #fileInput type="file" (change)="upload($event)"  accept=".png,.jpg" />
-          <mat-progress-bar max="100" [color]="green" [value]="(progressBarValue | async)"></mat-progress-bar> -->
-          <label>
-              <input type="file" (change)="detectFiles($event)">
-           </label>
-           <button [disabled]="!selectedFiles" (click)="uploadSingle()">Upload Single</button>
-           <img style="max-height: 400px; max-width: 400px;" src="{{imgSrc | async}}">
-           <p>{{imgSrc | async}}</p>
+
+        <!-- 
+          <button mat-raised-button color="primary" (click)="uploadSingle()">Send</button>
+          <input #fileInput type="file" (change)="detectFiles($event)"  accept=".png,.jpg" /> -->
+
+        <div *ngIf="progress$ | async as p">
+          <mat-progress-bar mode="determinate" [value]="p"></mat-progress-bar>
+        </div>
+
+        <button mat-button color="accent" mat-mini-fab (click)="imgFileInput.click()">
+          <mat-icon>attachment</mat-icon>
+        </button>
+        {{ imgFileInput?.value }}
+        <input hidden type="file" #imgFileInput (change)="uploadSingle($event)" accept=".png,.jpg" />
+        <mat-hint>Додати основне фото закладу.</mat-hint>
+
+        <div *ngIf="currentUpload">
+          <img style="max-width: 300px" [src]="currentUpload?.url || ''" [alt]="currentUpload?.name || ''">
+        </div>
+
 
         <mat-form-field>
           <input type="text" matInput required placeholder="Назва кафе">

@@ -8,6 +8,7 @@ import { ImageUploadService } from '../../core/image-upload/image-upload.service
 import { Upload } from '../../core/models/image-upload.model';
 
 import { AngularFireStorage } from 'angularfire2/storage';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: "app-add-cafe",
@@ -28,27 +29,37 @@ export class AddCafe implements OnInit {
   selectedFiles: FileList;
   currentUpload: Upload;
   imgSrc;
+  progress$: Observable<number>;
 
   @ViewChild("search") public searchElementRef: ElementRef;
 
   constructor(private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, public fb: FormBuilder,
     private upSvc: ImageUploadService, private afs: AngularFireStorage) {
+      this.progress$ = this.upSvc.uploading$;
+      this.upSvc.completed$.subscribe((upload) => {
+        if (upload) {          
+          this.currentUpload = upload;
+          this.imgSrc = this.currentUpload.url
+          console.log( this.imgSrc);
+        } else {
+          this.currentUpload = null;
+        }
+      });
+
     this.tablesForm = this.fb.group({
       'tablesNumber': ['', [Validators.required]],
       'visitorsNumber': ['', [Validators.required]]
     });
   }
 
-  detectFiles(event) {
-        this.selectedFiles = event.target.files;
-
+    detectFiles(event) {
+      this.selectedFiles = event.target.files;
     }
 
-  uploadSingle() {
-    let file = this.selectedFiles.item(0)
+  uploadSingle(event) {
+    let file = event.target.files[0];
     this.currentUpload = new Upload(file)
     this.upSvc.pushUpload(this.currentUpload)
-  
   }
 
 
@@ -67,7 +78,7 @@ export class AddCafe implements OnInit {
 
     task.then((val) => {
       this.downloadURL = val.downloadURL
-      console.log(this.downloadURL)
+      console.log( this.currentUpload )
     })
 
   }
