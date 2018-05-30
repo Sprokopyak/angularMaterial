@@ -9,6 +9,7 @@ import { AuthService } from "./auth-service/auth.service";
 import { CafeService } from "./cafe-service/cafe.service";
 import { AdminGuard } from "./admin-guard/admin.guard";
 import { LoginGuard } from "./login-guard/login.guard";
+import { ImageUploadService } from "./image-upload/image-upload.service";
 
 @NgModule({
   imports: [
@@ -21,7 +22,8 @@ import { LoginGuard } from "./login-guard/login.guard";
     LoginGuard,
     AuthService,
     AngularFireDatabase,
-    CafeService
+    CafeService,
+    ImageUploadService
   ]
 })
 export class CoreModule {}

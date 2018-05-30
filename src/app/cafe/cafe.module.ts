@@ -7,7 +7,8 @@ import { AppRoutes } from './../app.routes';
 import { AddCafe } from './add-cafe/add-cafe.component';
 
 import { AgmCoreModule } from '@agm/core';
-
+import { AngularFireStorage, AngularFireUploadTask } from 'angularfire2/storage';
+import { AngularFirestore } from 'angularfire2/firestore';
 @NgModule({
   imports: [
     AgmCoreModule,
@@ -20,6 +21,7 @@ import { AgmCoreModule } from '@agm/core';
   declarations: [
     AddCafe
   ],
-  exports: [AddCafe]
+  exports: [AddCafe],
+  providers: [AngularFireStorage, AngularFirestore]
 })
 export class CafeModule { }

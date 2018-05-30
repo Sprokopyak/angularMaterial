@@ -14,6 +14,19 @@
       <div class="title-container">
       </div>
       <form>
+
+         
+            
+  <!-- <button mat-raised-button color="primary" (click)="fileInput.click()">Click</button>
+          <input #fileInput type="file" (change)="upload($event)"  accept=".png,.jpg" />
+          <mat-progress-bar max="100" [color]="green" [value]="(progressBarValue | async)"></mat-progress-bar> -->
+          <label>
+              <input type="file" (change)="detectFiles($event)">
+           </label>
+           <button [disabled]="!selectedFiles" (click)="uploadSingle()">Upload Single</button>
+           <img style="max-height: 400px; max-width: 400px;" src="{{imgSrc | async}}">
+           <p>{{imgSrc | async}}</p>
+
         <mat-form-field>
           <input type="text" matInput required placeholder="Назва кафе">
           <mat-hint>Введіть назву кафе.</mat-hint>
