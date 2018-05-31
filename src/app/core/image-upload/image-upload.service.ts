@@ -3,18 +3,63 @@ import * as firebase from 'firebase/app';
 import { AngularFireDatabase, FirebaseListObservable } from "angularfire2/database-deprecated";
 
 import { Upload } from '../models/image-upload.model';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+
+import { MatDialog } from '@angular/material';
+import { MessageDialog } from '../../commons/message-dialog/message-dialog.component';
 
 @Injectable()
 export class ImageUploadService {
-  constructor(private db: AngularFireDatabase) { }
-
-  private basePath:string = '/uploads';
+  file
+  private basePath: string = '/uploads';
   uploads: FirebaseListObservable<Upload[]>;
   completed$ = new Subject<Upload>();
   uploading$ = new Subject<number>();
 
-  pushUpload(upload: Upload){
+  constructor(private db: AngularFireDatabase, private dialog: MatDialog) { }
+
+  showMessageDialog(message: string): void {
+    this.dialog.open(MessageDialog, {
+      width: '450px',
+      data: message
+    });
+  }
+
+  pushUpload(event) {
+    let storageRef = firebase.storage().ref();
+    this.file = event.target.files[0];
+
+    if (this.file.type.split('/')[0] !== 'image') {
+       this.showMessageDialog('Невірний формат файлу, виберіть зображення');
+       return;
+    } else {
+      const upload = new Upload(this.file)
+      let uploadTask = storageRef.child(`${this.basePath}/${upload.file.name}`).put(upload.file);
+      this.uploadToDB(uploadTask, upload)
+    }
+  }
+
+  uploadToDB(uploadTask, upload): any {
+    uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
+      (snapshot) => {
+        upload.progress = ((uploadTask.snapshot.bytesTransferred / uploadTask.snapshot.totalBytes) * 100).toString().split('.')[0];
+        this.uploading$.next(upload.progress);
+        console.log(upload.progress);
+      },
+      (error) => {
+        console.log(error)
+      },
+      () => {
+        upload.url = uploadTask.snapshot.downloadURL
+        upload.name = upload.file.name
+        this.completed$.next(upload);
+        this.uploading$.next(null);
+      }
+    );
+  }
+
+
+  pushUploadd(upload: Upload){
     let storageRef = firebase.storage().ref();
     let uploadTask = storageRef.child(`${this.basePath}/${upload.file.name}`).put(upload.file);
 
@@ -35,4 +80,6 @@ export class ImageUploadService {
       }
     );
   }
+
+
 }

@@ -21,13 +21,14 @@
           <input #fileInput type="file" (change)="detectFiles($event)"  accept=".png,.jpg" /> -->
 
         <div *ngIf="progress$ | async as p">
+          {{p}} %
           <mat-progress-bar mode="determinate" [value]="p"></mat-progress-bar>
         </div>
 
         <button mat-button color="accent" mat-mini-fab (click)="imgFileInput.click()">
           <mat-icon>attachment</mat-icon>
         </button>
-        {{ imgFileInput?.value }}
+        {{ imgFileInput?.files[0]?.name }}
         <input hidden type="file" #imgFileInput (change)="uploadSingle($event)" accept=".png,.jpg" />
         <mat-hint>Додати основне фото закладу.</mat-hint>
 
@@ -35,6 +36,11 @@
           <img style="max-width: 300px" [src]="currentUpload?.url || ''" [alt]="currentUpload?.name || ''">
         </div>
 
+
+        <label>
+            <input type="file" (change)="detectFiles($event)" multiple>
+         </label>
+        <button [disabled]="!selectedFiles" (click)="uploadMulti()">Upload Multipl</button>
 
         <mat-form-field>
           <input type="text" matInput required placeholder="Назва кафе">
@@ -80,7 +86,7 @@
           <mat-chip color="primary" selected="true" (click)="onAdd(tablesNumber, visitorsNumber)">Додати</mat-chip>
         </div>
 
-        <mat-chip *ngFor="let table of tables" (removed)="remove(fruit)">
+        <mat-chip *ngFor="let table of tables" (removed)="remove(table)">
           {{table.tablesNumber}} столи, віміщає {{table.visitorsNumber}} гостей
           <mat-icon matChipRemove>cancel</mat-icon>
         </mat-chip>

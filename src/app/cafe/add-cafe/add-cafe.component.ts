@@ -52,25 +52,31 @@ export class AddCafe implements OnInit {
     });
   }
 
+    uploadSingle(event) {
+      this.upSvc.pushUpload(event)
+    }
+
     detectFiles(event) {
       this.selectedFiles = event.target.files;
     }
 
-  uploadSingle(event) {
-    let file = event.target.files[0];
-    this.currentUpload = new Upload(file)
-    this.upSvc.pushUpload(this.currentUpload)
-  }
+    uploadMulti() {
+      let files = this.selectedFiles
+      // this.currentUpload = new Upload(files);
+      this.upSvc.pushUploadd(this.currentUpload)
+      console.log(files);
+      
+      // let filesIndex = _.range(files.length)
+      // _.each(filesIndex, (idx) => {
+      //   this.currentUpload = new Upload(files[idx]);
+      //   this.upSvc.pushUpload(this.currentUpload)}
+      // )
+    }
 
 
   upload(event) {
     let file = event.target.files[0];
     let uniqkey = 'pic' + new Date().getTime();
-
-    if (file.type.split('/')[0] !== 'image') {
-      console.error('Невірний формат файлу')
-      return;
-    }
 
     let ref = this.afs.ref('/uploads/' + uniqkey);
     let task = ref.put(file);
@@ -133,8 +139,8 @@ export class AddCafe implements OnInit {
     }
   }
 
-  remove(fruit: any): void {
-    let index = this.tables.indexOf(fruit);
+  remove(table: any): void {
+    let index = this.tables.indexOf(table);
     if (index >= 0) {
       this.tables.splice(index, 1);
     }
