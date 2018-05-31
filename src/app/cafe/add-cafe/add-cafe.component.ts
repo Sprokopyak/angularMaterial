@@ -10,6 +10,8 @@ import { Upload } from '../../core/models/image-upload.model';
 import { AngularFireStorage } from 'angularfire2/storage';
 import { Observable } from 'rxjs';
 
+import * as _ from "lodash";
+
 @Component({
   selector: "app-add-cafe",
   templateUrl: "./add-cafe.component.html",
@@ -24,7 +26,6 @@ export class AddCafe implements OnInit {
 
   progressBarValue;
   downloadURL
-
 
   selectedFiles: FileList;
   currentUpload: Upload;
@@ -51,25 +52,33 @@ export class AddCafe implements OnInit {
       'visitorsNumber': ['', [Validators.required]]
     });
   }
-
+arr =[]
     uploadSingle(event) {
       this.upSvc.pushUpload(event)
+     
     }
 
     detectFiles(event) {
       this.selectedFiles = event.target.files;
+   
     }
 
     uploadMulti() {
       let files = this.selectedFiles
-      // this.currentUpload = new Upload(files);
-      this.upSvc.pushUploadd(this.currentUpload)
-      console.log(files);
+      this.arr.push( this.selectedFiles)
+      console.log(this.arr);
       
+      // for (let key in files) {
+      //   console.log(files[key]);
+      //   this.currentUpload = new Upload(files[key]);
+      //   this.upSvc.pushUploadd(this.currentUpload)
+      // }
+      // console.log(files );
       // let filesIndex = _.range(files.length)
       // _.each(filesIndex, (idx) => {
       //   this.currentUpload = new Upload(files[idx]);
-      //   this.upSvc.pushUpload(this.currentUpload)}
+      //   this.upSvc.pushUploadd(this.currentUpload)
+      // }
       // )
     }
 
