@@ -4,7 +4,6 @@ export class Upload {
   file:File;
   name:string;
   url:string;
-  urls: object;
   progress:number;
   createdAt: Date = new Date();
 

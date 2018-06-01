@@ -3,21 +3,20 @@ import * as firebase from 'firebase/app';
 import { AngularFireDatabase, FirebaseListObservable } from "angularfire2/database-deprecated";
 
 import { Upload } from '../models/image-upload.model';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, forkJoin } from 'rxjs';
 
 import { MatDialog } from '@angular/material';
 import { MessageDialog } from '../../commons/message-dialog/message-dialog.component';
 
 @Injectable()
 export class ImageUploadService {
-  file
-  private basePath: string = '/uploads';
-  uploads: FirebaseListObservable<Upload[]>;
+  public file;
+  private basePath: string = '/mainPhotos';
   completed$ = new Subject<Upload>();
   uploading$ = new Subject<number>();
+  completedMulti$ = new Subject<Upload>();
 
   constructor(private db: AngularFireDatabase, private dialog: MatDialog) { }
-
   showMessageDialog(message: string): void {
     this.dialog.open(MessageDialog, {
       width: '450px',
@@ -25,7 +24,7 @@ export class ImageUploadService {
     });
   }
 
-  pushUpload(event) {
+  uploadSingle(event, path?:string) {
     let storageRef = firebase.storage().ref();
     this.file = event.target.files[0];
 
@@ -58,28 +57,31 @@ export class ImageUploadService {
     );
   }
 
-
-  pushUploadd(upload: Upload){
+  uploadMulti(upload: Upload, path?:string){
     let storageRef = firebase.storage().ref();
-    let uploadTask = storageRef.child(`${this.basePath}/${upload.file.name}`).put(upload.file);
+    let uploadTask = storageRef.child(`${path}/${upload.file.name}`).put(upload.file);
 
     uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
-      (snapshot) =>  {
+      (snapshot) => {
         upload.progress = (uploadTask.snapshot.bytesTransferred / uploadTask.snapshot.totalBytes) * 100;
         this.uploading$.next(upload.progress);
         console.log(upload.progress);
-      }, 
+      },
       (error) => {
         console.log(error)
       },
       () => {
         upload.url = uploadTask.snapshot.downloadURL
         upload.name = upload.file.name
-        this.completed$.next(upload);
+
+        forkJoin([upload]).subscribe(t=> {
+          console.log(t);
+          
+        });
+        this.completedMulti$.next(upload);
         this.uploading$.next(null);
       }
     );
   }
-
 
 }

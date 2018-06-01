@@ -24,24 +24,52 @@ export class AddCafe implements OnInit {
   public longitude: number;
   public searchControl: FormControl;
 
-  progressBarValue;
-  downloadURL
-
+  private _selectedImages = [];
+  tables = [];
   selectedFiles: FileList;
   currentUpload: Upload;
   imgSrc;
+  imgSrcGallery;
+  gallery = [];
   progress$: Observable<number>;
 
-  @ViewChild("search") public searchElementRef: ElementRef;
+  private cafeTypes = [
+    { value: 'bar', viewValue: 'Бар' },
+    { value: 'cafe', viewValue: 'Кафе' },
+    { value: 'coffeShop', viewValue: 'Кав\'ярня' },
+    { value: 'restaurant', viewValue: 'Ресторан' },
+    { value: 'pub', viewValue: 'Паб' },
+    { value: 'hookah', viewValue: 'Кальянна' },
+    { value: 'nightClub', viewValue: 'Нічний клуб' }
+  ];
 
-  constructor(private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, public fb: FormBuilder,
-    private upSvc: ImageUploadService, private afs: AngularFireStorage) {
-      this.progress$ = this.upSvc.uploading$;
-      this.upSvc.completed$.subscribe((upload) => {
+  @ViewChild('search') public searchElementRef: ElementRef;
+
+  constructor(
+    private mapsAPILoader: MapsAPILoader, 
+    private ngZone: NgZone, 
+    public fb: FormBuilder,
+    private _imageUploadService: ImageUploadService, 
+    private afs: AngularFireStorage
+  ) {
+      this.progress$ = this._imageUploadService.uploading$;
+      this._imageUploadService.completed$.subscribe((upload) => {
         if (upload) {          
           this.currentUpload = upload;
-          this.imgSrc = this.currentUpload.url
-          console.log( this.imgSrc);
+          this.imgSrc = this.currentUpload.url;
+        } else {
+          this.currentUpload = null;
+        }
+      });
+
+      this._imageUploadService.completedMulti$.subscribe((upload) => {
+        if (upload) {          
+          this.currentUpload = upload;
+          this.gallery.push(this.currentUpload.url);
+          console.log( this.gallery);
+          // this.anyService.uploadFormData({....}).subscribe(() => {
+          //   console.log('done');
+          // });
         } else {
           this.currentUpload = null;
         }
@@ -52,52 +80,6 @@ export class AddCafe implements OnInit {
       'visitorsNumber': ['', [Validators.required]]
     });
   }
-arr =[]
-    uploadSingle(event) {
-      this.upSvc.pushUpload(event)
-     
-    }
-
-    detectFiles(event) {
-      this.selectedFiles = event.target.files;
-   
-    }
-
-    uploadMulti() {
-      let files = this.selectedFiles
-      this.arr.push( this.selectedFiles)
-      console.log(this.arr);
-      
-      // for (let key in files) {
-      //   console.log(files[key]);
-      //   this.currentUpload = new Upload(files[key]);
-      //   this.upSvc.pushUploadd(this.currentUpload)
-      // }
-      // console.log(files );
-      // let filesIndex = _.range(files.length)
-      // _.each(filesIndex, (idx) => {
-      //   this.currentUpload = new Upload(files[idx]);
-      //   this.upSvc.pushUploadd(this.currentUpload)
-      // }
-      // )
-    }
-
-
-  upload(event) {
-    let file = event.target.files[0];
-    let uniqkey = 'pic' + new Date().getTime();
-
-    let ref = this.afs.ref('/uploads/' + uniqkey);
-    let task = ref.put(file);
-    this.progressBarValue = task.percentageChanges();
-
-    task.then((val) => {
-      this.downloadURL = val.downloadURL
-      console.log( this.currentUpload )
-    })
-
-  }
-
 
   ngOnInit() {
     this.searchControl = new FormControl();
@@ -123,23 +105,32 @@ arr =[]
     });
   }
 
-  cafeTypes = [
-    { value: "bar", viewValue: "Бар" },
-    { value: "cafe", viewValue: "Кафе" },
-    { value: "coffeShop", viewValue: "Кав'ярня" },
-    { value: "restaurant", viewValue: "Ресторан" },
-    { value: "pub", viewValue: "Паб" },
-    { value: "hookah", viewValue: "Кальянна" },
-    { value: "nightClub", viewValue: "Нічний клуб" }
-  ];
+  uploadSingle(event) {
+    this._imageUploadService.uploadSingle(event)
+  }
 
-  tables = [
-    { tablesNumber: 1, visitorsNumber: 5 },
-    { tablesNumber: 4, visitorsNumber: 2 },
-    { tablesNumber: 3, visitorsNumber: 4 },
-  ];
+  selectFiles(event) {
+    this.selectedFiles = event.target.files;
+    let files = this.selectedFiles;
+    let filesIndex = _.range(files.length)
+    _.each(filesIndex, (idx) => {
+      this._selectedImages.push( files[idx])
+    })
+    // console.log(this.selectedImages);
+  }
 
-  onAdd(tablesNumber, visitorsNumber) {
+   uploadMulti() {
+    let files = this.selectedFiles;
+    let uniqkey = 'cafe' + new Date().getTime();
+ 
+
+    this._selectedImages.forEach((val)=>{
+      this.currentUpload = new Upload(val);
+      this._imageUploadService.uploadMulti(this.currentUpload, uniqkey)
+    })
+  }
+
+  onAddTables(tablesNumber, visitorsNumber) {
     if (tablesNumber.value !== '' && visitorsNumber.value !== '') {
       this.tables.push({ tablesNumber: tablesNumber.value, visitorsNumber: visitorsNumber.value })
       console.log(this.tables)
@@ -148,10 +139,28 @@ arr =[]
     }
   }
 
+  removeImg(img: any): void {
+    let index = this._selectedImages.indexOf(img);  
+    if (index >= 0) {
+      this._selectedImages.splice(index, 1);
+    }
+  }
+
   remove(table: any): void {
-    let index = this.tables.indexOf(table);
+    let index = this.tables.indexOf(table);  
     if (index >= 0) {
       this.tables.splice(index, 1);
     }
   }
+
+  // send(){
+   
+  //   this.uploadMulti()
+  //   .then((val)=>{
+  //     console.log(val);
+      
+  //     console.log( this.gallery);
+      
+  //   })
+  // }
 }

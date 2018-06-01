@@ -32,15 +32,27 @@
         <input hidden type="file" #imgFileInput (change)="uploadSingle($event)" accept=".png,.jpg" />
         <mat-hint>Додати основне фото закладу.</mat-hint>
 
-        <div *ngIf="currentUpload">
+        <div *ngIf="currentUpload && gallery.length === 0">
           <img style="max-width: 300px" [src]="currentUpload?.url || ''" [alt]="currentUpload?.name || ''">
         </div>
-
+        <div *ngIf="currentUpload">
+            <p  *ngFor="let img of gallery">
+                <img style="max-width: 100px" [src]="img || ''" [alt]="currentUpload?.name || ''">
+            </p>
+         
+          </div>
 
         <label>
-            <input type="file" (change)="detectFiles($event)" multiple>
+            <input type="file" (change)="selectFiles($event)" multiple>
          </label>
         <button [disabled]="!selectedFiles" (click)="uploadMulti()">Upload Multipl</button>
+
+        
+        <mat-chip *ngFor="let img of selectedImages" (removed)="removeImg(img)">
+            {{img.name}}
+            <mat-icon matChipRemove>cancel</mat-icon>
+          </mat-chip>
+  
 
         <mat-form-field>
           <input type="text" matInput required placeholder="Назва кафе">
@@ -83,7 +95,7 @@
             </mat-form-field>
 
           </mat-chip-list>
-          <mat-chip color="primary" selected="true" (click)="onAdd(tablesNumber, visitorsNumber)">Додати</mat-chip>
+          <mat-chip color="primary" selected="true" (click)="onAddTables(tablesNumber, visitorsNumber)">Додати</mat-chip>
         </div>
 
         <mat-chip *ngFor="let table of tables" (removed)="remove(table)">
@@ -95,7 +107,7 @@
           <textarea matInput placeholder="Опис закладу"></textarea>
           <mat-hint>Введіть короткий опис закладу</mat-hint>
         </mat-form-field>
-        <button type="submit" mat-raised-button color="primary">Додати</button>
+        <button type="submit" mat-raised-button (click)=send() color="primary">Додати</button>
       </form>
     </div>
   </div>
