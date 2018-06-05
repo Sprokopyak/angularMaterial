@@ -1,30 +1,34 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase/app';
-import { AngularFireDatabase, FirebaseListObservable } from "angularfire2/database-deprecated";
 
 import { Upload } from '../models/image-upload.model';
-import { Observable, Subject, forkJoin } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 import { MatDialog } from '@angular/material';
 import { MessageDialog } from '../../commons/message-dialog/message-dialog.component';
+import { each, range } from "lodash";
 
 @Injectable()
 export class ImageUploadService {
   public file;
-  private basePath: string = '/mainPhotos';
+  private _mainPhotos: string = '/mainPhotos';
+  private _galaryPhotos: string = '/galaryPhotos';
   completed$ = new Subject<Upload>();
   uploading$ = new Subject<number>();
   completedMulti$ = new Subject<Upload>();
+  selectedFiles: FileList;
+  uniqueId = Math.random().toString(36).substring(2) + (new Date()).getTime().toString(36);
 
-  constructor(private db: AngularFireDatabase, private dialog: MatDialog) { }
-  showMessageDialog(message: string): void {
+  constructor(private dialog: MatDialog) { }
+
+  showMessageDialog(message: string) {
     this.dialog.open(MessageDialog, {
       width: '450px',
       data: message
     });
   }
 
-  uploadSingle(event, path?:string) {
+  uploadSingle(event) {
     let storageRef = firebase.storage().ref();
     this.file = event.target.files[0];
 
@@ -33,17 +37,16 @@ export class ImageUploadService {
        return;
     } else {
       const upload = new Upload(this.file)
-      let uploadTask = storageRef.child(`${this.basePath}/${upload.file.name}`).put(upload.file);
-      this.uploadToDB(uploadTask, upload)
+      let uploadTask = storageRef.child(`${this._mainPhotos}/${this.uniqueId + upload.file.name}`).put(upload.file);
+      this.uploadToDB(uploadTask, upload, 'single')
     }
   }
 
-  uploadToDB(uploadTask, upload): any {
+  uploadToDB(uploadTask, upload, type?:string) {
     uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
       (snapshot) => {
         upload.progress = ((uploadTask.snapshot.bytesTransferred / uploadTask.snapshot.totalBytes) * 100).toString().split('.')[0];
         this.uploading$.next(upload.progress);
-        console.log(upload.progress);
       },
       (error) => {
         console.log(error)
@@ -51,37 +54,36 @@ export class ImageUploadService {
       () => {
         upload.url = uploadTask.snapshot.downloadURL
         upload.name = upload.file.name
-        this.completed$.next(upload);
+        upload.fullPath = uploadTask.snapshot.ref.fullPath
+    
+        type === 'single' ? this.completed$.next(upload) : this.completedMulti$.next(upload);
         this.uploading$.next(null);
       }
     );
   }
 
-  uploadMulti(upload: Upload, path?:string){
+  uploadMulti(event){
     let storageRef = firebase.storage().ref();
-    let uploadTask = storageRef.child(`${path}/${upload.file.name}`).put(upload.file);
-
-    uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
-      (snapshot) => {
-        upload.progress = (uploadTask.snapshot.bytesTransferred / uploadTask.snapshot.totalBytes) * 100;
-        this.uploading$.next(upload.progress);
-        console.log(upload.progress);
-      },
-      (error) => {
-        console.log(error)
-      },
-      () => {
-        upload.url = uploadTask.snapshot.downloadURL
-        upload.name = upload.file.name
-
-        forkJoin([upload]).subscribe(t=> {
-          console.log(t);
-          
-        });
-        this.completedMulti$.next(upload);
-        this.uploading$.next(null);
+    this.selectedFiles = event.target.files;
+    let files = this.selectedFiles;
+              
+    let filesIndex = range(files.length);
+    each(filesIndex, (idx) => {
+      if (files[idx].type.split('/')[0] !== 'image') {
+        this.showMessageDialog('Невірний формат файлу, виберіть зображення');
+        return;
+      } else {
+        const upload = new Upload( files[idx]);
+        let uploadTask:any = storageRef.child(`${this._galaryPhotos}/${this.uniqueId + upload.file.name}`).put(upload.file);
+        this.uploadToDB(uploadTask, upload);
       }
-    );
+    })
+  }
+
+  removeImg(imgPath) {
+    const storageRef = firebase.storage().ref();
+    storageRef.child(`${imgPath}`).delete()
+    .catch(error => console.log(error));
   }
 
 }

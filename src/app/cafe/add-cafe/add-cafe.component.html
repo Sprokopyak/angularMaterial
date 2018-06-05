@@ -14,13 +14,7 @@
       <div class="title-container">
       </div>
       <form>
-
-
-        <!-- 
-          <button mat-raised-button color="primary" (click)="uploadSingle()">Send</button>
-          <input #fileInput type="file" (change)="detectFiles($event)"  accept=".png,.jpg" /> -->
-
-        <div *ngIf="progress$ | async as p">
+        <div class="progress" *ngIf="progress$ | async as p">
           {{p}} %
           <mat-progress-bar mode="determinate" [value]="p"></mat-progress-bar>
         </div>
@@ -28,31 +22,29 @@
         <button mat-button color="accent" mat-mini-fab (click)="imgFileInput.click()">
           <mat-icon>attachment</mat-icon>
         </button>
-        {{ imgFileInput?.files[0]?.name }}
         <input hidden type="file" #imgFileInput (change)="uploadSingle($event)" accept=".png,.jpg" />
-        <mat-hint>Додати основне фото закладу.</mat-hint>
+        <mat-hint> Додати основне фото закладу.</mat-hint>
 
-        <div *ngIf="currentUpload && gallery.length === 0">
-          <img style="max-width: 300px" [src]="currentUpload?.url || ''" [alt]="currentUpload?.name || ''">
+        <div class="mainPhoto" *ngIf="mainImgSrc?.url">
+          <img [src]="mainImgSrc?.url || ''" [alt]="currentUpload?.name || ''">
+          <mat-icon (click)="_imageUploadService.removeImg(currentUpload.fullPath); mainImgSrc =''">cancel</mat-icon>
         </div>
-        <div *ngIf="currentUpload">
-            <p  *ngFor="let img of gallery">
-                <img style="max-width: 100px" [src]="img || ''" [alt]="currentUpload?.name || ''">
-            </p>
-         
+
+        <div class="gallery-container">
+          <button mat-button color="accent" mat-mini-fab (click)="imgMulti.click()">
+            <mat-icon>attachment</mat-icon>
+          </button>
+          <input hidden type="file" #imgMulti (change)="uploadMulti($event)" multiple accept=".png,.jpg">
+          <mat-hint> Додати фото для галереї закладу.</mat-hint>
+          <div *ngIf="gallery.length !== 0">
+            <ul class="gallery">
+              <li *ngFor="let img of gallery">
+                <img [src]="img.url || ''" [alt]="currentUpload?.name || ''">
+                <mat-icon (click)="removeGalleryImg(img)">cancel</mat-icon>
+              </li>
+            </ul>
           </div>
-
-        <label>
-            <input type="file" (change)="selectFiles($event)" multiple>
-         </label>
-        <button [disabled]="!selectedFiles" (click)="uploadMulti()">Upload Multipl</button>
-
-        
-        <mat-chip *ngFor="let img of selectedImages" (removed)="removeImg(img)">
-            {{img.name}}
-            <mat-icon matChipRemove>cancel</mat-icon>
-          </mat-chip>
-  
+        </div>
 
         <mat-form-field>
           <input type="text" matInput required placeholder="Назва кафе">
@@ -62,7 +54,7 @@
 
         <mat-form-field>
           <mat-select placeholder="Тип закладу" required>
-            <mat-option *ngFor="let cafe of cafeTypes" [value]="cafe.value">
+            <mat-option *ngFor="let cafe of _cafeTypes" [value]="cafe.value">
               {{cafe.viewValue}}
             </mat-option>
           </mat-select>

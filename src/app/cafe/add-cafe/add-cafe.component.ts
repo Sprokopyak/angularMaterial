@@ -7,10 +7,9 @@ import { MapsAPILoader } from "@agm/core";
 import { ImageUploadService } from '../../core/image-upload/image-upload.service';
 import { Upload } from '../../core/models/image-upload.model';
 
-import { AngularFireStorage } from 'angularfire2/storage';
 import { Observable } from 'rxjs';
 
-import * as _ from "lodash";
+import * as firebase from 'firebase/app';
 
 @Component({
   selector: "app-add-cafe",
@@ -24,16 +23,13 @@ export class AddCafe implements OnInit {
   public longitude: number;
   public searchControl: FormControl;
 
-  private _selectedImages = [];
   tables = [];
-  selectedFiles: FileList;
   currentUpload: Upload;
-  imgSrc;
-  imgSrcGallery;
+  mainImgSrc: object;
   gallery = [];
   progress$: Observable<number>;
 
-  private cafeTypes = [
+  private _cafeTypes = [
     { value: 'bar', viewValue: 'Бар' },
     { value: 'cafe', viewValue: 'Кафе' },
     { value: 'coffeShop', viewValue: 'Кав\'ярня' },
@@ -49,27 +45,30 @@ export class AddCafe implements OnInit {
     private mapsAPILoader: MapsAPILoader, 
     private ngZone: NgZone, 
     public fb: FormBuilder,
-    private _imageUploadService: ImageUploadService, 
-    private afs: AngularFireStorage
+    private _imageUploadService: ImageUploadService
   ) {
       this.progress$ = this._imageUploadService.uploading$;
       this._imageUploadService.completed$.subscribe((upload) => {
         if (upload) {          
-          this.currentUpload = upload;
-          this.imgSrc = this.currentUpload.url;
+          this.currentUpload = upload;          
+          this.mainImgSrc = {
+            url: this.currentUpload.url,
+            fullPath: this.currentUpload.fullPath
+          } 
+          console.log(this.mainImgSrc);
+          
         } else {
           this.currentUpload = null;
         }
       });
-
+     
       this._imageUploadService.completedMulti$.subscribe((upload) => {
         if (upload) {          
           this.currentUpload = upload;
-          this.gallery.push(this.currentUpload.url);
-          console.log( this.gallery);
-          // this.anyService.uploadFormData({....}).subscribe(() => {
-          //   console.log('done');
-          // });
+          this.pushIfNew(this.gallery, {
+            url: this.currentUpload.url,
+            fullPath: this.currentUpload.fullPath
+          })
         } else {
           this.currentUpload = null;
         }
@@ -79,6 +78,15 @@ export class AddCafe implements OnInit {
       'tablesNumber': ['', [Validators.required]],
       'visitorsNumber': ['', [Validators.required]]
     });
+  }
+
+   pushIfNew(array,  obj) {
+    for (var i = 0; i < array.length; i++) {
+      if (array[i].fullPath === obj.fullPath) { 
+        return;
+      }
+    }    
+    array.push(obj);
   }
 
   ngOnInit() {
@@ -106,29 +114,13 @@ export class AddCafe implements OnInit {
   }
 
   uploadSingle(event) {
-    this._imageUploadService.uploadSingle(event)
+    this._imageUploadService.uploadSingle(event);
   }
 
-  selectFiles(event) {
-    this.selectedFiles = event.target.files;
-    let files = this.selectedFiles;
-    let filesIndex = _.range(files.length)
-    _.each(filesIndex, (idx) => {
-      this._selectedImages.push( files[idx])
-    })
-    // console.log(this.selectedImages);
+  uploadMulti(event) {
+    this._imageUploadService.uploadMulti(event);
   }
 
-   uploadMulti() {
-    let files = this.selectedFiles;
-    let uniqkey = 'cafe' + new Date().getTime();
- 
-
-    this._selectedImages.forEach((val)=>{
-      this.currentUpload = new Upload(val);
-      this._imageUploadService.uploadMulti(this.currentUpload, uniqkey)
-    })
-  }
 
   onAddTables(tablesNumber, visitorsNumber) {
     if (tablesNumber.value !== '' && visitorsNumber.value !== '') {
@@ -139,10 +131,11 @@ export class AddCafe implements OnInit {
     }
   }
 
-  removeImg(img: any): void {
-    let index = this._selectedImages.indexOf(img);  
+  removeGalleryImg(img): void {
+    this._imageUploadService.removeImg(img.fullPath);
+    let index = this.gallery.indexOf(img);  
     if (index >= 0) {
-      this._selectedImages.splice(index, 1);
+      this.gallery.splice(index, 1);
     }
   }
 
@@ -154,13 +147,10 @@ export class AddCafe implements OnInit {
   }
 
   // send(){
-   
   //   this.uploadMulti()
   //   .then((val)=>{
   //     console.log(val);
-      
   //     console.log( this.gallery);
-      
   //   })
   // }
 }

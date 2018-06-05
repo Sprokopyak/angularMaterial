@@ -76,3 +76,43 @@
 .tables-quantity .mat-form-field:first-child{
   margin-right: 11%;
 }
+
+.progress{
+  margin-bottom: 10px;
+}
+
+.mainPhoto {
+  margin-top: 10px;
+}
+
+.mainPhoto img{
+  width: 180px;
+  // max-height: 100px;
+}
+
+.gallery-container{
+  margin-top: 30px;
+}
+
+.gallery li{
+  list-style-type: none;
+  display: inline-block;
+  margin: 0 10px;
+ 
+}
+
+.gallery li img {
+  width: 50px;
+  height: 50px;
+}
+
+.gallery li .mat-icon, .mainPhoto .mat-icon{
+  vertical-align: top;
+}
+
+.gallery li .material-icons, .mainPhoto .material-icons{
+  cursor: pointer;
+  font-size: 20px;
+  margin-top: -12px;
+  margin-left: -15px;
+}
