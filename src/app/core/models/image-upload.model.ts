@@ -6,7 +6,8 @@ export class Upload {
   url:string;
   fullPath: string;
   progress:number;
-  createdAt: Date = new Date();
+  thumbnailUrl: string;
+  thumbnailPath: string;
 
   constructor(file:File) {
     this.file = file;

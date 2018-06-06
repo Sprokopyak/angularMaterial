@@ -8,8 +8,7 @@ import { ImageUploadService } from '../../core/image-upload/image-upload.service
 import { Upload } from '../../core/models/image-upload.model';
 
 import { Observable } from 'rxjs';
-
-import * as firebase from 'firebase/app';
+import { CAFE_TYPES } from '../constants';
 
 @Component({
   selector: "app-add-cafe",
@@ -18,7 +17,6 @@ import * as firebase from 'firebase/app';
 })
 export class AddCafe implements OnInit {
   public tablesForm: FormGroup;
-
   public latitude: number;
   public longitude: number;
   public searchControl: FormControl;
@@ -28,16 +26,7 @@ export class AddCafe implements OnInit {
   mainImgSrc: object;
   gallery = [];
   progress$: Observable<number>;
-
-  private _cafeTypes = [
-    { value: 'bar', viewValue: 'Бар' },
-    { value: 'cafe', viewValue: 'Кафе' },
-    { value: 'coffeShop', viewValue: 'Кав\'ярня' },
-    { value: 'restaurant', viewValue: 'Ресторан' },
-    { value: 'pub', viewValue: 'Паб' },
-    { value: 'hookah', viewValue: 'Кальянна' },
-    { value: 'nightClub', viewValue: 'Нічний клуб' }
-  ];
+  cafeTypes = CAFE_TYPES;
 
   @ViewChild('search') public searchElementRef: ElementRef;
 
@@ -53,10 +42,10 @@ export class AddCafe implements OnInit {
           this.currentUpload = upload;          
           this.mainImgSrc = {
             url: this.currentUpload.url,
-            fullPath: this.currentUpload.fullPath
-          } 
-          console.log(this.mainImgSrc);
-          
+            fullPath: this.currentUpload.fullPath,
+            thumbnailUrl: this.currentUpload.thumbnailUrl,
+            thumbnailPath: this.currentUpload.thumbnailPath
+          }           
         } else {
           this.currentUpload = null;
         }
@@ -67,8 +56,10 @@ export class AddCafe implements OnInit {
           this.currentUpload = upload;
           this.pushIfNew(this.gallery, {
             url: this.currentUpload.url,
-            fullPath: this.currentUpload.fullPath
-          })
+            fullPath: this.currentUpload.fullPath,
+            thumbnailUrl: this.currentUpload.thumbnailUrl,
+            thumbnailPath: this.currentUpload.thumbnailPath
+          })          
         } else {
           this.currentUpload = null;
         }
@@ -123,8 +114,15 @@ export class AddCafe implements OnInit {
 
 
   onAddTables(tablesNumber, visitorsNumber) {
+    
     if (tablesNumber.value !== '' && visitorsNumber.value !== '') {
-      this.tables.push({ tablesNumber: tablesNumber.value, visitorsNumber: visitorsNumber.value })
+
+    
+      let arr = new Array(parseInt(tablesNumber.value));      
+      arr.fill({ booked: false, visitorsNumber: parseInt(visitorsNumber.value)  })
+      console.log(arr);
+
+      this.tables.push({ tablesNumber: parseInt(tablesNumber.value), visitorsNumber: parseInt(visitorsNumber.value), freeTables: arr })
       console.log(this.tables)
       tablesNumber.value = '';
       visitorsNumber.value = '';
@@ -132,14 +130,14 @@ export class AddCafe implements OnInit {
   }
 
   removeGalleryImg(img): void {
-    this._imageUploadService.removeImg(img.fullPath);
+    this._imageUploadService.removeImg(img.fullPath, img.thumbnailPath);
     let index = this.gallery.indexOf(img);  
     if (index >= 0) {
       this.gallery.splice(index, 1);
     }
   }
 
-  remove(table: any): void {
+  removeTables(table: any): void {
     let index = this.tables.indexOf(table);  
     if (index >= 0) {
       this.tables.splice(index, 1);

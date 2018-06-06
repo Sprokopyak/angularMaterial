@@ -27,7 +27,7 @@
 
         <div class="mainPhoto" *ngIf="mainImgSrc?.url">
           <img [src]="mainImgSrc?.url || ''" [alt]="currentUpload?.name || ''">
-          <mat-icon (click)="_imageUploadService.removeImg(currentUpload.fullPath); mainImgSrc =''">cancel</mat-icon>
+          <mat-icon (click)="_imageUploadService.removeImg(currentUpload.fullPath, currentUpload.thumbnailPath); mainImgSrc =''">cancel</mat-icon>
         </div>
 
         <div class="gallery-container">
@@ -54,7 +54,7 @@
 
         <mat-form-field>
           <mat-select placeholder="Тип закладу" required>
-            <mat-option *ngFor="let cafe of _cafeTypes" [value]="cafe.value">
+            <mat-option *ngFor="let cafe of cafeTypes" [value]="cafe.value">
               {{cafe.viewValue}}
             </mat-option>
           </mat-select>
@@ -90,7 +90,7 @@
           <mat-chip color="primary" selected="true" (click)="onAddTables(tablesNumber, visitorsNumber)">Додати</mat-chip>
         </div>
 
-        <mat-chip *ngFor="let table of tables" (removed)="remove(table)">
+        <mat-chip *ngFor="let table of tables" (removed)="removeTables(table)">
           {{table.tablesNumber}} столи, віміщає {{table.visitorsNumber}} гостей
           <mat-icon matChipRemove>cancel</mat-icon>
         </mat-chip>

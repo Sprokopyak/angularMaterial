@@ -18,6 +18,7 @@ export class ImageUploadService {
   completedMulti$ = new Subject<Upload>();
   selectedFiles: FileList;
   uniqueId = Math.random().toString(36).substring(2) + (new Date()).getTime().toString(36);
+  thumbnailStorageUrl = 'https://firebasestorage.googleapis.com/v0/b/easy-book-2fcf6.appspot.com/o/';
 
   constructor(private dialog: MatDialog) { }
 
@@ -38,11 +39,13 @@ export class ImageUploadService {
     } else {
       const upload = new Upload(this.file)
       let uploadTask = storageRef.child(`${this._mainPhotos}/${this.uniqueId + upload.file.name}`).put(upload.file);
-      this.uploadToDB(uploadTask, upload, 'single')
+      let thumbnailUrl = `${this.thumbnailStorageUrl + 'mainPhotos%2F' + 'thumb_' + this.uniqueId + upload.file.name + '?alt=media'}`;
+      let thumbnailPath = `${'mainPhotos/' + 'thumb_'  + this.uniqueId + upload.file.name}`;
+      this.uploadToDB(uploadTask, upload, thumbnailUrl, thumbnailPath, 'single');
     }
   }
 
-  uploadToDB(uploadTask, upload, type?:string) {
+  uploadToDB(uploadTask, upload, thumbnailUrl, thumbnailPath, type?:string) {
     uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
       (snapshot) => {
         upload.progress = ((uploadTask.snapshot.bytesTransferred / uploadTask.snapshot.totalBytes) * 100).toString().split('.')[0];
@@ -52,9 +55,11 @@ export class ImageUploadService {
         console.log(error)
       },
       () => {
-        upload.url = uploadTask.snapshot.downloadURL
-        upload.name = upload.file.name
-        upload.fullPath = uploadTask.snapshot.ref.fullPath
+        upload.url = uploadTask.snapshot.downloadURL;
+        upload.name = upload.file.name;
+        upload.fullPath = uploadTask.snapshot.ref.fullPath;
+        upload.thumbnailUrl = thumbnailUrl;
+        upload.thumbnailPath = thumbnailPath;
     
         type === 'single' ? this.completed$.next(upload) : this.completedMulti$.next(upload);
         this.uploading$.next(null);
@@ -75,14 +80,17 @@ export class ImageUploadService {
       } else {
         const upload = new Upload( files[idx]);
         let uploadTask:any = storageRef.child(`${this._galaryPhotos}/${this.uniqueId + upload.file.name}`).put(upload.file);
-        this.uploadToDB(uploadTask, upload);
+        let thumbnailUrl = `${this.thumbnailStorageUrl + 'galaryPhotos%2F' + 'thumb_' + this.uniqueId + upload.file.name + '?alt=media'}`;
+        let thumbnailPath = `${'galaryPhotos/' + 'thumb_'  + this.uniqueId + upload.file.name}`;
+        this.uploadToDB(uploadTask, upload, thumbnailUrl, thumbnailPath);
       }
     })
   }
 
-  removeImg(imgPath) {
+  removeImg(imgPath, thumbPath) {
     const storageRef = firebase.storage().ref();
     storageRef.child(`${imgPath}`).delete()
+    storageRef.child(`${thumbPath}`).delete()
     .catch(error => console.log(error));
   }
 
