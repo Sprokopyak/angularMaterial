@@ -69,12 +69,20 @@
 }
 
 .tables-quantity .mat-form-field{
-  width: 44%;
   display: inline-block;
 }
 
 .tables-quantity .mat-form-field:first-child{
+  width: 40%;
   margin-right: 11%;
+}
+
+.tables-quantity .mat-form-field:last-child{
+  width: 48%;
+}
+
+.mat-chip.mat-standard-chip.mat-chip-selected.mat-primary{
+  margin-top: 15px;
 }
 
 .progress{
@@ -87,7 +95,6 @@
 
 .mainPhoto img{
   width: 180px;
-  // max-height: 100px;
 }
 
 .gallery-container{
@@ -98,7 +105,6 @@
   list-style-type: none;
   display: inline-block;
   margin: 0 10px;
- 
 }
 
 .gallery li img {
@@ -115,4 +121,8 @@
   font-size: 20px;
   margin-top: -12px;
   margin-left: -15px;
+}
+
+.mat-standard-chip.mat-chip-with-trailing-icon {
+  margin: 5px 9px;
 }

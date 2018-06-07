@@ -13,7 +13,7 @@
     <div class="content-container">
       <div class="title-container">
       </div>
-      <form>
+      <form [formGroup]="addCafeForm" (ngSubmit)="addCafe()">
         <div class="progress" *ngIf="progress$ | async as p">
           {{p}} %
           <mat-progress-bar mode="determinate" [value]="p"></mat-progress-bar>
@@ -47,13 +47,13 @@
         </div>
 
         <mat-form-field>
-          <input type="text" matInput required placeholder="Назва кафе">
+          <input type="text" matInput required placeholder="Назва кафе" formControlName="cafeName">
           <mat-hint>Введіть назву кафе.</mat-hint>
           <mat-error>Назва кафе повинна складатись не менше ніж з 2 символів.</mat-error>
         </mat-form-field>
 
         <mat-form-field>
-          <mat-select placeholder="Тип закладу" required>
+          <mat-select placeholder="Тип закладу" required formControlName="cafeType">
             <mat-option *ngFor="let cafe of cafeTypes" [value]="cafe.value">
               {{cafe.viewValue}}
             </mat-option>
@@ -64,12 +64,9 @@
 
         <mat-form-field>
           <input type="search" matInput required placeholder="Розташування закладу" autocorrect="off" autocapitalize="off" spellcheck="off"
-            class="form-control" #search [formControl]="searchControl">
+            class="form-control" #search formControlName="searchControl">
           <mat-hint>Введіть місце розташування закладу.</mat-hint>
           <mat-error>Введіть місце розташування закладу.</mat-error>
-          <!-- <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="false" [zoom]="zoom">
-            <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
-          </agm-map> -->
         </mat-form-field>
 
         <div class="tables-quantity">
@@ -77,13 +74,11 @@
             <mat-form-field>
               <input type="number" matInput required #tablesNumber placeholder="Кількість столів">
               <mat-hint>Введіть кількість столів.</mat-hint>
-              <mat-error>Заповніть два поля.</mat-error>
             </mat-form-field>
 
             <mat-form-field>
               <input type="number" matInput required #visitorsNumber placeholder="Кількість гостей">
               <mat-hint>Введіть кількість гостей, яку вміщає один такий стіл.</mat-hint>
-              <mat-error>Заповніть два поля.</mat-error>
             </mat-form-field>
 
           </mat-chip-list>
@@ -96,10 +91,11 @@
         </mat-chip>
 
         <mat-form-field>
-          <textarea matInput placeholder="Опис закладу"></textarea>
+          <textarea matInput placeholder="Опис закладу" formControlName="description"></textarea>
           <mat-hint>Введіть короткий опис закладу</mat-hint>
+          <mat-error>Короткий опис повинен складатись не менше ніж з 2 символів.</mat-error>
         </mat-form-field>
-        <button type="submit" mat-raised-button (click)=send() color="primary">Додати</button>
+        <button type="submit" mat-raised-button color="primary">Додати</button>
       </form>
     </div>
   </div>

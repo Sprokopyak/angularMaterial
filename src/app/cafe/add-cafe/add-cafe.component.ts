@@ -1,6 +1,6 @@
 import { ActivatedRoute } from "@angular/router";
 import { ElementRef, NgZone, OnInit, ViewChild, Component } from "@angular/core";
-import { FormControl, FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { } from "googlemaps";
 import { MapsAPILoader } from "@agm/core";
 
@@ -16,17 +16,15 @@ import { CAFE_TYPES } from '../constants';
   styleUrls: ["./add-cafe.component.scss"]
 })
 export class AddCafe implements OnInit {
-  public tablesForm: FormGroup;
-  public latitude: number;
-  public longitude: number;
-  public searchControl: FormControl;
-
+  addCafeForm: FormGroup;
+  cafeTypes = CAFE_TYPES;
+  latitude: number;
+  longitude: number;
   tables = [];
   currentUpload: Upload;
   mainImgSrc: object;
   gallery = [];
   progress$: Observable<number>;
-  cafeTypes = CAFE_TYPES;
 
   @ViewChild('search') public searchElementRef: ElementRef;
 
@@ -46,9 +44,7 @@ export class AddCafe implements OnInit {
             thumbnailUrl: this.currentUpload.thumbnailUrl,
             thumbnailPath: this.currentUpload.thumbnailPath
           }           
-        } else {
-          this.currentUpload = null;
-        }
+        } 
       });
      
       this._imageUploadService.completedMulti$.subscribe((upload) => {
@@ -59,15 +55,15 @@ export class AddCafe implements OnInit {
             fullPath: this.currentUpload.fullPath,
             thumbnailUrl: this.currentUpload.thumbnailUrl,
             thumbnailPath: this.currentUpload.thumbnailPath
-          })          
-        } else {
-          this.currentUpload = null;
-        }
+          });       
+        } 
       });
 
-    this.tablesForm = this.fb.group({
-      'tablesNumber': ['', [Validators.required]],
-      'visitorsNumber': ['', [Validators.required]]
+    this.addCafeForm = this.fb.group({
+      'cafeName': ['', [Validators.required, Validators.minLength(2)]],
+      'cafeType': ['', [Validators.required]],
+      'searchControl': ['', [Validators.required]],
+      'description': ['', [Validators.required, Validators.minLength(10)]]
     });
   }
 
@@ -81,8 +77,6 @@ export class AddCafe implements OnInit {
   }
 
   ngOnInit() {
-    this.searchControl = new FormControl();
-
     this.mapsAPILoader.load().then(() => {
       const autocomplete = new google.maps.places.Autocomplete(
         this.searchElementRef.nativeElement, {
@@ -98,7 +92,6 @@ export class AddCafe implements OnInit {
           }
           this.latitude = place.geometry.location.lat();
           this.longitude = place.geometry.location.lng();
-          console.log(this.latitude, this.longitude);
         });
       });
     });
@@ -112,15 +105,10 @@ export class AddCafe implements OnInit {
     this._imageUploadService.uploadMulti(event);
   }
 
-
   onAddTables(tablesNumber, visitorsNumber) {
-    
     if (tablesNumber.value !== '' && visitorsNumber.value !== '') {
-
-    
       let arr = new Array(parseInt(tablesNumber.value));      
-      arr.fill({ booked: false, visitorsNumber: parseInt(visitorsNumber.value)  })
-      console.log(arr);
+      arr.fill({booked: false, visitorsNumber: parseInt(visitorsNumber.value)})
 
       this.tables.push({ tablesNumber: parseInt(tablesNumber.value), visitorsNumber: parseInt(visitorsNumber.value), freeTables: arr })
       console.log(this.tables)
@@ -144,11 +132,21 @@ export class AddCafe implements OnInit {
     }
   }
 
-  // send(){
-  //   this.uploadMulti()
-  //   .then((val)=>{
-  //     console.log(val);
-  //     console.log( this.gallery);
-  //   })
-  // }
+  addCafe(){
+    let formsVlue = this.addCafeForm.getRawValue();
+    let obj = {
+      mainImgSrc: this.mainImgSrc,
+      gallery: this.gallery,
+      cafeName: formsVlue.cafeName,
+      cafeType: formsVlue.cafeType,
+      location: {
+        latitude: this.latitude, 
+        longitude: this.longitude
+      },
+      tables: this.tables,
+      description: formsVlue.description
+    }
+    console.log(obj);
+    
+  }
 }
