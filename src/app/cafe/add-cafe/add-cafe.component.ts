@@ -5,6 +5,7 @@ import { } from "googlemaps";
 import { MapsAPILoader } from "@agm/core";
 
 import { ImageUploadService } from '../../core/image-upload/image-upload.service';
+import { CafeService } from '../../core/cafe-service/cafe.service';
 import { Upload } from '../../core/models/image-upload.model';
 
 import { Observable } from 'rxjs';
@@ -32,7 +33,8 @@ export class AddCafe implements OnInit {
     private mapsAPILoader: MapsAPILoader, 
     private ngZone: NgZone, 
     public fb: FormBuilder,
-    private _imageUploadService: ImageUploadService
+    private _imageUploadService: ImageUploadService,
+    private _cafeService: CafeService
   ) {
       this.progress$ = this._imageUploadService.uploading$;
       this._imageUploadService.completed$.subscribe((upload) => {
@@ -146,6 +148,7 @@ export class AddCafe implements OnInit {
       tables: this.tables,
       description: formsVlue.description
     }
+    this._cafeService.pushCafe(obj)
     console.log(obj);
     
   }
