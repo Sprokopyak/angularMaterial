@@ -1,41 +1,17 @@
-import { Injectable } from '@angular/core';
-
-import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database-deprecated';
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
-
-import { Observable } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
-import { of } from 'rxjs';
-
-import { MatDialog } from '@angular/material';
-import { MessageDialog } from '../../commons/message-dialog/message-dialog.component';
+import { Injectable } from "@angular/core";
+import { AngularFirestore, AngularFirestoreCollection } from "angularfire2/firestore";
 
 @Injectable()
 export class CafeService {
-  cafeRef: AngularFirestoreDocument<any>;
-  cafe$: Observable<any>;
+  cafeRef: AngularFirestoreCollection<any> = this.afs.collection("cafes");
+  tablesRef: AngularFirestoreCollection<any> = this.afs.collection("tables");
 
-  tablesRef: AngularFirestoreCollection<any> = this.afs.collection('cafes');
-  tables= this.tablesRef.valueChanges();
-  tables$: Observable<any>;
+  constructor(private afs: AngularFirestore) {}
 
-  constructor(private afs: AngularFirestore) {
-    // this.cafe$ = this.afs.collection('cafes').valueChanges();
-
-    // this.cafeRef = this.afs.doc('cafes')
-    // this.tablesRef = this.cafeRef.collection('tables' )
-    // this.cafe$ = this.cafeRef.valueChanges();
+  pushCafe(obj?: object, arr?: Array<[0]>) {
+    this.cafeRef.add(obj).then(docRef => {
+      this.cafeRef.doc(docRef.id).update({ cafeId: docRef.id });
+      this.tablesRef.doc(docRef.id).set({ tables: arr });
+    });
   }
-
-  pushCafe(obj?: object) {
-    this.tablesRef.add(obj)
-    .then((docRef)=>{
-      console.log(docRef);
-      
-      this.tablesRef.doc(docRef.id).update({
-        cafeId: docRef.id
-      })
-    })
-  }
-
 }

@@ -137,19 +137,18 @@ export class AddCafe implements OnInit {
   addCafe(){
     let formsVlue = this.addCafeForm.getRawValue();
     let obj = {
-      mainImgSrc: this.mainImgSrc,
-      gallery: this.gallery,
+      mainImgSrc: this.mainImgSrc || '',
+      gallery: this.gallery || '',
       cafeName: formsVlue.cafeName,
       cafeType: formsVlue.cafeType,
       location: {
         latitude: this.latitude, 
         longitude: this.longitude
       },
-      tables: this.tables,
       description: formsVlue.description
     }
-    this._cafeService.pushCafe(obj)
-    console.log(obj);
     
+    this._cafeService.pushCafe(obj, this.tables);
+    console.log(obj);
   }
 }
