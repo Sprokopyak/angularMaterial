@@ -1,0 +1,136 @@
+.details-page__wrapper-dark {
+  background: linear-gradient(#fc7db8, #C2185B); // height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative; // overflow: hidden;
+  margin-top: -64px;
+}
+
+.background-gradient__circle {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  z-index: 1;
+  height: 95%;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  margin-top: 130px;
+  margin-bottom: 50px;
+  width: 800px;
+  padding-bottom: 50px;
+  background: rgba(4, 4, 4, 0.8);
+  box-shadow: 0px 35px 44px -22px #1f181b;
+  z-index: 2;
+}
+
+.content-container {
+  width: 100%;
+  text-align: center;
+}
+
+.title-container {
+  position: relative;
+  margin-bottom: 30px;
+  min-height: 160px;
+  background-image: url(../../../assets/images/add-cafe-bg.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50%;
+}
+
+.title-container:before {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: #510321b0;
+}
+
+.mat-form-field {
+  display: block;
+  margin: 20px auto 0 auto;
+  width: 80%;
+}
+
+.tables-quantity{
+  width: 80%;
+  margin: 10px auto;
+}
+
+.tables-quantity .mat-form-field{
+  display: inline-block;
+}
+
+.tables-quantity .mat-form-field:first-child{
+  width: 40%;
+  margin-right: 11%;
+}
+
+.tables-quantity .mat-form-field:last-child{
+  width: 48%;
+}
+
+.mat-chip.mat-standard-chip.mat-chip-selected.mat-primary{
+  margin-top: 15px;
+}
+
+.progress{
+  margin-bottom: 10px;
+}
+
+.mainPhoto {
+  margin-top: 10px;
+}
+
+.mainPhoto img{
+  width: 180px;
+}
+
+.gallery-container{
+  margin-top: 30px;
+}
+
+.gallery li{
+  list-style-type: none;
+  display: inline-block;
+  margin: 0 10px;
+}
+
+.gallery li img {
+  width: 50px;
+  height: 50px;
+}
+
+.gallery li .mat-icon, .mainPhoto .mat-icon{
+  vertical-align: top;
+}
+
+.gallery li .material-icons, .mainPhoto .material-icons{
+  cursor: pointer;
+  font-size: 20px;
+  margin-top: -12px;
+  margin-left: -15px;
+}
+
+.mat-standard-chip.mat-chip-with-trailing-icon {
+  margin: 5px 9px;
+}
+
+mat-spinner{
+  margin: 35px auto 0 auto;
+}
+
+.btn_submit{
+  margin-top: 30px;
+}
