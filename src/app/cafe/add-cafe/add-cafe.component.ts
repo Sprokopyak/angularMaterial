@@ -17,6 +17,7 @@ import { CAFE_TYPES } from '../constants';
   styleUrls: ["./add-cafe.component.scss"]
 })
 export class AddCafe implements OnInit {
+  isLoading = false;
   addCafeForm: FormGroup;
   cafeTypes = CAFE_TYPES;
   latitude: number;
@@ -110,10 +111,9 @@ export class AddCafe implements OnInit {
   onAddTables(tablesNumber, visitorsNumber) {
     if (tablesNumber.value !== '' && visitorsNumber.value !== '') {
       let arr = new Array(parseInt(tablesNumber.value));      
-      arr.fill({booked: false, visitorsNumber: parseInt(visitorsNumber.value)})
+      arr.fill({booked: false, visitorsNumber: parseInt(visitorsNumber.value)});
 
-      this.tables.push({ tablesNumber: parseInt(tablesNumber.value), visitorsNumber: parseInt(visitorsNumber.value), freeTables: arr })
-      console.log(this.tables)
+      this.tables.push({ tablesNumber: parseInt(tablesNumber.value), visitorsNumber: parseInt(visitorsNumber.value), freeTables: arr });
       tablesNumber.value = '';
       visitorsNumber.value = '';
     }
@@ -137,6 +137,7 @@ export class AddCafe implements OnInit {
   addCafe(){
     let formsVlue = this.addCafeForm.getRawValue();
     let obj = {
+      approved: false,
       mainImgSrc: this.mainImgSrc || '',
       gallery: this.gallery || '',
       cafeName: formsVlue.cafeName,
@@ -147,8 +148,14 @@ export class AddCafe implements OnInit {
       },
       description: formsVlue.description
     }
-    
-    this._cafeService.pushCafe(obj, this.tables);
-    console.log(obj);
+    this.isLoading = true;
+    this._cafeService.pushCafe(obj, this.tables)
+    .then(()=>{
+      this.isLoading = false;
+      this.addCafeForm.reset();
+      this.mainImgSrc= {};
+      this.gallery = [];
+      this.tables = [];
+    })
   }
 }

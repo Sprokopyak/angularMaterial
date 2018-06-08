@@ -20,7 +20,7 @@ export const AppRoutes = RouterModule.forRoot([
   }, {
     path: 'sign-in',
     component: SignIn,
-    // canActivate: [LoginGuard]
+    canActivate: [LoginGuard]
   }, {
     path: 'admin',
     component: Admin,

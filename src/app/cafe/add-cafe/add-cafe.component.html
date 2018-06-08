@@ -13,7 +13,7 @@
     <div class="content-container">
       <div class="title-container">
       </div>
-      <form [formGroup]="addCafeForm" (ngSubmit)="addCafe()">
+      <form [formGroup]="addCafeForm" >
         <div class="progress" *ngIf="progress$ | async as p">
           {{p}} %
           <mat-progress-bar mode="determinate" [value]="p"></mat-progress-bar>
@@ -95,7 +95,9 @@
           <mat-hint>Введіть короткий опис закладу</mat-hint>
           <mat-error>Короткий опис повинен складатись не менше ніж з 2 символів.</mat-error>
         </mat-form-field>
-        <button type="submit" mat-raised-button color="primary">Додати</button>
+
+        <button *ngIf="!isLoading" class="btn_submit" mat-raised-button [disabled]="addCafeForm.invalid" (click)="addCafe()" color="primary">Додати кафе</button>
+        <mat-spinner [diameter]="60" *ngIf="isLoading"></mat-spinner>
       </form>
     </div>
   </div>
