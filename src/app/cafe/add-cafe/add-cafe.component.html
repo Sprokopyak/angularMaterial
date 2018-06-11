@@ -53,6 +53,12 @@
         </mat-form-field>
 
         <mat-form-field>
+          <input type="tel" matInput required placeholder="Номер телефону" formControlName="phoneNumber">
+          <mat-hint>Введіть номер телефону.</mat-hint>
+          <mat-error>Номер телефону повинен складатись з 12 символів.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
           <mat-select placeholder="Тип закладу" required formControlName="cafeType">
             <mat-option *ngFor="let cafe of cafeTypes" [value]="cafe.value">
               {{cafe.viewValue}}

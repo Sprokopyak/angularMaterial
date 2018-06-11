@@ -64,6 +64,7 @@ export class AddCafe implements OnInit {
 
     this.addCafeForm = this.fb.group({
       'cafeName': ['', [Validators.required, Validators.minLength(2)]],
+      'phoneNumber': ['+380', [Validators.required, Validators.minLength(13), Validators.maxLength(13)]],
       'cafeType': ['', [Validators.required]],
       'searchControl': ['', [Validators.required]],
       'description': ['', [Validators.required, Validators.minLength(10)]]
@@ -110,10 +111,8 @@ export class AddCafe implements OnInit {
 
   onAddTables(tablesNumber, visitorsNumber) {
     if (tablesNumber.value !== '' && visitorsNumber.value !== '') {
-      let arr = new Array(parseInt(tablesNumber.value));      
-      arr.fill({booked: false, visitorsNumber: parseInt(visitorsNumber.value)});
 
-      this.tables.push({ tablesNumber: parseInt(tablesNumber.value), visitorsNumber: parseInt(visitorsNumber.value), freeTables: arr });
+      this.tables.push({ tablesNumber: parseInt(tablesNumber.value), visitorsNumber: parseInt(visitorsNumber.value), booked: 0 });
       tablesNumber.value = '';
       visitorsNumber.value = '';
     }
@@ -141,15 +140,17 @@ export class AddCafe implements OnInit {
       mainImgSrc: this.mainImgSrc || '',
       gallery: this.gallery || '',
       cafeName: formsVlue.cafeName,
+      phoneNumber: parseInt(formsVlue.phoneNumber),
       cafeType: formsVlue.cafeType,
       location: {
         latitude: this.latitude, 
         longitude: this.longitude
       },
+      tables: this.tables,
       description: formsVlue.description
     }
     this.isLoading = true;
-    this._cafeService.pushCafe(obj, this.tables)
+    this._cafeService.pushCafe(obj)
     .then(()=>{
       this.isLoading = false;
       this.addCafeForm.reset();
