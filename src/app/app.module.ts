@@ -10,12 +10,15 @@ import { MaterialModule } from './material/material.module';
 import { CoreModule } from './core/core.module';
 import { CommonsModule } from './commons/commons.module';
 import { LoginModule } from './login/login.module';
+import { CafeModule } from './cafe/cafe.module';
 import { AppRoutes } from './app.routes';
 
 import { AppComponent } from './app.component';
 import { MainNavComponent } from './main-nav/main-nav.component';
 import { Home } from './home/home.component';
 import { Admin } from './admin/admin.component';
+
+import { AgmCoreModule } from '@agm/core';
 
 @NgModule({
   declarations: [
@@ -25,6 +28,10 @@ import { Admin } from './admin/admin.component';
     Admin
   ],
   imports: [
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyAaWrqJxjZiw7BTzD9wDLybddkb1ktedKQ',
+      libraries: ['places']
+    }),
     BrowserModule,
     ReactiveFormsModule,
     FormsModule,
@@ -33,7 +40,8 @@ import { Admin } from './admin/admin.component';
     MaterialModule,
     CoreModule,
     LoginModule,
-    CommonsModule
+    CommonsModule,
+    CafeModule
   ],
   providers: [],
   bootstrap: [AppComponent]

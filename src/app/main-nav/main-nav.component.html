@@ -3,6 +3,7 @@
     [mode]="(isHandset | async)!.matches ? 'over' : 'side'" [opened]="!(isHandset | async)!.matches">
     <mat-toolbar color="primary">Menu</mat-toolbar>
     <mat-nav-list>
+      <a mat-list-item *ngIf="auth.isLogedIn" routerLink="/add-cafe" routerLinkActive="active">Додати кафе</a>
       <a mat-list-item routerLink="admin" routerLinkActive="admin">Admin</a>
       <a mat-list-item *ngIf="!auth.isLogedIn" routerLink="/sign-up" routerLinkActive="active">Зареєструватись</a>
       <a mat-list-item *ngIf="!auth.isLogedIn" routerLink="/sign-in" routerLinkActive="active">Увійти</a>
@@ -19,6 +20,7 @@
       <a routerLink="home" routerLinkActive="active">Application Title</a>
       <span class="spacer"></span>
       <span *ngIf="!(isHandset | async)!.matches">
+        <a *ngIf="auth.isLogedIn" routerLink="/add-cafe" routerLinkActive="active">Додати кафе</a>
         <a routerLink="admin" routerLinkActive="admin">Admin</a>
         <a *ngIf="!auth.isLogedIn" routerLink="/sign-up" routerLinkActive="active">Зареєструватись</a>
         <a *ngIf="!auth.isLogedIn" routerLink="/sign-in" routerLinkActive="active">Увійти</a>
