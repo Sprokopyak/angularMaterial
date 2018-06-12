@@ -29,8 +29,8 @@ import { AgmCoreModule } from '@agm/core';
   ],
   imports: [
     AgmCoreModule.forRoot({
-      apiKey: "AIzaSyAaWrqJxjZiw7BTzD9wDLybddkb1ktedKQ",
-      libraries: ["places"]
+      apiKey: 'AIzaSyAaWrqJxjZiw7BTzD9wDLybddkb1ktedKQ',
+      libraries: ['places']
     }),
     BrowserModule,
     ReactiveFormsModule,

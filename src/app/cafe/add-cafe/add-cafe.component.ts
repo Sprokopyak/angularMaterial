@@ -1,7 +1,7 @@
 import { ActivatedRoute } from "@angular/router";
 import { ElementRef, NgZone, OnInit, ViewChild, Component } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { } from "googlemaps";
+import {} from "googlemaps";
 import { MapsAPILoader } from "@agm/core";
 
 import { ImageUploadService } from '../../core/image-upload/image-upload.service';
@@ -31,15 +31,14 @@ export class AddCafe implements OnInit {
   @ViewChild('search') public searchElementRef: ElementRef;
 
   constructor(
-    private mapsAPILoader: MapsAPILoader, 
-    private ngZone: NgZone, 
-    public fb: FormBuilder,
-    private _imageUploadService: ImageUploadService,
+    private _mapsAPILoader: MapsAPILoader, 
+    private _ngZone: NgZone, 
+    private _fb: FormBuilder,
+    public imageUploadService: ImageUploadService,
     private _cafeService: CafeService
   ) {
-      this.progress$ = this._imageUploadService.uploading$;
-      this._imageUploadService.completed$.subscribe((upload) => {
-        if (upload) {          
+      this.progress$ = this.imageUploadService.uploading$;
+      this.imageUploadService.completed$.subscribe((upload) => {          
           this.currentUpload = upload;          
           this.mainImgSrc = {
             url: this.currentUpload.url,
@@ -47,11 +46,9 @@ export class AddCafe implements OnInit {
             thumbnailUrl: this.currentUpload.thumbnailUrl,
             thumbnailPath: this.currentUpload.thumbnailPath
           }           
-        } 
       });
      
-      this._imageUploadService.completedMulti$.subscribe((upload) => {
-        if (upload) {          
+      this.imageUploadService.completedMulti$.subscribe((upload) => {
           this.currentUpload = upload;
           this.pushIfNew(this.gallery, {
             url: this.currentUpload.url,
@@ -59,29 +56,25 @@ export class AddCafe implements OnInit {
             thumbnailUrl: this.currentUpload.thumbnailUrl,
             thumbnailPath: this.currentUpload.thumbnailPath
           });       
-        } 
       });
 
-    this.addCafeForm = this.fb.group({
-      'cafeName': ['', [Validators.required, Validators.minLength(2)]],
-      'phoneNumber': ['+380', [Validators.required, Validators.minLength(13), Validators.maxLength(13)]],
-      'cafeType': ['', [Validators.required]],
-      'searchControl': ['', [Validators.required]],
-      'description': ['', [Validators.required, Validators.minLength(10)]]
+    this.addCafeForm = this._fb.group({
+      cafeName: ['', [Validators.required, Validators.minLength(2)]],
+      phoneNumber: ['380', [Validators.required, Validators.minLength(12), Validators.maxLength(12), Validators.pattern('[0-9]*')]],
+      cafeType: ['', [Validators.required]],
+      searchControl: ['', [Validators.required]],
+      description: ['', [Validators.required, Validators.minLength(10)]]
     });
   }
 
    pushIfNew(array,  obj) {
-    for (var i = 0; i < array.length; i++) {
-      if (array[i].fullPath === obj.fullPath) { 
-        return;
-      }
-    }    
-    array.push(obj);
+    if (!array.find(val => val.fullPath === obj.fullPath)){
+      array.push(obj);
+    }
   }
 
   ngOnInit() {
-    this.mapsAPILoader.load().then(() => {
+    this._mapsAPILoader.load().then(() => {
       const autocomplete = new google.maps.places.Autocomplete(
         this.searchElementRef.nativeElement, {
           types: ["address"]
@@ -89,7 +82,7 @@ export class AddCafe implements OnInit {
       );
 
       autocomplete.addListener("place_changed", () => {
-        this.ngZone.run(() => {
+        this._ngZone.run(() => {
           const place: google.maps.places.PlaceResult = autocomplete.getPlace();
           if (place.geometry === undefined || place.geometry === null) {
             return;
@@ -102,11 +95,11 @@ export class AddCafe implements OnInit {
   }
 
   uploadSingle(event) {
-    this._imageUploadService.uploadSingle(event);
+    this.imageUploadService.uploadSingle(event);
   }
 
   uploadMulti(event) {
-    this._imageUploadService.uploadMulti(event);
+    this.imageUploadService.uploadMulti(event);
   }
 
   onAddTables(tablesNumber, visitorsNumber) {
@@ -119,18 +112,14 @@ export class AddCafe implements OnInit {
   }
 
   removeGalleryImg(img): void {
-    this._imageUploadService.removeImg(img.fullPath, img.thumbnailPath);
-    let index = this.gallery.indexOf(img);  
-    if (index >= 0) {
-      this.gallery.splice(index, 1);
-    }
+    this.imageUploadService.removeImg(img.fullPath, img.thumbnailPath);
+    let index = this.gallery.indexOf(img);
+    this.gallery = this.gallery.filter((el, i) => i !== index);
   }
 
   removeTables(table: any): void {
     let index = this.tables.indexOf(table);  
-    if (index >= 0) {
-      this.tables.splice(index, 1);
-    }
+    this.tables = this.tables.filter((el, i) => i !== index);
   }
 
   addCafe(){
@@ -151,12 +140,12 @@ export class AddCafe implements OnInit {
     }
     this.isLoading = true;
     this._cafeService.pushCafe(obj)
-    .then(()=>{
-      this.isLoading = false;
-      this.addCafeForm.reset();
-      this.mainImgSrc= {};
-      this.gallery = [];
-      this.tables = [];
-    })
+      .then(()=>{
+        this.isLoading = false;
+        this.addCafeForm.reset();
+        this.mainImgSrc= {};
+        this.gallery = [];
+        this.tables = [];
+      });
   }
 }

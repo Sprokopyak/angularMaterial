@@ -10,7 +10,7 @@ import { each, range } from "lodash";
 
 @Injectable()
 export class ImageUploadService {
-  public file;
+  file;
   private _mainPhotos: string = '/mainPhotos';
   private _galaryPhotos: string = '/galaryPhotos';
   completed$ = new Subject<Upload>();
@@ -30,7 +30,7 @@ export class ImageUploadService {
   }
 
   uploadSingle(event) {
-    let storageRef = firebase.storage().ref();
+    const storageRef = firebase.storage().ref();
     this.file = event.target.files[0];
 
     if (this.file.type.split('/')[0] !== 'image') {
@@ -38,9 +38,9 @@ export class ImageUploadService {
        return;
     } else {
       const upload = new Upload(this.file)
-      let uploadTask = storageRef.child(`${this._mainPhotos}/${this.uniqueId + upload.file.name}`).put(upload.file);
-      let thumbnailUrl = `${this.thumbnailStorageUrl + 'mainPhotos%2F' + 'thumb_' + this.uniqueId + upload.file.name + '?alt=media'}`;
-      let thumbnailPath = `${'mainPhotos/' + 'thumb_'  + this.uniqueId + upload.file.name}`;
+      const uploadTask = storageRef.child(`${this._mainPhotos}/${this.uniqueId + upload.file.name}`).put(upload.file);
+      const thumbnailUrl = `${this.thumbnailStorageUrl}mainPhotos%2Fthumb_${this.uniqueId + upload.file.name}?alt=media`;
+      const thumbnailPath = `mainPhotos/thumb_${this.uniqueId + upload.file.name}`;
       this.uploadToDB(uploadTask, upload, thumbnailUrl, thumbnailPath, 'single');
     }
   }
@@ -68,20 +68,20 @@ export class ImageUploadService {
   }
 
   uploadMulti(event){
-    let storageRef = firebase.storage().ref();
+    const storageRef = firebase.storage().ref();
     this.selectedFiles = event.target.files;
-    let files = this.selectedFiles;
+    const files = this.selectedFiles;
               
-    let filesIndex = range(files.length);
+    const filesIndex = range(files.length);
     each(filesIndex, (idx) => {
       if (files[idx].type.split('/')[0] !== 'image') {
         this.showMessageDialog('Невірний формат файлу, виберіть зображення');
         return;
       } else {
         const upload = new Upload( files[idx]);
-        let uploadTask:any = storageRef.child(`${this._galaryPhotos}/${this.uniqueId + upload.file.name}`).put(upload.file);
-        let thumbnailUrl = `${this.thumbnailStorageUrl + 'galaryPhotos%2F' + 'thumb_' + this.uniqueId + upload.file.name + '?alt=media'}`;
-        let thumbnailPath = `${'galaryPhotos/' + 'thumb_'  + this.uniqueId + upload.file.name}`;
+        const uploadTask:any = storageRef.child(`${this._galaryPhotos}/${this.uniqueId + upload.file.name}`).put(upload.file);
+        const thumbnailUrl = `${this.thumbnailStorageUrl}galaryPhotos%2Fthumb_${this.uniqueId + upload.file.name}?alt=media`;
+        const thumbnailPath = `galaryPhotos/thumb_${this.uniqueId + upload.file.name}`;
         this.uploadToDB(uploadTask, upload, thumbnailUrl, thumbnailPath);
       }
     })

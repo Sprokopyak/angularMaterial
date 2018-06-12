@@ -89,11 +89,11 @@
   margin-bottom: 10px;
 }
 
-.mainPhoto {
+.main__photo {
   margin-top: 10px;
 }
 
-.mainPhoto img{
+.main__photo img{
   width: 180px;
 }
 
@@ -112,11 +112,11 @@
   height: 50px;
 }
 
-.gallery li .mat-icon, .mainPhoto .mat-icon{
+.gallery li .mat-icon, .main__photo .mat-icon{
   vertical-align: top;
 }
 
-.gallery li .material-icons, .mainPhoto .material-icons{
+.gallery li .material-icons, .main__photo .material-icons{
   cursor: pointer;
   font-size: 20px;
   margin-top: -12px;
