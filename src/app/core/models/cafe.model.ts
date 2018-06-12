@@ -11,4 +11,5 @@ export interface Cafe {
   };
   tables: any;
   description: string;
+  id?: string;
 }

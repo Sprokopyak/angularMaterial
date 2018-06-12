@@ -11,3 +11,23 @@ $red: red;
 h1 {
   color: $red;
 }
+
+.example-card {
+  width: 40%;
+  margin: 20px 20px;
+  float: left;
+}
+
+.image-thumb {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  overflow: hidden;
+}
+
+.image-thumb img {
+  width: 100%;
+}

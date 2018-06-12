@@ -1,5 +1,8 @@
 import { Injectable } from "@angular/core";
-import { AngularFirestore, AngularFirestoreCollection } from "angularfire2/firestore";
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from "angularfire2/firestore";
+
+import { Observable } from 'rxjs';
+import { switchMap, map } from 'rxjs/operators';
 
 import { Cafe } from '../models/cafe.model';
 
@@ -10,8 +13,13 @@ import { MessageDialog } from '../../commons/message-dialog/message-dialog.compo
 export class CafeService {
   cafeRef: AngularFirestoreCollection<Cafe> = this.afs.collection("cafes");
 
+  cafes$: Observable<any>;
+  cafe$: Observable<any>;
+  cafeDoc: AngularFirestoreDocument<Cafe>;
+
   constructor(private afs: AngularFirestore, 
     private _dialog: MatDialog) {
+    this.cafes$ = this.cafeRef.valueChanges();
   }
 
   showMessageDialog(message: string): void {
@@ -28,5 +36,17 @@ export class CafeService {
       })
       .then(() => this.showMessageDialog('Ваш заклад буде опубліковано на нашому сайті, після того як адміністратор його перевірить '))
       .catch(error => this.showMessageDialog(error.message));
+  }
+
+  getCafes(){
+   return this.cafes$ 
+  }
+
+  getCafe(id: string){
+    return  this.cafe$ = this.afs.doc(`cafes/${id}`).valueChanges()
+  }
+
+  updateCafe(cafe: Cafe){    
+    return this.afs.doc(`cafes/${cafe.id}`).update(cafe)
   }
 }
