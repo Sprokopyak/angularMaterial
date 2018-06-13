@@ -13,9 +13,16 @@ h1 {
 }
 
 .example-card {
-  width: 40%;
-  margin: 20px 20px;
+  margin: 20px;
+}
+
+.list{
+  width: 33.333333%;
   float: left;
+}
+
+.mat-card {
+  padding: 24px 0; 
 }
 
 .image-thumb {
@@ -23,7 +30,7 @@ h1 {
   width: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: stretch;
   height: 200px;
   overflow: hidden;
 }

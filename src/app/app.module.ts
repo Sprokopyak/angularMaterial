@@ -31,7 +31,9 @@ import { DirectivesModule } from './directives/directives.module';
   imports: [
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyAaWrqJxjZiw7BTzD9wDLybddkb1ktedKQ',
-      libraries: ['places']
+      libraries: ['places'],
+      language: 'uk-UA',
+      region: 'UA'
     }),
     BrowserModule,
     ReactiveFormsModule,
