@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { Star } from '../models/rating.model';
 
 @Injectable()
-export class StarService {
+export class RatingService {
 
   constructor(private _afs: AngularFirestore) { }
 
@@ -14,7 +14,7 @@ export class StarService {
     return starsRef.valueChanges();
   }
 
-  getMovieStars(cafeId) {
+  getCafeStars(cafeId) {
     const starsRef = this._afs.collection('stars', ref => ref.where('cafeId', '==', cafeId) );
     return starsRef.valueChanges();
   }

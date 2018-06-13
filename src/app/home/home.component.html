@@ -30,10 +30,12 @@
       <div class="image-thumb">
         <img class="img img-responsive" mat-card-image [src]="cafe.mainImgSrc.thumbnailUrl">
       </div>
+      <app-rating [cafeId]="cafe.id" [userId]="user.uid"></app-rating>
       <mat-card-content class="cafe__list">
           <p>Адреса: {{ cafe.coords }}</p>
           <p>Вільних столиків залишилось: {{ getFreeTables(cafe.tables) }}</p>
       </mat-card-content>
+     
     </mat-card>
   </div>
   </div>

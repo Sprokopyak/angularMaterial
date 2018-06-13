@@ -10,6 +10,7 @@ import { CafeService } from "./cafe-service/cafe.service";
 import { AdminGuard } from "./admin-guard/admin.guard";
 import { LoginGuard } from "./login-guard/login.guard";
 import { ImageUploadService } from "./image-upload/image-upload.service";
+import { RatingService } from "./rating-service/rating.service";
 
 @NgModule({
   imports: [
@@ -23,7 +24,8 @@ import { ImageUploadService } from "./image-upload/image-upload.service";
     AuthService,
     AngularFireDatabase,
     CafeService,
-    ImageUploadService
+    ImageUploadService,
+    RatingService
   ]
 })
 export class CoreModule {}

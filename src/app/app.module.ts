@@ -16,6 +16,7 @@ import { AppRoutes } from './app.routes';
 import { AppComponent } from './app.component';
 import { MainNavComponent } from './main-nav/main-nav.component';
 import { Home } from './home/home.component';
+import { RatingComponent } from './rating/rating.component';
 import { Admin } from './admin/admin.component';
 
 import { AgmCoreModule } from '@agm/core';
@@ -26,7 +27,8 @@ import { DirectivesModule } from './directives/directives.module';
     AppComponent,
     MainNavComponent,
     Home,
-    Admin
+    Admin,
+    RatingComponent
   ],
   imports: [
     AgmCoreModule.forRoot({

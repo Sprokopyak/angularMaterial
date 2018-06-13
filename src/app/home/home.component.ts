@@ -4,7 +4,7 @@ import { AuthService } from "../core/auth-service/auth.service";
 import { CafeService } from "../core/cafe-service/cafe.service";
 import { Cafe } from "../core/models/cafe.model";
 
-import { CAFE_TYPES } from '../cafe/constants';
+import { CAFE_TYPES } from "../cafe/constants";
 
 import { MapsAPILoader } from "@agm/core";
 
@@ -18,12 +18,17 @@ export class Home implements OnInit {
   freeTables;
   cafeTypes = CAFE_TYPES;
   private subscription;
+  user;
 
   constructor(
     private _authService: AuthService,
     private _mapsAPILoader: MapsAPILoader,
     private _cafeService: CafeService
-  ) { }
+  ) {
+    this._authService.currentUser.subscribe(val => {
+      this.user = val;
+    });
+  }
 
   ngOnInit() {
     this.subscription = this._cafeService.getCafes().subscribe(cafes => {
@@ -31,36 +36,34 @@ export class Home implements OnInit {
       this.cafes = cafes;
     });
 
-    this._mapsAPILoader.load()
+    this._mapsAPILoader.load();
   }
 
   map2(cord, fn) {
     let address;
     let latlng = new google.maps.LatLng(cord.latitude, cord.longitude);
-    const geocoder = new google.maps.Geocoder;
+    const geocoder = new google.maps.Geocoder();
 
-    geocoder.geocode({ 'location': latlng }, (results, status) => {
+    geocoder.geocode({ location: latlng }, (results, status) => {
       if (status == google.maps.GeocoderStatus.OK) {
-
         return fn(results[0].formatted_address);
-
       }
-    })
+    });
 
-      // return address
+    // return address
   }
 
-  map(a){
-    const x = this.map2(a, b =>{
+  map(a) {
+    const x = this.map2(a, b => {
       console.log(b);
-      return b
-    })
+      return b;
+    });
 
     return x;
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe()
+    this.subscription.unsubscribe();
   }
 
   getCafetype(type) {
@@ -69,14 +72,14 @@ export class Home implements OnInit {
       if (val.value === type) {
         typeName = val.viewValue;
       }
-    })
-    return typeName
+    });
+    return typeName;
   }
 
   getFreeTables(tables) {
     let sum = 0;
     tables.forEach(val => {
-      sum += val.tablesNumber - val.booked
+      sum += val.tablesNumber - val.booked;
     });
     return sum;
   }

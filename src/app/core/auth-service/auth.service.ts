@@ -6,7 +6,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database-deprecated';
 
-import { Observable, pipe } from 'rxjs';
+import { Observable, pipe, Subject } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 import { User } from '../models/user.model';
 import { of } from 'rxjs';
@@ -18,7 +18,7 @@ import { MessageDialog } from '../../commons/message-dialog/message-dialog.compo
 export class AuthService {
   user: Observable<User>;
   authState: any = null;
-  currentUser: User;
+  currentUser= new Subject<User>() ;
   constructor(public afAuth: AngularFireAuth,
     public afs: AngularFirestore,
     public db: AngularFireDatabase,
@@ -29,6 +29,11 @@ export class AuthService {
     this.user = this.afAuth.authState.pipe(
       switchMap(user => {
         if (user) {
+          this.currentUser.next({
+            uid: user.uid,
+            email: user.email,
+            role: 'user'
+          })
           return this.afs.doc<User>(`users/${user.uid}`).valueChanges()
         } else {
           return of(null)
