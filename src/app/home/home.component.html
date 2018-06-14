@@ -30,18 +30,16 @@
         <div class="image-thumb">
           <img class="img img-responsive" mat-card-image [src]="cafe.mainImgSrc.thumbnailUrl">
         </div>
-        <p>{{cafe.id}}</p>
-
-        <!-- <app-rating (click)="cafeID(cafe.id)" [cafeId]="cafe.id" [userId]="user.uid"></app-rating> -->
 
         <mat-card-content class="cafe__list">
           <p>Адреса: {{ cafe.coords }}</p>
           <p>Вільних столиків залишилось: {{ getFreeTables(cafe.tables) }}</p>
-          <p>Рейтинг  {{cafe.avRating}}</p>
+          <p>Рейтинг {{cafe.avRating}}</p>
           <span class="stars">
-           
-              <span [ngStyle]="{ 'width': cafe?.avRating + '%' }"></span>
-            </span>
+
+            <span [ngStyle]="{ 'width': cafe?.avRating*20 + '%' }"></span>
+          </span>
+
         </mat-card-content>
         <fieldset class="rating">
           <ng-container *ngFor="let num of [5, 4, 3, 2, 1]">
@@ -54,20 +52,7 @@
             <label class="half" [for]="'halfstar'+num"></label>
           </ng-container>
         </fieldset>
-
-      
-          
-              
-           
-          <!--         
-        <div class="star-rating">
-          <ul *ngFor="let num of [1, 2, 3, 4, 5]">
-            <li (click)="starHandler(num, cafe.id)" class="star" ng-class="{filled: star.filled}" [value]="num-0.5">
-              <i class="fa fa-star"></i>
-            </li>
-          </ul>
-        </div> -->
       </mat-card>
-      </div>
     </div>
   </div>
+</div>

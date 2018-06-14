@@ -7,7 +7,6 @@
 }
 
 $red: red;
-
 h1 {
   color: $red;
 }
@@ -16,13 +15,13 @@ h1 {
   margin: 20px;
 }
 
-.list{
+.list {
   width: 33.333333%;
   float: left;
 }
 
 .mat-card {
-  padding: 24px 0; 
+  padding: 24px 0;
 }
 
 .image-thumb {
@@ -38,14 +37,6 @@ h1 {
 .image-thumb img {
   width: 100%;
 }
-
-
-
-
-
-
-
-
 
 fieldset,
 label {
@@ -102,44 +93,15 @@ selection .rating>input:checked~label:hover~label {
   color: #FFED85;
 }
 
-
-.star-rating {
-  margin: 0;
-  padding: 0;
-  
-  .star {
-    padding: 1px;
-    color: #ddd;
-    font-size: 25px;
-    text-shadow: .05em .05em #aaa;
-    list-style-type: none;
-    display: inline-block;
-    cursor: pointer;
-
-    &.filled {
-      color: #fd0;
-    }
-  }
-
-  &.readonly .star.filled {
-    color: #666;
-  }
-}
-
-ul li{
-  list-style: none;
-  display: inline-block;
-  float: left;
-  margin: 0;
-}
-
-span.stars, span.stars span {
+span.stars,
+span.stars span {
   display: block;
-  background: url("https://product-review-rating.firebaseapp.com/stars.0f74d73e9dc596925b0f.png") 0 -16px repeat-x;
+  background: url("../../assets/images/stars.png") 0 -16px repeat-x;
   width: 80px;
   height: 16px;
 }
 
 span.stars span {
   background-position: 0 0;
+  width: 50%;
 }
