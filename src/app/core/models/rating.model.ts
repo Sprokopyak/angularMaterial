@@ -1,5 +1,5 @@
 export interface Star {
-  userId: any;
-  cafeId: any;
-  value: number;
+  userId: string;
+  cafeId: string;
+  ratingValue: number;
 }

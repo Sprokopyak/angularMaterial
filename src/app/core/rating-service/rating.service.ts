@@ -20,8 +20,8 @@ export class RatingService {
   }
 
 
-  setStar(userId, cafeId, value) {
-    const star: Star = { userId, cafeId, value };
+  setStar(userId, cafeId, ratingValue) {
+    const star: Star = { userId, cafeId, ratingValue };
     const starPath = `stars/${star.userId}_${star.cafeId}`;
 
     return this._afs.doc(starPath).set(star)

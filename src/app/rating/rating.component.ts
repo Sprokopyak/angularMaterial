@@ -23,7 +23,10 @@ console.log(this.cafeId);
 
     this.avgRating = this.stars.pipe(
       map(arr => {
+        console.log(arr);
+        
         const ratings = arr.map(v => v.value);
+        console.log(ratings);
         return ratings.length
           ? ratings.reduce((total, val) => total + val) / arr.length
           : "not reviewed";
@@ -31,7 +34,9 @@ console.log(this.cafeId);
     );
   }
 
-  starHandler(value) {
+  starHandler(value, cafeId) {
+    console.log(this.cafeId, cafeId );
+    
     this._ratingService.setStar(this.userId, this.cafeId, value);
   }
 }

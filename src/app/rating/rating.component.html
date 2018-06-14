@@ -15,7 +15,7 @@
 
 <fieldset class="rating">
   <ng-container *ngFor="let num of [5, 4, 3, 2, 1]">
-    <input (click)="starHandler(num)" [id]="'star'+num" [value]="num-0.5" name="rating" type="radio" />
+    <input (click)="starHandler(num, cafeId)" [id]="'star'+num" [value]="num-0.5" name="rating" type="radio" />
 
     <label class="full" [for]="'star'+num"></label>
 

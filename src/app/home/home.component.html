@@ -21,22 +21,53 @@
   <div class="wrapper" *ngFor="let cafe of cafes">
     <div class="list">
 
-   
-    <mat-card class="example-card">
-      <mat-card-header>
-        <mat-card-title>{{cafe.cafeName}}</mat-card-title>
-        <mat-card-subtitle>Тип кафе: {{ getCafetype(cafe.cafeType) }}</mat-card-subtitle>
-      </mat-card-header>
-      <div class="image-thumb">
-        <img class="img img-responsive" mat-card-image [src]="cafe.mainImgSrc.thumbnailUrl">
-      </div>
-      <app-rating [cafeId]="cafe.id" [userId]="user.uid"></app-rating>
-      <mat-card-content class="cafe__list">
+
+      <mat-card class="example-card">
+        <mat-card-header>
+          <mat-card-title>{{cafe.cafeName}}</mat-card-title>
+          <mat-card-subtitle>Тип кафе: {{ getCafetype(cafe.cafeType) }}</mat-card-subtitle>
+        </mat-card-header>
+        <div class="image-thumb">
+          <img class="img img-responsive" mat-card-image [src]="cafe.mainImgSrc.thumbnailUrl">
+        </div>
+        <p>{{cafe.id}}</p>
+
+        <!-- <app-rating (click)="cafeID(cafe.id)" [cafeId]="cafe.id" [userId]="user.uid"></app-rating> -->
+
+        <mat-card-content class="cafe__list">
           <p>Адреса: {{ cafe.coords }}</p>
           <p>Вільних столиків залишилось: {{ getFreeTables(cafe.tables) }}</p>
-      </mat-card-content>
-     
-    </mat-card>
+          <p>Рейтинг  {{cafe.avRating}}</p>
+          <span class="stars">
+           
+              <span [ngStyle]="{ 'width': cafe?.avRating + '%' }"></span>
+            </span>
+        </mat-card-content>
+        <fieldset class="rating">
+          <ng-container *ngFor="let num of [5, 4, 3, 2, 1]">
+            <input (click)="starHandler(num, cafe.id)" [id]="'star'+num" [value]="num-0.5" name="rating" type="radio" />
+
+            <label class="full" [for]="'star'+num"></label>
+
+            <input (click)="starHandler(num-0.5, cafe.id)" [value]="num-0.5" [id]="'halfstar'+num" name="rating" type="radio" />
+
+            <label class="half" [for]="'halfstar'+num"></label>
+          </ng-container>
+        </fieldset>
+
+      
+          
+              
+           
+          <!--         
+        <div class="star-rating">
+          <ul *ngFor="let num of [1, 2, 3, 4, 5]">
+            <li (click)="starHandler(num, cafe.id)" class="star" ng-class="{filled: star.filled}" [value]="num-0.5">
+              <i class="fa fa-star"></i>
+            </li>
+          </ul>
+        </div> -->
+      </mat-card>
+      </div>
+    </div>
   </div>
-  </div>
-</div>

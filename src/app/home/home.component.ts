@@ -19,6 +19,7 @@ export class Home implements OnInit {
   cafeTypes = CAFE_TYPES;
   private subscription;
   user;
+  selectedCafeId: string;
 
   constructor(
     private _authService: AuthService,
@@ -43,23 +44,19 @@ export class Home implements OnInit {
     let address;
     let latlng = new google.maps.LatLng(cord.latitude, cord.longitude);
     const geocoder = new google.maps.Geocoder();
-
     geocoder.geocode({ location: latlng }, (results, status) => {
       if (status == google.maps.GeocoderStatus.OK) {
         return fn(results[0].formatted_address);
       }
     });
-
     // return address
   }
 
   map(a) {
-    const x = this.map2(a, b => {
+    return this.map2(a, b => {
       console.log(b);
       return b;
     });
-
-    return x;
   }
 
   ngOnDestroy() {
@@ -83,4 +80,27 @@ export class Home implements OnInit {
     });
     return sum;
   }
+
+
+  starHandler(val, cafeId) {
+    console.log(val, cafeId, this.user.uid);
+    
+
+    this._cafeService.postRating({
+      userId: 'this.user.id',
+      cafeId: cafeId,
+      ratingValue: val
+    });
+
+    this._cafeService.getCafeRating(cafeId).subscribe((retVal) => {
+      console.log(retVal);
+      
+      const ratings = retVal.map(v => v.ratingValue);
+      let avRating = (ratings.length ? ratings.reduce((total, val) => total + val) / retVal.length : 0);
+console.log(avRating);
+
+      this._cafeService.setCafeRating(cafeId, avRating.toFixed(1));
+    });
+  }
+
 }
