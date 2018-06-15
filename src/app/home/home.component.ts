@@ -4,11 +4,9 @@ import { AuthService } from "../core/auth-service/auth.service";
 import { CafeService } from "../core/cafe-service/cafe.service";
 import { Cafe } from "../core/models/cafe.model";
 
-import { Observable } from "rxjs";
-import { map } from "rxjs/operators";
-
+import { Observable, Subject, combineLatest } from "rxjs";
+import { AngularFirestore } from 'angularfire2/firestore';
 import { CAFE_TYPES } from "../cafe/constants";
-
 import { MapsAPILoader } from "@agm/core";
 
 @Component({
@@ -17,25 +15,32 @@ import { MapsAPILoader } from "@agm/core";
   styleUrls: ["./home.component.scss"]
 })
 export class Home implements OnInit {
-  cafes: Cafe[];
+  cafes: Observable<any>;
+  startAt = new Subject();
+  endAt = new Subject();
   freeTables;
   cafeTypes = CAFE_TYPES;
-  private subscription;
-  user: object;
-  avgRating: Observable<any>;
 
   constructor(
-    private _authService: AuthService,
     private _mapsAPILoader: MapsAPILoader,
     private _cafeService: CafeService
   ) {}
 
+  search($event) {
+    let query = $event.target.value;
+    if (query !== '') {
+      this.startAt.next(query);
+      this.endAt.next(query + "\uf8ff");
+    } else {     
+      this.cafes = this._cafeService.getCafes();
+    }
+  }
+ 
   ngOnInit() {
-    this._authService.user.subscribe(val => {
-      this.user = val;
-    });
-    this.subscription = this._cafeService.getCafes().subscribe(cafes => {
-      this.cafes = cafes;
+    this.cafes = this._cafeService.getCafes();
+
+    combineLatest(this.startAt, this.endAt).subscribe((value) => { 
+      this.cafes = this._cafeService.searchCafe(value[0], value[1])
     });
 
     this._mapsAPILoader.load();
@@ -51,10 +56,6 @@ export class Home implements OnInit {
       }
     });
     return address;
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
   }
 
   getCafetype(type) {
@@ -73,21 +74,5 @@ export class Home implements OnInit {
       sum += val.tablesNumber - val.booked;
     });
     return sum;
-  }
-
-  starHandler(val, cafeId) {
-    this._cafeService.postRating({
-      userId: this.user["uid"],
-      cafeId: cafeId,
-      ratingValue: val
-    });
-
-    this._cafeService.getCafeRating(cafeId).subscribe(retVal => {
-      const ratings = retVal.map(v => v["ratingValue"]);
-      let avRating = ratings.length
-        ? ratings.reduce((total, val) => total + val) / retVal.length
-        : 0;
-      this._cafeService.setCafeRating(cafeId, avRating.toFixed(1));
-    });
   }
 }

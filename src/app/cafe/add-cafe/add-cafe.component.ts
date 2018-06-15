@@ -84,7 +84,6 @@ export class AddCafe implements OnInit {
       autocomplete.addListener("place_changed", () => {
         this._ngZone.run(() => {
           const place: google.maps.places.PlaceResult = autocomplete.getPlace();
-          console.log(place);
           
           if (place.geometry === undefined || place.geometry === null) {
             return;
@@ -130,7 +129,7 @@ export class AddCafe implements OnInit {
       approved: false,
       mainImgSrc: this.mainImgSrc || '',
       gallery: this.gallery || '',
-      cafeName: formsVlue.cafeName,
+      cafeName: formsVlue.cafeName.toLowerCase(),
       phoneNumber: parseInt(formsVlue.phoneNumber),
       cafeType: formsVlue.cafeType,
       location: {

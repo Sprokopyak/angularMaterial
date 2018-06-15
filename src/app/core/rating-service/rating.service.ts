@@ -27,4 +27,18 @@ export class RatingService {
     return this._afs.doc(starPath).set(star)
   }
 
+  postRating(starObj: Star) {
+    const starPath = `stars/${starObj.userId}_${starObj.cafeId}`;
+    return this._afs.doc(starPath).set(starObj)
+  }
+
+  getCafeRating(cafeId) {
+    const starsRef = this._afs.collection('stars', ref => ref.where('cafeId', '==', cafeId) );
+    return starsRef.valueChanges();
+  }
+
+  setCafeRating(cafeId, avRating) {
+    return this._afs.doc(`cafes/${cafeId}`).update({ avRating: avRating })
+  }
+
 }

@@ -65,4 +65,8 @@ export class CafeService {
   setCafeRating(cafeId, avRating) {
     return this._afs.doc(`cafes/${cafeId}`).update({ avRating: avRating })
   }
+
+  searchCafe(start, end) {
+    return this._afs.collection('cafes', ref => ref.limit(4).orderBy('cafeName').startAt(start).endAt(end)).valueChanges();
+  }
 }

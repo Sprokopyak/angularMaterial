@@ -47,13 +47,13 @@
         </div>
 
         <mat-form-field>
-          <input type="text" matInput required placeholder="Назва кафе" formControlName="cafeName">
+          <input type="text" autocomplete="off" matInput required placeholder="Назва кафе" formControlName="cafeName">
           <mat-hint>Введіть назву кафе.</mat-hint>
           <mat-error>Назва кафе повинна складатись не менше ніж з 2 символів.</mat-error>
         </mat-form-field>
 
         <mat-form-field>
-          <input type="tel" matInput required placeholder="Номер телефону" formControlName="phoneNumber">
+          <input type="tel" autocomplete="off" matInput required placeholder="Номер телефону" formControlName="phoneNumber">
           <mat-hint>Введіть номер телефону.</mat-hint>
           <mat-error>Номер телефону повинен складатись з 12 цифр.</mat-error>
         </mat-form-field>
@@ -78,12 +78,12 @@
         <div class="tables-quantity">
           <mat-chip-list #chipList>
             <mat-form-field>
-              <input type="number" matInput required #tablesNumber placeholder="Кількість столів">
+              <input type="number" autocomplete="off" matInput required #tablesNumber placeholder="Кількість столів">
               <mat-hint>Введіть кількість столів.</mat-hint>
             </mat-form-field>
 
             <mat-form-field>
-              <input type="number" matInput required #visitorsNumber placeholder="Кількість гостей">
+              <input type="number" autocomplete="off" matInput required #visitorsNumber placeholder="Кількість гостей">
               <mat-hint>Введіть кількість гостей, яку вміщає один такий стіл.</mat-hint>
             </mat-form-field>
 
