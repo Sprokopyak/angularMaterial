@@ -21,6 +21,7 @@ import { Admin } from './admin/admin.component';
 
 import { AgmCoreModule } from '@agm/core';
 import { DirectivesModule } from './directives/directives.module';
+import { PipesModule } from './pipes/pipes.module';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { DirectivesModule } from './directives/directives.module';
     LoginModule,
     CommonsModule,
     CafeModule,
-    DirectivesModule
+    DirectivesModule,
+    PipesModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

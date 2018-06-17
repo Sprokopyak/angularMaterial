@@ -4,12 +4,10 @@ import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument 
 import { Observable } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 import { Star } from '../models/rating.model';
-
 import { Cafe } from '../models/cafe.model';
 
 import { MatDialog } from '@angular/material';
 import { MessageDialog } from '../../commons/message-dialog/message-dialog.component';
-import { pipe } from "@angular/core/src/render3/pipe";
 
 @Injectable()
 export class CafeService {
@@ -58,7 +56,7 @@ export class CafeService {
   }
 
   getCafeRating(cafeId) {
-    const starsRef = this._afs.collection('stars', ref => ref.where('cafeId', '==', cafeId) );
+    const starsRef = this._afs.collection('stars', ref => ref.where('cafeId', '==', cafeId));
     return starsRef.valueChanges();
   }
 

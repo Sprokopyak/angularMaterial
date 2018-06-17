@@ -10,6 +10,7 @@ export interface Cafe {
     longitude: number;
   };
   tables: any;
+  freeTables: number;
   description: string;
   id?: string;
   avRating?:number;

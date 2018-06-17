@@ -58,13 +58,13 @@ export class AddCafe implements OnInit {
           });       
       });
 
-    this.addCafeForm = this._fb.group({
-      cafeName: ['', [Validators.required, Validators.minLength(2)]],
-      phoneNumber: ['380', [Validators.required, Validators.minLength(12), Validators.maxLength(12), Validators.pattern('[0-9]*')]],
-      cafeType: ['', [Validators.required]],
-      searchControl: ['', [Validators.required]],
-      description: ['', [Validators.required, Validators.minLength(10)]]
-    });
+      this.addCafeForm = this._fb.group({
+        cafeName: ['', [Validators.required, Validators.minLength(2)]],
+        phoneNumber: ['380', [Validators.required, Validators.minLength(12), Validators.maxLength(12), Validators.pattern('[0-9]*')]],
+        cafeType: ['', [Validators.required]],
+        searchControl: ['', [Validators.required]],
+        description: ['', [Validators.required, Validators.minLength(10)]]
+      });
   }
 
    pushIfNew(array,  obj) {
@@ -103,7 +103,7 @@ export class AddCafe implements OnInit {
     this.imageUploadService.uploadMulti(event);
   }
 
-  onAddTables(tablesNumber, visitorsNumber) {
+  onAddTables(tablesNumber, visitorsNumber) {   
     if (tablesNumber.value !== '' && visitorsNumber.value !== '') {
 
       this.tables.push({ tablesNumber: parseInt(tablesNumber.value), visitorsNumber: parseInt(visitorsNumber.value), booked: 0 });
@@ -124,6 +124,11 @@ export class AddCafe implements OnInit {
   }
 
   addCafe(){
+    let freeTables = 0;
+    this.tables.forEach(val=>{
+      freeTables += val.tablesNumber;
+    });
+    
     let formsVlue = this.addCafeForm.getRawValue();
     let obj = {
       approved: false,
@@ -137,6 +142,7 @@ export class AddCafe implements OnInit {
         longitude: this.longitude
       },
       tables: this.tables,
+      freeTables: freeTables,
       description: formsVlue.description
     }
     this.isLoading = true;

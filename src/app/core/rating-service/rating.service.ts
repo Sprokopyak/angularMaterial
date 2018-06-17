@@ -37,7 +37,7 @@ export class RatingService {
     return starsRef.valueChanges();
   }
 
-  setCafeRating(cafeId, avRating) {
+  setCafeRating(cafeId, avRating: number) {
     return this._afs.doc(`cafes/${cafeId}`).update({ avRating: avRating })
   }
 

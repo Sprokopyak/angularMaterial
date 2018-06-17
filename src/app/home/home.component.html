@@ -5,11 +5,39 @@
         spellcheck="off" autocomplete="off" class="form-control">
     </mat-form-field>
 
+    <mat-form-field>
+      <mat-select placeholder="Тип закладу" [(ngModel)]="selectedType" (ngModelChange)="filterByCafeType(selectedType)">
+        <mat-option>Всі заклади</mat-option>
+        <mat-option *ngFor="let cafe of cafeTypes" [value]="cafe.value">
+          {{cafe.viewValue}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select placeholder="Вільні столики" [(ngModel)]="selectedFreeTables" (ngModelChange)="filterByFreeTables(selectedFreeTables)">
+        <mat-option>Всі заклади</mat-option>
+        <mat-option [value]="0">Заклади з вільними столиками</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <p></p>
+
+    <mat-form-field>
+      <mat-select placeholder="Сортувати за рейтигом" [(ngModel)]="selectedRating" (ngModelChange)="filterByRating(selectedRating)">
+        <mat-option>Всі заклади</mat-option>
+        <mat-option [value]="1">Заклади з рейтингом 1 і більше</mat-option>
+        <mat-option [value]="2">Заклади з рейтингом 2 і більше</mat-option>
+        <mat-option [value]="3">Заклади з рейтингом 3 і більше</mat-option>
+        <mat-option [value]="4">Заклади з рейтингом 4 і більше</mat-option>
+        <mat-option [value]="5">Заклади з рейтингом 5</mat-option>
+      </mat-select>
+    </mat-form-field>
+
     <div *ngFor="let cafe of (cafes | async ) ">
       <div class="list">
-        <mat-card class="example-card">
+        <mat-card class="content-card">
           <mat-card-header>
-            <mat-card-title>{{cafe.cafeName}}</mat-card-title>
+            <mat-card-title>{{cafe.cafeName | uppercase}}</mat-card-title>
             <mat-card-subtitle>Тип кафе: {{ getCafetype(cafe.cafeType) }}</mat-card-subtitle>
           </mat-card-header>
           <div class="image-thumb">
@@ -17,14 +45,18 @@
           </div>
 
           <mat-card-content class="cafe__list">
-            <p>Адреса: {{ cafe.coords }}</p>
-            <p>Вільних столиків залишилось: {{ getFreeTables(cafe.tables) }}</p>
-            <p>Рейтинг {{cafe.avRating}}</p>
+            <span class="rating_number">{{cafe.avRating}}</span>
             <span class="stars">
               <span [ngStyle]="{ 'width': cafe?.avRating*20 + '%' }"></span>
             </span>
+            <a class="mobile" href="tel:+{{cafe.phoneNumber}}">Номер телефону: +{{cafe.phoneNumber}}</a>
+            <p>Вільних столиків залишилось: {{ cafe.freeTables }}</p>
+            <p>{{cafe.description | shorten: 125}}</p>
+            <!-- <p>Вільних столиків залишилось: {{ getFreeTables(cafe.tables) }}</p> -->
+
+
           </mat-card-content>
-          <app-rating [cafeId]="cafe.id" ></app-rating>
+          <!-- <app-rating [cafeId]="cafe.id"></app-rating> -->
         </mat-card>
       </div>
     </div>

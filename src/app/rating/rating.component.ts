@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { RatingService } from "../core/rating-service/rating.service";
-import { Observable } from "rxjs";
 
 import { AuthService } from "../core/auth-service/auth.service";
 import { User } from "../core/models/user.model";
@@ -40,7 +39,7 @@ export class RatingComponent implements OnInit {
       let avRating = ratings.length
         ? ratings.reduce((total, val) => total + val) / retVal.length
         : 0;
-      this._ratingService.setCafeRating(this.cafeId, avRating.toFixed(1));
+      this._ratingService.setCafeRating(this.cafeId, parseFloat(avRating.toFixed(1)));
     });
   }
 }
