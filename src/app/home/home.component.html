@@ -1,4 +1,4 @@
-<div myMatchHeight="cafe__list">
+<div samehHeight="cafe__list">
   <div class="wrapper">
     <mat-form-field>
       <input type="text" [(ngModel)]="searchterm" (keyup)="search($event)" matInput placeholder="Пошук" autocorrect="off" autocapitalize="off"
@@ -52,11 +52,7 @@
             <a class="mobile" href="tel:+{{cafe.phoneNumber}}">Номер телефону: +{{cafe.phoneNumber}}</a>
             <p>Вільних столиків залишилось: {{ cafe.freeTables }}</p>
             <p>{{cafe.description | shorten: 125}}</p>
-            <!-- <p>Вільних столиків залишилось: {{ getFreeTables(cafe.tables) }}</p> -->
-
-
           </mat-card-content>
-          <!-- <app-rating [cafeId]="cafe.id"></app-rating> -->
         </mat-card>
       </div>
     </div>

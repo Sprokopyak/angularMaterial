@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
-import { Observable } from 'rxjs';
-
+import { AngularFirestore } from 'angularfire2/firestore';
 import { Star } from '../models/rating.model';
 
 @Injectable()

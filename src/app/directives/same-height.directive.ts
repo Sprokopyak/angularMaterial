@@ -7,20 +7,20 @@ import {
 } from "@angular/core";
 
 @Directive({
-  selector: "[myMatchHeight]"
+  selector: "[samehHeight]"
 })
 export class MatchHeightDirective implements AfterViewChecked {
-  @Input() myMatchHeight: any;
+  @Input() samehHeight: any;
 
   constructor(private el: ElementRef) {}
 
   ngAfterViewChecked() {
-    this.matchHeight(this.el.nativeElement, this.myMatchHeight);
+    this.matchHeight(this.el.nativeElement, this.samehHeight);
   }
 
   @HostListener("window:resize")
   onResize() {
-    this.matchHeight(this.el.nativeElement, this.myMatchHeight);
+    this.matchHeight(this.el.nativeElement, this.samehHeight);
   }
 
   matchHeight(parent: HTMLElement, className: string) {

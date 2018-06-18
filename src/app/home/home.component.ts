@@ -1,5 +1,4 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { Component, OnInit } from "@angular/core";
 import { CafeService } from "../core/cafe-service/cafe.service";
 import { Cafe } from "../core/models/cafe.model";
 
@@ -25,7 +24,6 @@ export class Home implements OnInit {
   freeTablesFilter$ = new BehaviorSubject(null);
 
   constructor(
-    private _mapsAPILoader: MapsAPILoader,
     private _cafeService: CafeService,
     private afs: AngularFirestore
   ) {}
@@ -64,8 +62,6 @@ export class Home implements OnInit {
           .valueChanges()
       )
     );
-
-    this._mapsAPILoader.load();
   }
 
   filterByCafeType(type: string | null) {
@@ -80,19 +76,6 @@ export class Home implements OnInit {
     this.freeTablesFilter$.next(freeTables);
   }
 
-  map(cord) {
-    let address;
-    let latlng = new google.maps.LatLng(cord.latitude, cord.longitude);
-    const geocoder = new google.maps.Geocoder();
-    geocoder.geocode({ location: latlng }, (results, status) => {
-      if (status == google.maps.GeocoderStatus.OK) {
-        address = results[0].formatted_address;
-        console.log(address);
-      }
-    });
-    return address;
-  }
-
   getCafetype(type) {
     let typeName;
     this.cafeTypes.forEach(val => {
@@ -101,13 +84,5 @@ export class Home implements OnInit {
       }
     });
     return typeName;
-  }
-
-  getFreeTables(tables) {
-    let sum = 0;
-    tables.forEach(val => {
-      sum += val.tablesNumber - val.booked;
-    });
-    return sum;
   }
 }

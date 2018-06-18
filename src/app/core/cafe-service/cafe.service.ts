@@ -2,7 +2,6 @@ import { Injectable } from "@angular/core";
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from "angularfire2/firestore";
 
 import { Observable } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
 import { Star } from '../models/rating.model';
 import { Cafe } from '../models/cafe.model';
 
