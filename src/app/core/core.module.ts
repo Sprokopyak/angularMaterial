@@ -11,6 +11,7 @@ import { AdminGuard } from "./admin-guard/admin.guard";
 import { LoginGuard } from "./login-guard/login.guard";
 import { ImageUploadService } from "./image-upload/image-upload.service";
 import { RatingService } from "./rating-service/rating.service";
+import { InfinityScrollService } from './infinity-scroll/infinity-scroll.service';
 
 @NgModule({
   imports: [
@@ -25,7 +26,8 @@ import { RatingService } from "./rating-service/rating.service";
     AngularFireDatabase,
     CafeService,
     ImageUploadService,
-    RatingService
+    RatingService,
+    InfinityScrollService
   ]
 })
 export class CoreModule {}

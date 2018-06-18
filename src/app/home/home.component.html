@@ -1,4 +1,4 @@
-<div samehHeight="cafe__list">
+<!-- <div samehHeight="cafe__list">
   <div class="wrapper">
     <mat-form-field>
       <input type="text" [(ngModel)]="searchterm" (keyup)="search($event)" matInput placeholder="Пошук" autocorrect="off" autocapitalize="off"
@@ -55,6 +55,29 @@
           </mat-card-content>
         </mat-card>
       </div>
+    </div>
+  </div>
+</div> -->
+
+
+  <div class="content" scrollable (scrollPosition)="onScroll($event)">
+    <div class="s">
+
+    
+    <mat-form-field>
+      <mat-select placeholder="Тип закладу" [(ngModel)]="selectedType" (ngModelChange)="filterByCafeType(selectedType)">
+        <mat-option>Всі заклади</mat-option>
+        <mat-option *ngFor="let cafe of cafeTypes" [value]="cafe.value">
+          {{cafe.viewValue}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <p class="tag is-warning" *ngIf="page.done | async">I ran out of boats!</p>
+
+
+    <div *ngFor="let cafe of page.data | async">
+      <h1>Built in {{ cafe.cafeName }}</h1>
+      <img class="img img-responsive" mat-card-image [src]="cafe.mainImgSrc.thumbnailUrl">
     </div>
   </div>
 </div>
