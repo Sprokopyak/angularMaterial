@@ -10,9 +10,7 @@ export class ScrollableDirective {
   constructor(public el: ElementRef) { }
 
   @HostListener('scroll', ['$event'])
-  onScroll(event) {
-    console.log(event);
-    
+  onScroll(event) {    
     try {
 
       const top = event.target.scrollTop

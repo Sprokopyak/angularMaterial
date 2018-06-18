@@ -67,9 +67,7 @@ export class Home implements OnInit {
     );
   }
 
-  onScroll(e) {
-    console.log(e);
-    
+  onScroll(e) {       
     if (e === 'bottom') {
       this.page.more()
     }
@@ -77,7 +75,7 @@ export class Home implements OnInit {
 
 
   filterByCafeType(type: string | null) {
-    this.cafeTypeFilter$.next(type);
+    this.page.freeTablesFilter$.next(type);
   }
 
   filterByRating(rating: number | null) {
