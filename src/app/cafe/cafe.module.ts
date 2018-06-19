@@ -5,6 +5,7 @@ import { MaterialModule } from '../material/material.module';
 import { AppRoutes } from './../app.routes';
 
 import { AddCafe } from './add-cafe/add-cafe.component';
+import { CafeDetails } from './cafe-details/cafe-details.component';
 
 import { AgmCoreModule } from '@agm/core';
 import { AngularFireStorage, AngularFireUploadTask } from 'angularfire2/storage';
@@ -19,9 +20,10 @@ import { AngularFirestore } from 'angularfire2/firestore';
     AppRoutes
   ],
   declarations: [
-    AddCafe
+    AddCafe,
+    CafeDetails
   ],
-  exports: [AddCafe],
+  exports: [AddCafe, CafeDetails],
   providers: [AngularFireStorage, AngularFirestore]
 })
 export class CafeModule { }

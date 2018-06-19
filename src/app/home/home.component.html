@@ -54,6 +54,7 @@
               <p>Вільних столиків залишилось: {{ cafe.freeTables }}</p>
               <p>{{cafe.description | shorten: 125}}</p>
             </mat-card-content>
+            <button mat-raised-button color="primary" [routerLink]="['/cafe', cafe.id]">Детальніше</button>
           </mat-card>
         </div>
       </div>

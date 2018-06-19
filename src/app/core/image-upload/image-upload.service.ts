@@ -46,6 +46,7 @@ export class ImageUploadService {
   }
 
   uploadToDB(uploadTask, upload, thumbnailUrl, thumbnailPath, type?:string) {
+    const storageRef = firebase.storage().ref();
     uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
       (snapshot) => {
         upload.progress = ((uploadTask.snapshot.bytesTransferred / uploadTask.snapshot.totalBytes) * 100).toString().split('.')[0];
@@ -55,14 +56,17 @@ export class ImageUploadService {
         console.log(error)
       },
       () => {
-        upload.url = uploadTask.snapshot.downloadURL;
-        upload.name = upload.file.name;
-        upload.fullPath = uploadTask.snapshot.ref.fullPath;
-        upload.thumbnailUrl = thumbnailUrl;
-        upload.thumbnailPath = thumbnailPath;
-    
-        type === 'single' ? this.completed$.next(upload) : this.completedMulti$.next(upload);
-        this.uploading$.next(null);
+        storageRef.child(uploadTask.snapshot.ref.fullPath).getDownloadURL().then(val=>{
+          upload.url = val
+          upload.name = upload.file.name;
+          upload.fullPath = uploadTask.snapshot.ref.fullPath;
+          upload.thumbnailUrl = thumbnailUrl;
+          upload.thumbnailPath = thumbnailPath;
+
+          type === 'single' ? this.completed$.next(upload) : this.completedMulti$.next(upload);
+        }).then(()=>{
+          this.uploading$.next(null);
+        })
       }
     );
   }

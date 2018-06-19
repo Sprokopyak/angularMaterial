@@ -1,0 +1,20 @@
+
+    <h1>{{cafe?.cafeName}}</h1>
+    <p>Тип кафе: {{cafe?.cafeType}}</p>
+    <ul>
+      <li *ngFor="let table of cafe?.tables">
+        <span>Кількість столиків: {{table.tablesNumber}}, </span>
+        <span>Один таки столик вміщає: {{table.visitorsNumber}} гостей</span>
+        <div>Зарезервовані столики: {{table.booked}}
+          <div>Вільних столиків залишилось: {{table.tablesNumber - table.booked}}</div>
+
+          <button (click)="book(table, table.tablesNumber, table.booked)">Edit</button>
+        </div>
+  
+        <!-- <p *ngFor="let booked of table.freeTables">
+          <span>{{booked.booked}}</span>
+         
+        </p> -->
+  
+      </li>
+    </ul>
