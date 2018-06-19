@@ -37,10 +37,6 @@ export class CafeService {
       .catch(error => this.showMessageDialog(error.message));
   }
 
-  getCafes() {
-    return this.cafes$
-  }
-
   getCafe(id: string) {
     return this.cafe$ = this._afs.doc(`cafes/${id}`).valueChanges()
   }

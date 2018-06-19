@@ -1,23 +1,26 @@
-.main {
-  padding: 1em;
-  font-family: Arial, Helvetica, sans-serif;
-  text-align: center;
-  margin-top: 50px;
-  display: block;
+.content {
+  overflow: auto;
+  max-height: 100vh;
+  width: 100vw;
+}
+.space{
+  display: flex;
+  width: 100%;
+  height: 100px;
 }
 
-$red: red;
-h1 {
-  color: $red;
-}
-
-.content-card {
-  margin: 15px;
+.mat-progress-spinner {
+  margin: 0 auto;
+  display: flex;
 }
 
 .list {
   width: 33.333333%;
   float: left;
+}
+
+.content-card {
+  margin: 15px;
 }
 
 .mat-card {
@@ -42,15 +45,6 @@ fieldset,
 label {
   margin: 0;
   padding: 0;
-}
-
-body {
-  margin: 20px;
-}
-
-h1 {
-  font-size: 1.5em;
-  margin: 10px;
 }
 
 .cafe__list{
@@ -82,17 +76,4 @@ span.stars span {
 .mobile{
   margin-top: 15px;
   display: block;
-}
-
-.content{
-
-  height: 100vh;
-  overflow: auto;
-}
-// .tag{
-//     font-size: 2.2em;
-// }
-.s{
-  
-  height: 100%;
 }

@@ -17,6 +17,10 @@ a{
   color: #fff;
 }
 
+.mat-drawer-container, .mat-drawer-content  {
+  overflow: hidden !important;
+}
+
 h1,
 h2,
 h3,
