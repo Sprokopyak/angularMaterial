@@ -14,11 +14,6 @@ export class ScrollableDirective {
   constructor(private el: ElementRef) {
 
     this.scrollEvent$ = fromEvent(this.el.nativeElement, 'scroll').subscribe((e: any) => {
-      this.loaded.subscribe(val => {
-        if (val) {
-          this.scrollEvent$.unsubscribe()
-        }
-      })
       try {
         const top = e.target.scrollTop
         const height = this.el.nativeElement.scrollHeight

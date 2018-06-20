@@ -6,10 +6,15 @@ import { AppRoutes } from './../app.routes';
 
 import { AddCafe } from './add-cafe/add-cafe.component';
 import { CafeDetails } from './cafe-details/cafe-details.component';
+import { NgxGalleryModule } from 'ngx-gallery';
+import { RatingComponent } from './rating/rating.component';
+import { CafeList } from './cafe-list/cafe-list.component';
 
 import { AgmCoreModule } from '@agm/core';
-import { AngularFireStorage, AngularFireUploadTask } from 'angularfire2/storage';
+import { AngularFireStorage } from 'angularfire2/storage';
 import { AngularFirestore } from 'angularfire2/firestore';
+import { PipesModule } from '../pipes/pipes.module';
+
 @NgModule({
   imports: [
     AgmCoreModule,
@@ -17,13 +22,17 @@ import { AngularFirestore } from 'angularfire2/firestore';
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,
-    AppRoutes
+    AppRoutes,
+    NgxGalleryModule,
+    PipesModule
   ],
   declarations: [
     AddCafe,
-    CafeDetails
+    CafeDetails,
+    RatingComponent,
+    CafeList
   ],
-  exports: [AddCafe, CafeDetails],
+  exports: [AddCafe, CafeDetails,RatingComponent, CafeList],
   providers: [AngularFireStorage, AngularFirestore]
 })
 export class CafeModule { }

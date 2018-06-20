@@ -4,7 +4,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AngularFireModule } from 'angularfire2';
 import { FirebaseConfig } from '../environments/firebase.config';
-import { AngularFirestore } from 'angularfire2/firestore';
 
 import { MaterialModule } from './material/material.module';
 import { CoreModule } from './core/core.module';
@@ -16,7 +15,6 @@ import { AppRoutes } from './app.routes';
 import { AppComponent } from './app.component';
 import { MainNavComponent } from './main-nav/main-nav.component';
 import { Home } from './home/home.component';
-import { RatingComponent } from './rating/rating.component';
 import { Admin } from './admin/admin.component';
 
 import { AgmCoreModule } from '@agm/core';
@@ -28,8 +26,7 @@ import { PipesModule } from './pipes/pipes.module';
     AppComponent,
     MainNavComponent,
     Home,
-    Admin,
-    RatingComponent
+    Admin
   ],
   imports: [
     AgmCoreModule.forRoot({
@@ -49,7 +46,7 @@ import { PipesModule } from './pipes/pipes.module';
     CommonsModule,
     CafeModule,
     DirectivesModule,
-    PipesModule,
+    PipesModule
   ],
   providers: [],
   bootstrap: [AppComponent]

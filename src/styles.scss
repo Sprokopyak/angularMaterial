@@ -17,6 +17,12 @@ a{
   color: #fff;
 }
 
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
 .mat-drawer-container, .mat-drawer-content  {
   overflow: hidden !important;
 }

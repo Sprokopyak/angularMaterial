@@ -37,6 +37,10 @@ export class CafeService {
       .catch(error => this.showMessageDialog(error.message));
   }
 
+  getCafes() {
+    return this._afs.collection('cafes', ref => ref.limit(2).orderBy('avRating', "desc")).valueChanges()
+  }
+
   getCafe(id: string) {
     return this.cafe$ = this._afs.doc(`cafes/${id}`).valueChanges()
   }

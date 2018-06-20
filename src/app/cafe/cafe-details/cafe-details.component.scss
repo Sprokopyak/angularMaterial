@@ -1,0 +1,43 @@
+.container  {
+  overflow: auto;
+  max-height: 100vh;
+  width: 100vw;
+}
+
+.wrapper{
+  margin: 30px auto 100px auto;
+}
+.rating_number{
+  float: left;
+  margin-top: 2px;
+}
+
+.stars{
+  margin-left: 25px;
+}
+
+span.stars,
+span.stars span {
+  display: block;
+  background: url("../../../assets/images/stars2.png") 0 -16px repeat-x;
+  width: 80px;
+  height: 16px;
+}
+
+span.stars span {
+  background-position: 0 0;
+  width: 50%;
+}
+
+.main_content{
+  width: 65%;
+  float: left;
+  margin-top: 15px;
+  margin-left: 15px;
+}
+
+.cafes {
+
+  // float: right;
+  // width: 38%;
+}

@@ -2,8 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { CafeService } from "../core/cafe-service/cafe.service";
 
 import { Subject, combineLatest, BehaviorSubject } from "rxjs";
-import { CAFE_TYPES } from "../cafe/constants";
 import { InfinityScrollService } from '../core/infinity-scroll/infinity-scroll.service';
+import { CAFE_TYPES } from "./../cafe/constants";
 
 @Component({
   selector: "home",
@@ -61,15 +61,5 @@ export class Home implements OnInit {
 
   filterByFreeTables(freeTables: number | null) {
     this.page.freeTablesFilter$.next(freeTables);
-  }
-
-  getCafetype(type) {
-    let typeName;
-    this.cafeTypes.forEach(val => {
-      if (val.value === type) {
-        typeName = val.viewValue;
-      }
-    });
-    return typeName;
   }
 }

@@ -34,31 +34,11 @@
         </mat-select>
       </mat-form-field>
 
-      <div *ngFor="let cafe of (page.data | async )">
-        <div class="list">
-          <mat-card class="content-card">
-            <mat-card-header>
-              <mat-card-title>{{cafe.cafeName | uppercase}}</mat-card-title>
-              <mat-card-subtitle>Тип кафе: {{ getCafetype(cafe.cafeType) }}</mat-card-subtitle>
-            </mat-card-header>
-            <div class="image-thumb">
-              <img class="img img-responsive" mat-card-image [src]="cafe.mainImgSrc.thumbnailUrl">
-            </div>
-
-            <mat-card-content class="cafe__list">
-              <span class="rating_number">{{cafe.avRating}}</span>
-              <span class="stars">
-                <span [ngStyle]="{ 'width': cafe?.avRating*20 + '%' }"></span>
-              </span>
-              <a class="mobile" href="tel:+{{cafe.phoneNumber}}">Номер телефону: +{{cafe.phoneNumber}}</a>
-              <p>Вільних столиків залишилось: {{ cafe.freeTables }}</p>
-              <p>{{cafe.description | shorten: 125}}</p>
-            </mat-card-content>
-            <button mat-raised-button color="primary" [routerLink]="['/cafe', cafe.id]">Детальніше</button>
-          </mat-card>
-        </div>
+      <div samehHeight="cafe__list">
+        <app-cafe-list *ngFor="let cafe of (page.data | async )" [cafe]="cafe"></app-cafe-list>
       </div>
       <mat-spinner [diameter]="60" *ngIf="page.loading | async"></mat-spinner>
+      
       <div *ngIf="page.done | async">Всі кафе загрузились</div>
     </div>
   </div>

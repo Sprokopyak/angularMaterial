@@ -1,20 +1,44 @@
+<div class="container">
+  <div class="wrapper">
+    <div class="main_content clearfix">
+      <mat-card>
+        <h1>{{cafe?.cafeName | uppercase}}</h1>
+        <p>Тип закладу: {{ getCafetype(cafe?.cafeType) }}</p>
 
-    <h1>{{cafe?.cafeName}}</h1>
-    <p>Тип кафе: {{cafe?.cafeType}}</p>
-    <ul>
-      <li *ngFor="let table of cafe?.tables">
-        <span>Кількість столиків: {{table.tablesNumber}}, </span>
-        <span>Один таки столик вміщає: {{table.visitorsNumber}} гостей</span>
-        <div>Зарезервовані столики: {{table.booked}}
-          <div>Вільних столиків залишилось: {{table.tablesNumber - table.booked}}</div>
+        <span class="rating_number">{{cafe?.avRating}}</span>
+        <span class="stars">
+          <span [ngStyle]="{ 'width': cafe?.avRating*20 + '%' }"></span>
+        </span>
 
-          <button (click)="book(table, table.tablesNumber, table.booked)">Edit</button>
-        </div>
-  
-        <!-- <p *ngFor="let booked of table.freeTables">
+        <ngx-gallery *ngIf="cafe" [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
+
+        <p>{{cafe?.description}}</p>
+        <mat-divider></mat-divider>
+        <ul>
+          <li *ngFor="let table of cafe?.tables">
+            <span>Кількість столиків: {{table.tablesNumber}}, </span>
+            <span>Один таки столик вміщає: {{table.visitorsNumber}} гостей</span>
+            <div>Зарезервовані столики: {{table.booked}}
+              <div>Вільних столиків залишилось: {{table.tablesNumber - table.booked}}</div>
+
+              <button (click)="book(table, table.tablesNumber, table.booked)">Edit</button>
+            </div>
+
+            <!-- <p *ngFor="let booked of table.freeTables">
           <span>{{booked.booked}}</span>
-         
         </p> -->
-  
-      </li>
-    </ul>
+
+          </li>
+        </ul>
+        <app-rating [cafeId]="cafeId"></app-rating>
+
+      </mat-card>
+    </div>
+
+    <div class="cafes clearfix">
+      <div samehHeight="cafe__list">
+        <app-cafe-list *ngFor="let key of (cafes | async )" [cafe]="key"></app-cafe-list>
+      </div>
+    </div>
+  </div>
+</div>

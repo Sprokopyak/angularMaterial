@@ -1,8 +1,8 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { RatingService } from "../core/rating-service/rating.service";
+import { RatingService } from "../../core/rating-service/rating.service";
 
-import { AuthService } from "../core/auth-service/auth.service";
-import { User } from "../core/models/user.model";
+import { AuthService } from "../../core/auth-service/auth.service";
+import { User } from "../../core/models/user.model";
 
 @Component({
   selector: "app-rating",
