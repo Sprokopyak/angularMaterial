@@ -1,18 +1,17 @@
-import { Injectable } from "@angular/core";
-import { AngularFirestore, AngularFirestoreCollection } from "angularfire2/firestore";
-import { BehaviorSubject, Observable } from "rxjs";
-import { take, tap, scan } from "rxjs/operators";
+import { Injectable } from '@angular/core';
+import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { take, tap, scan } from 'rxjs/operators';
 
 @Injectable()
 export class InfinityScrollService {
-  query
   private _done = new BehaviorSubject(false);
   private _loading = new BehaviorSubject(false);
   private _data = new BehaviorSubject([]);
+  query;
   data: Observable<any>;
   done: Observable<boolean> = this._done.asObservable();
   loading: Observable<boolean> = this._loading.asObservable();
-
   cafeTypeFilter$ = new BehaviorSubject(null);
   ratingFilter$ = new BehaviorSubject(null);
   freeTablesFilter$ = new BehaviorSubject(null);
@@ -31,7 +30,7 @@ export class InfinityScrollService {
 
     const first = this._afs.collection(this.query.path, ref => {
       return ref
-        .orderBy(this.query.field, this.query.reverse ? "desc" : "asc")
+        .orderBy(this.query.field, this.query.reverse ? 'desc' : 'asc')
         .limit(this.query.limit);
     })
 
@@ -53,10 +52,10 @@ export class InfinityScrollService {
 
     const first = this._afs.collection(this.query.path, ref => {
       let query: any = ref;
-      if (this.cafeTypeFilter$.value) { query = query.where("cafeType", "==", this.cafeTypeFilter$.value);}
-      if (this.freeTablesFilter$.value) { query = query.where("freeTables", "!=", this.freeTablesFilter$.value); }
-      if (this.ratingFilter$.value) { query = query.where("avRating", ">=", this.ratingFilter$.value); }
-      query = query.orderBy(this.query.field, this.query.reverse ? "desc" : "asc")
+      if (this.cafeTypeFilter$.value) { query = query.where('cafeType', '==', this.cafeTypeFilter$.value);}
+      if (this.freeTablesFilter$.value) { query = query.where('freeTables', '!=', this.freeTablesFilter$.value); }
+      if (this.ratingFilter$.value) { query = query.where('avRating', '>=', this.ratingFilter$.value); }
+      query = query.orderBy(this.query.field, this.query.reverse ? 'desc' : 'asc')
       query = query.limit(this.query.limit)
       return query;
     })
@@ -74,10 +73,10 @@ export class InfinityScrollService {
     const cursor = this.getCursor();
     const more =  this._afs.collection(this.query.path, ref => {
       let query: any = ref;
-      if (this.cafeTypeFilter$.value) { query = query.where("cafeType", "==", this.cafeTypeFilter$.value);}
-      if (this.freeTablesFilter$.value) { query = query.where("freeTables", "!=", this.freeTablesFilter$.value); }
-      if (this.ratingFilter$.value) { query = query.where("avRating", ">=", this.ratingFilter$.value); }
-      query = query.orderBy(this.query.field, this.query.reverse ? "desc" : "asc")
+      if (this.cafeTypeFilter$.value) { query = query.where('cafeType', '==', this.cafeTypeFilter$.value);}
+      if (this.freeTablesFilter$.value) { query = query.where('freeTables', '!=', this.freeTablesFilter$.value); }
+      if (this.ratingFilter$.value) { query = query.where('avRating', ">=", this.ratingFilter$.value); }
+      query = query.orderBy(this.query.field, this.query.reverse ? 'desc' : 'asc')
       query = query.limit(this.query.limit)
       query = query.startAfter(cursor)
       return query;

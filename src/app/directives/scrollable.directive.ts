@@ -6,14 +6,11 @@ import { fromEvent } from 'rxjs';
 })
 export class ScrollableDirective {
 
-  @Input() loaded: any;
-
-  @Output() scrollPosition = new EventEmitter()
-  private scrollEvent$;
+  @Output() scrollPosition = new EventEmitter();
 
   constructor(private el: ElementRef) {
 
-    this.scrollEvent$ = fromEvent(this.el.nativeElement, 'scroll').subscribe((e: any) => {
+    fromEvent(this.el.nativeElement, 'scroll').subscribe((e: any) => {
       try {
         const top = e.target.scrollTop
         const height = this.el.nativeElement.scrollHeight

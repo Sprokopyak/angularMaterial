@@ -43,3 +43,30 @@ label {
 selection .rating>input:checked~label:hover~label {
   color: #009FE3;
 }
+
+.rating_number{
+  float: left;
+  margin-top: 2px;
+}
+
+.stars{
+  margin-left: 25px;
+}
+
+span.stars,
+span.stars span {
+  display: block;
+  background: url("../../../assets/images/stars2.png") 0 -16px repeat-x;
+  width: 80px;
+  height: 16px;
+}
+
+span.stars span {
+  background-position: 0 0;
+  width: 50%;
+}
+
+.mobile{
+  margin-top: 15px;
+  display: block;
+}

@@ -1,10 +1,10 @@
-import { OnInit, Component, Input } from "@angular/core";
-import { CAFE_TYPES } from "../constants";
+import { Component, Input } from '@angular/core';
+import { CAFE_TYPES } from '../constants';
 
 @Component({
-  selector: "app-cafe-list",
-  templateUrl: "./cafe-list.component.html",
-  styleUrls: ["./cafe-list.component.scss"]
+  selector: 'app-cafe-list',
+  templateUrl: './cafe-list.component.html',
+  styleUrls: ['./cafe-list.component.scss']
 })
 export class CafeList {
   @Input('cafe') cafe;

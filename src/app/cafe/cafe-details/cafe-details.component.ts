@@ -1,14 +1,14 @@
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { OnInit, Component } from "@angular/core";
+import { ActivatedRoute } from '@angular/router';
+import { OnInit, Component } from '@angular/core';
 
-import { CafeService } from "../../core/cafe-service/cafe.service";
-import { CAFE_TYPES } from "../constants";
+import { CafeService } from '../../core/cafe-service/cafe.service';
+import { CAFE_TYPES } from '../constants';
 import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation } from 'ngx-gallery';
 
 @Component({
-  selector: "app-cafe-details",
-  templateUrl: "./cafe-details.component.html",
-  styleUrls: ["./cafe-details.component.scss"]
+  selector: 'app-cafe-details',
+  templateUrl: './cafe-details.component.html',
+  styleUrls: ['./cafe-details.component.scss']
 })
 export class CafeDetails implements OnInit {
   galleryOptions: NgxGalleryOptions[];

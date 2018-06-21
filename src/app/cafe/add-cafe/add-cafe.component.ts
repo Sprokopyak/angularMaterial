@@ -1,8 +1,7 @@
-import { ActivatedRoute } from "@angular/router";
-import { ElementRef, NgZone, OnInit, ViewChild, Component } from "@angular/core";
-import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { ElementRef, NgZone, OnInit, ViewChild, Component } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { } from 'googlemaps';
-import { MapsAPILoader } from "@agm/core";
+import { MapsAPILoader } from '@agm/core';
 
 import { ImageUploadService } from '../../core/image-upload/image-upload.service';
 import { CafeService } from '../../core/cafe-service/cafe.service';
@@ -12,9 +11,9 @@ import { Observable } from 'rxjs';
 import { CAFE_TYPES } from '../constants';
 
 @Component({
-  selector: "app-add-cafe",
-  templateUrl: "./add-cafe.component.html",
-  styleUrls: ["./add-cafe.component.scss"]
+  selector: 'app-add-cafe',
+  templateUrl: './add-cafe.component.html',
+  styleUrls: ['./add-cafe.component.scss']
 })
 export class AddCafe implements OnInit {
   isLoading = false;
@@ -28,13 +27,13 @@ export class AddCafe implements OnInit {
   gallery = [];
   progress$: Observable<number>;
 
-  @ViewChild('search') public searchElementRef: ElementRef;
+  @ViewChild('search') searchElementRef: ElementRef;
 
   constructor(
+    public imageUploadService: ImageUploadService,
     private _mapsAPILoader: MapsAPILoader, 
     private _ngZone: NgZone, 
     private _fb: FormBuilder,
-    public imageUploadService: ImageUploadService,
     private _cafeService: CafeService
   ) {
       this.progress$ = this.imageUploadService.uploading$;
@@ -77,11 +76,11 @@ export class AddCafe implements OnInit {
     this._mapsAPILoader.load().then(() => {
       const autocomplete = new google.maps.places.Autocomplete(
         this.searchElementRef.nativeElement, {
-          types: ["address"]
+          types: ['address']
         }
       );
 
-      autocomplete.addListener("place_changed", () => {
+      autocomplete.addListener('place_changed', () => {
         this._ngZone.run(() => {
           const place: google.maps.places.PlaceResult = autocomplete.getPlace();
           
@@ -112,13 +111,13 @@ export class AddCafe implements OnInit {
     }
   }
 
-  removeGalleryImg(img): void {
+  removeGalleryImg(img) {
     this.imageUploadService.removeImg(img.fullPath, img.thumbnailPath);
     let index = this.gallery.indexOf(img);
     this.gallery = this.gallery.filter((el, i) => i !== index);
   }
 
-  removeTables(table: any): void {
+  removeTables(table: any) {
     let index = this.tables.indexOf(table);  
     this.tables = this.tables.filter((el, i) => i !== index);
   }

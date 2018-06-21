@@ -1,16 +1,17 @@
-import { Component, OnInit, Input } from "@angular/core";
-import { RatingService } from "../../core/rating-service/rating.service";
+import { Component, OnInit, Input } from '@angular/core';
+import { RatingService } from '../../core/rating-service/rating.service';
 
-import { AuthService } from "../../core/auth-service/auth.service";
-import { User } from "../../core/models/user.model";
+import { AuthService } from '../../core/auth-service/auth.service';
+import { User } from '../../core/models/user.model';
 
 @Component({
-  selector: "app-rating",
-  templateUrl: "./rating.component.html",
-  styleUrls: ["./rating.component.scss"]
+  selector: 'app-rating',
+  templateUrl: './rating.component.html',
+  styleUrls: ['./rating.component.scss']
 })
 export class RatingComponent implements OnInit {
   @Input() cafeId;
+  @Input() cafeRating;
   user: User;
   subscription;
 
@@ -35,7 +36,7 @@ export class RatingComponent implements OnInit {
     });
 
     this._ratingService.getCafeRating(this.cafeId).subscribe(retVal => {
-      const ratings = retVal.map(v => v["ratingValue"]);
+      const ratings = retVal.map(v => v['ratingValue']);
       let avRating = ratings.length
         ? ratings.reduce((total, val) => total + val) / retVal.length
         : 0;

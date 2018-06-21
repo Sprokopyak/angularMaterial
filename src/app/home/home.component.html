@@ -1,4 +1,4 @@
-<div class="content" [loaded]="page.done" scrollable (scrollPosition)="onScroll($event)">
+<div class="content" scrollable (scrollPosition)="onScroll($event)">
   <div samehHeight="cafe__list">
     <div class="wrapper">
 
@@ -35,11 +35,11 @@
       </mat-form-field>
 
       <div samehHeight="cafe__list">
-        <app-cafe-list *ngFor="let cafe of (page.data | async )" [cafe]="cafe"></app-cafe-list>
+        <app-cafe-list *ngFor="let cafe of (infinityScrollService.data | async )" [cafe]="cafe"></app-cafe-list>
       </div>
-      <mat-spinner [diameter]="60" *ngIf="page.loading | async"></mat-spinner>
+      <mat-spinner [diameter]="60" *ngIf="infinityScrollService.loading | async"></mat-spinner>
       
-      <div *ngIf="page.done | async">Всі кафе загрузились</div>
+      <div *ngIf="infinityScrollService.done | async">Всі кафе загрузились</div>
     </div>
   </div>
   <div class="space"></div>

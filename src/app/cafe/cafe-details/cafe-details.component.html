@@ -5,11 +5,8 @@
         <h1>{{cafe?.cafeName | uppercase}}</h1>
         <p>Тип закладу: {{ getCafetype(cafe?.cafeType) }}</p>
 
-        <span class="rating_number">{{cafe?.avRating}}</span>
-        <span class="stars">
-          <span [ngStyle]="{ 'width': cafe?.avRating*20 + '%' }"></span>
-        </span>
-
+        
+        <app-rating [cafeRating]="cafe?.avRating"></app-rating>
         <ngx-gallery *ngIf="cafe" [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
 
         <p>{{cafe?.description}}</p>

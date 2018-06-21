@@ -1,5 +1,5 @@
-import { Injectable } from "@angular/core";
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from "angularfire2/firestore";
+import { Injectable } from '@angular/core';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 
 import { Observable } from 'rxjs';
 import { Star } from '../models/rating.model';
@@ -10,8 +10,7 @@ import { MessageDialog } from '../../commons/message-dialog/message-dialog.compo
 
 @Injectable()
 export class CafeService {
-  cafeRef: AngularFirestoreCollection<Cafe> = this._afs.collection("cafes");
-
+  cafeRef: AngularFirestoreCollection<Cafe> = this._afs.collection('cafes');
   cafes$: Observable<any>;
   cafe$: Observable<any>;
   cafeDoc: AngularFirestoreDocument<Cafe>;
@@ -38,20 +37,20 @@ export class CafeService {
   }
 
   getCafes() {
-    return this._afs.collection('cafes', ref => ref.limit(2).orderBy('avRating', "desc")).valueChanges()
+    return this._afs.collection('cafes', ref => ref.limit(2).orderBy('avRating', 'desc')).valueChanges();
   }
 
   getCafe(id: string) {
-    return this.cafe$ = this._afs.doc(`cafes/${id}`).valueChanges()
+    return this.cafe$ = this._afs.doc(`cafes/${id}`).valueChanges();
   }
 
   updateCafe(cafe: Cafe) {
-    return this._afs.doc(`cafes/${cafe.id}`).update(cafe)
+    return this._afs.doc(`cafes/${cafe.id}`).update(cafe);
   }
 
   postRating(starObj: Star) {
     const starPath = `stars/${starObj.userId}_${starObj.cafeId}`;
-    return this._afs.doc(starPath).set(starObj)
+    return this._afs.doc(starPath).set(starObj);
   }
 
   getCafeRating(cafeId) {
