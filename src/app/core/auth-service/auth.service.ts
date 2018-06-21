@@ -44,6 +44,16 @@ export class AuthService {
     return this.authState !== null;
   }
 
+  updateUser(userId, cafeId, tableIndex){
+    return this._afs.doc(`users/${userId}`)
+      .update({
+        reserved:{
+          cafeId: cafeId,
+          tableIndex: tableIndex
+        }
+      });
+  }
+
   emailSignUp(email: string, password: string) {
     return this._afAuth.auth.createUserWithEmailAndPassword(email, password)
       .then(user => {

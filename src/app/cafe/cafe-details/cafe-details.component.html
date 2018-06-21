@@ -18,12 +18,12 @@
             </ng-container>
 
             <ng-container matColumnDef="name">
-              <th mat-header-cell *matHeaderCellDef> К-сть столиків </th>
+              <th mat-header-cell *matHeaderCellDef> Столики </th>
               <td mat-cell *matCellDef="let table"> {{table.tablesNumber}}</td>
             </ng-container>
 
             <ng-container matColumnDef="reserved">
-              <th mat-header-cell *matHeaderCellDef> Зарезервовані </th>
+              <th mat-header-cell *matHeaderCellDef> Резерв </th>
               <td mat-cell *matCellDef="let table"> {{table.booked}}</td>
             </ng-container>
 
@@ -32,10 +32,10 @@
               <td mat-cell *matCellDef="let table"> {{table.tablesNumber - table.booked}}</td>
             </ng-container>
 
-            <ng-container matColumnDef="select">
+            <ng-container  matColumnDef="reserve">
               <th mat-header-cell *matHeaderCellDef></th>
               <td mat-cell *matCellDef="let table" class="reserved">
-                <button (click)="book(table, table.tablesNumber, table.booked)" mat-raised-button color="primary">Зарезервувати</button>
+                <button  *ngIf="!user?.reserved.cafeId" (click)="book(table, table.tablesNumber, table.booked)" mat-raised-button color="primary">Резерв</button>
               </td>
             </ng-container>
 

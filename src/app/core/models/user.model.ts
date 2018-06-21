@@ -3,5 +3,9 @@ export interface User {
   email: string;
   photoURL?: string;
   displayName?: string;
+  reserved?: {
+    cafeId: string,
+    tableIndex: number
+  };
   role: 'admin' | 'user';
 }
