@@ -7,7 +7,57 @@
 }
 
 $red: red;
-
 h1 {
   color: $red;
+}
+
+.content-card {
+  margin: 15px;
+}
+
+.list {
+  width: 33.333333%;
+  float: left;
+}
+
+.mat-card {
+  padding: 24px 0;
+}
+
+.image-thumb {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  height: 200px;
+  overflow: hidden;
+}
+
+.image-thumb img {
+  width: 100%;
+}
+
+fieldset,
+label {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 20px;
+}
+
+h1 {
+  font-size: 1.5em;
+  margin: 10px;
+}
+
+.cafe__list{
+  padding: 8px;
+}
+
+.content{
+  height: 100vh;
+  overflow: auto;
 }

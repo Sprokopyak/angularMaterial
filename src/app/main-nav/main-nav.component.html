@@ -3,6 +3,7 @@
     [mode]="(isHandset | async)!.matches ? 'over' : 'side'" [opened]="!(isHandset | async)!.matches">
     <mat-toolbar color="primary">Menu</mat-toolbar>
     <mat-nav-list>
+      <a mat-list-item *ngIf="auth.isLogedIn" routerLink="/add-cafe" routerLinkActive="active">Додати кафе</a>
       <a mat-list-item routerLink="admin" routerLinkActive="admin">Admin</a>
       <a mat-list-item *ngIf="!auth.isLogedIn" routerLink="/sign-up" routerLinkActive="active">Зареєструватись</a>
       <a mat-list-item *ngIf="!auth.isLogedIn" routerLink="/sign-in" routerLinkActive="active">Увійти</a>
@@ -13,19 +14,22 @@
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar color="primary">
-      <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" *ngIf="(isHandset | async)!.matches">
-        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-      </button>
-      <a routerLink="home" routerLinkActive="active">Application Title</a>
-      <span class="spacer"></span>
-      <span *ngIf="!(isHandset | async)!.matches">
-        <a routerLink="admin" routerLinkActive="admin">Admin</a>
-        <a *ngIf="!auth.isLogedIn" routerLink="/sign-up" routerLinkActive="active">Зареєструватись</a>
-        <a *ngIf="!auth.isLogedIn" routerLink="/sign-in" routerLinkActive="active">Увійти</a>
-        <a *ngIf="auth.isLogedIn" (click)="auth.signOut()" matTooltip="Вийти">
-          <mat-icon>exit_to_app</mat-icon>
-        </a>
-      </span>
+      <div class="wrapper">
+        <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" *ngIf="(isHandset | async)!.matches">
+          <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+        </button>
+        <a id="logo" routerLink="home" routerLinkActive="active">Application Title</a>
+        <span class="spacer"></span>
+        <p class="nav clearfix" *ngIf="!(isHandset | async)!.matches">
+          <a *ngIf="auth.isLogedIn" routerLink="/add-cafe" routerLinkActive="active">Додати кафе</a>
+          <a routerLink="admin" routerLinkActive="admin">Admin</a>
+          <a *ngIf="!auth.isLogedIn" routerLink="/sign-up" routerLinkActive="active">Зареєструватись</a>
+          <a *ngIf="!auth.isLogedIn" routerLink="/sign-in" routerLinkActive="active">Увійти</a>
+          <a *ngIf="auth.isLogedIn" (click)="auth.signOut()" matTooltip="Вийти">
+            <mat-icon>exit_to_app</mat-icon>
+          </a>
+        </p>
+      </div>
     </mat-toolbar>
     <ng-content></ng-content>
   </mat-sidenav-content>
