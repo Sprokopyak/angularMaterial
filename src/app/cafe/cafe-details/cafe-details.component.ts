@@ -16,9 +16,10 @@ export class CafeDetails implements OnInit {
   cafeTypes = CAFE_TYPES;
   cafe;
   cafes;
-  tables;
   cafeId;
   subscribtion;
+  displayedColumns = ['visitors', 'name', 'reserved', 'freeTables', 'select'];
+
   constructor(
     private _cafeService: CafeService, 
     private _route: ActivatedRoute) {
@@ -49,6 +50,7 @@ export class CafeDetails implements OnInit {
       this.subscribtion = this._cafeService.getCafe(this.cafeId).subscribe(cafe => {
         console.log(cafe);
         this.cafe = cafe;
+        this.cafe.tables.sort((a,b)=> a.visitorsNumber > b.visitorsNumber);
         this.galleryImages = this.cafe.gallery.map(val => {
           return {
             small: val.thumbnailUrl,
@@ -67,6 +69,8 @@ export class CafeDetails implements OnInit {
   }
 
   book(obj, tablesNumber, booked) {
+    console.log(obj);
+    
     let index = this.cafe.tables.indexOf(obj);
     console.log(index);
     if (booked < tablesNumber) {

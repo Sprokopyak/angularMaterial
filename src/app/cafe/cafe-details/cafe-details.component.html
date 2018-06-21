@@ -5,29 +5,48 @@
         <h1>{{cafe?.cafeName | uppercase}}</h1>
         <p>Тип закладу: {{ getCafetype(cafe?.cafeType) }}</p>
 
-        
         <app-rating [cafeRating]="cafe?.avRating"></app-rating>
         <ngx-gallery *ngIf="cafe" [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
 
         <p>{{cafe?.description}}</p>
-        <mat-divider></mat-divider>
-        <ul>
-          <li *ngFor="let table of cafe?.tables">
-            <span>Кількість столиків: {{table.tablesNumber}}, </span>
-            <span>Один таки столик вміщає: {{table.visitorsNumber}} гостей</span>
-            <div>Зарезервовані столики: {{table.booked}}
-              <div>Вільних столиків залишилось: {{table.tablesNumber - table.booked}}</div>
 
-              <button (click)="book(table, table.tablesNumber, table.booked)">Edit</button>
-            </div>
+        <div class="table-container">
+          <table mat-table [dataSource]="cafe?.tables">
+            <ng-container matColumnDef="visitors">
+              <th mat-header-cell *matHeaderCellDef> Вміщає </th>
+              <td mat-cell *matCellDef="let table"> {{table.visitorsNumber}}</td>
+            </ng-container>
 
-            <!-- <p *ngFor="let booked of table.freeTables">
-          <span>{{booked.booked}}</span>
-        </p> -->
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef> К-сть столиків </th>
+              <td mat-cell *matCellDef="let table"> {{table.tablesNumber}}</td>
+            </ng-container>
 
-          </li>
-        </ul>
+            <ng-container matColumnDef="reserved">
+              <th mat-header-cell *matHeaderCellDef> Зарезервовані </th>
+              <td mat-cell *matCellDef="let table"> {{table.booked}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="freeTables">
+              <th mat-header-cell *matHeaderCellDef> Вільні </th>
+              <td mat-cell *matCellDef="let table"> {{table.tablesNumber - table.booked}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="select">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td mat-cell *matCellDef="let table" class="reserved">
+                <button (click)="book(table, table.tablesNumber, table.booked)" mat-raised-button color="primary">Зарезервувати</button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </div>
+
         <app-rating [cafeId]="cafeId"></app-rating>
+
+
 
       </mat-card>
     </div>

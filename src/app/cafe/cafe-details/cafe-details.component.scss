@@ -18,3 +18,18 @@
 .cafes {
   margin-left: -8px;
 }
+
+.table-container {
+  position: relative;
+  max-height: 300px;
+  overflow: auto;
+
+}
+
+table {
+  width: 100%;
+}
+
+.reserved{
+  text-align: center;
+}
