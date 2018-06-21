@@ -1,4 +1,4 @@
-<fieldset class="rating">
+<fieldset *ngIf="cafeId" class="rating">
   <ng-container *ngFor="let num of [5, 4, 3, 2, 1]">
     <input (click)="pushRating(num)" [id]="'star'+num" [value]="num-0.5" name="rating" type="radio" />
     <label class="full" [for]="'star'+num"></label>
@@ -7,3 +7,10 @@
     <label class="half" [for]="'halfstar'+num"></label>
   </ng-container>
 </fieldset>
+
+<p *ngIf="cafeRating">
+<span class="rating_number">{{cafeRating}}</span>
+<span class="stars">
+  <span [ngStyle]="{ 'width': cafeRating*20 + '%' }"></span>
+</span>
+</p>

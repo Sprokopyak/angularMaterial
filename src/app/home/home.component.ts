@@ -7,7 +7,7 @@ import { AngularFirestore } from "angularfire2/firestore";
 import { Observable, Subject, combineLatest, BehaviorSubject } from "rxjs";
 import { switchMap } from "rxjs/operators";
 import { CAFE_TYPES } from "../cafe/constants";
-import { InfinityScrollService } from '../core/infinity-scroll/infinity-scroll.service';
+import { InfinityScrollService } from "../core/infinity-scroll/infinity-scroll.service";
 
 @Component({
   selector: "home",
@@ -25,8 +25,8 @@ export class Home implements OnInit {
 
   constructor(
     private _cafeService: CafeService,
-    private afs: AngularFirestore,
-    public page: InfinityScrollService
+    private _afs: AngularFirestore,
+    public infinityScrollService: InfinityScrollService
   ) {}
 
   search($event) {
@@ -40,7 +40,7 @@ export class Home implements OnInit {
   }
 
   ngOnInit() {
-    this.page.init('cafes', 'cafeName', { reverse: true, prepend: false })
+    this.infinityScrollService.init('cafes', 'cafeName', { reverse: true, prepend: false })
 
     this.cafes = this._cafeService.getCafes();
 
@@ -54,7 +54,7 @@ export class Home implements OnInit {
       this.ratingFilter$
     ).pipe(
       switchMap(([cafeType, freeTables, cafeRating]) =>
-        this.afs
+        this._afs
           .collection<Cafe>("cafes", ref => {
             let query: any = ref;
             if (cafeType) { query = query.where("cafeType", "==", cafeType);}
@@ -68,13 +68,10 @@ export class Home implements OnInit {
   }
 
   onScroll(e) {
-    console.log(e);
-    
     if (e === 'bottom') {
-      this.page.more()
+      this.infinityScrollService.more()
     }
   }
-
 
   filterByCafeType(type: string | null) {
     this.cafeTypeFilter$.next(type);

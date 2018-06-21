@@ -57,42 +57,7 @@ h1 {
   padding: 8px;
 }
 
-.rating_number{
-  float: left;
-  margin-top: 2px;
-}
-
-.stars{
-  margin-left: 25px;
-}
-
-span.stars,
-span.stars span {
-  display: block;
-  background: url("../../assets/images/stars2.png") 0 -16px repeat-x;
-  width: 80px;
-  height: 16px;
-}
-
-span.stars span {
-  background-position: 0 0;
-  width: 50%;
-}
-
-.mobile{
-  margin-top: 15px;
-  display: block;
-}
-
 .content{
-
   height: 100vh;
   overflow: auto;
-}
-// .tag{
-//     font-size: 2.2em;
-// }
-.s{
-  
-  height: 100%;
 }

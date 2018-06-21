@@ -10,7 +10,7 @@ import { MessageDialog } from '../../commons/message-dialog/message-dialog.compo
 
 @Injectable()
 export class CafeService {
-  cafeRef: AngularFirestoreCollection<Cafe> = this._afs.collection("cafes");
+  cafeRef: AngularFirestoreCollection<Cafe> = this._afs.collection('cafes');
 
   cafes$: Observable<any>;
   cafe$: Observable<any>;

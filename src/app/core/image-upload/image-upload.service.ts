@@ -10,9 +10,10 @@ import { each, range } from "lodash";
 
 @Injectable()
 export class ImageUploadService {
-  file;
   private _mainPhotos: string = '/mainPhotos';
   private _galaryPhotos: string = '/galaryPhotos';
+  
+  file;
   completed$ = new Subject<Upload>();
   uploading$ = new Subject<number>();
   completedMulti$ = new Subject<Upload>();

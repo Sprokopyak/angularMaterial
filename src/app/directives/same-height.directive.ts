@@ -7,7 +7,7 @@ import {
 } from "@angular/core";
 
 @Directive({
-  selector: "[samehHeight]"
+  selector: '[samehHeight]'
 })
 export class MatchHeightDirective implements AfterViewChecked {
   @Input() samehHeight: any;
@@ -18,7 +18,7 @@ export class MatchHeightDirective implements AfterViewChecked {
     this.matchHeight(this.el.nativeElement, this.samehHeight);
   }
 
-  @HostListener("window:resize")
+  @HostListener('window:resize')
   onResize() {
     this.matchHeight(this.el.nativeElement, this.samehHeight);
   }
@@ -30,7 +30,7 @@ export class MatchHeightDirective implements AfterViewChecked {
     if (!children) return;
 
     Array.from(children).forEach((x: HTMLElement) => {
-      x.style.height = "initial";
+      x.style.height = 'initial';
     });
 
     const itemHeights = Array.from(children).map(

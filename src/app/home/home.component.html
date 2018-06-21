@@ -61,9 +61,6 @@
 
 
   <div class="content" scrollable (scrollPosition)="onScroll($event)">
-    <div class="s">
-
-    
     <mat-form-field>
       <mat-select placeholder="Тип закладу" [(ngModel)]="selectedType" (ngModelChange)="filterByCafeType(selectedType)">
         <mat-option>Всі заклади</mat-option>
@@ -72,12 +69,12 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <p class="tag is-warning" *ngIf="page.done | async">I ran out of boats!</p>
+    <p class="tag is-warning" *ngIf="infinityScrollService.done | async">I ran out of boats!</p>
 
-
-    <div *ngFor="let cafe of page.data | async">
+    <div *ngFor="let cafe of infinityScrollService.data | async">
       <h1>Built in {{ cafe.cafeName }}</h1>
+      <app-rating [cafeRating]="cafe.avRating"></app-rating>
+      
       <img class="img img-responsive" mat-card-image [src]="cafe.mainImgSrc.thumbnailUrl">
     </div>
-  </div>
 </div>

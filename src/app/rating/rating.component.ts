@@ -11,6 +11,7 @@ import { User } from "../core/models/user.model";
 })
 export class RatingComponent implements OnInit {
   @Input() cafeId;
+  @Input() cafeRating;
   user: User;
   subscription;
 

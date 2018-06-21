@@ -28,7 +28,7 @@ export class AddCafe implements OnInit {
   gallery = [];
   progress$: Observable<number>;
 
-  @ViewChild('search') public searchElementRef: ElementRef;
+  @ViewChild('search') searchElementRef: ElementRef;
 
   constructor(
     private _mapsAPILoader: MapsAPILoader, 
@@ -112,13 +112,13 @@ export class AddCafe implements OnInit {
     }
   }
 
-  removeGalleryImg(img): void {
+  removeGalleryImg(img) {
     this.imageUploadService.removeImg(img.fullPath, img.thumbnailPath);
     let index = this.gallery.indexOf(img);
     this.gallery = this.gallery.filter((el, i) => i !== index);
   }
 
-  removeTables(table: any): void {
+  removeTables(table: any) {
     let index = this.tables.indexOf(table);  
     this.tables = this.tables.filter((el, i) => i !== index);
   }
