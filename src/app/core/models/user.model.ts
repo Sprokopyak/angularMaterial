@@ -5,7 +5,9 @@ export interface User {
   displayName?: string;
   reserved?: {
     cafeId: string,
-    tableIndex: number
+    approvedBoking: boolean,
+    reservedTime: string,
+    reservationValidTill: string
   };
   role: 'admin' | 'user';
 }

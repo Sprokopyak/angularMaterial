@@ -6,7 +6,32 @@
         <p>Тип закладу: {{ getCafetype(cafe?.cafeType) }}</p>
 
         <app-rating [cafeRating]="cafe?.avRating"></app-rating>
-        <ngx-gallery *ngIf="cafe" [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
+
+        <!-- <ngx-gallery *ngIf="cafe" [options]="galleryOptions" [images]="galleryImages"></ngx-gallery> -->
+        <div class="progress" *ngIf="progress$ | async as progress">
+          {{progress}} %
+          <mat-progress-bar mode="determinate" [value]="progress"></mat-progress-bar>
+        </div>
+        <div class="main__container clearfix">
+          <div class="main__photo">
+            <img [src]="cafe?.mainImgSrc.url">
+            <mat-icon (click)="imageUploadService.removeImg(cafe?.mainImgSrc.fullPath, cafe?.mainImgSrc.thumbnailPath); cafe.mainImgSrc =''">cancel</mat-icon>
+          </div>
+          <button mat-button color="accent" mat-mini-fab (click)="imgFileInput.click()">
+            <mat-icon>attachment</mat-icon>
+          </button>
+          <input required hidden type="file" #imgFileInput (change)="uploadSingle($event)" accept=".png,.jpg" />
+          <mat-hint> Змінити основне фото закладу.</mat-hint>
+        </div>
+
+        <div>
+          <ul class="gallery">
+            <li *ngFor="let img of cafe?.gallery">
+              <img [src]="img.url">
+              <mat-icon (click)="removeGalleryImg(img)">cancel</mat-icon>
+            </li>
+          </ul>
+        </div>
 
         <p>{{cafe?.description}}</p>
 
@@ -32,10 +57,10 @@
               <td mat-cell *matCellDef="let table"> {{table.tablesNumber - table.booked}}</td>
             </ng-container>
 
-            <ng-container  matColumnDef="reserve">
+            <ng-container matColumnDef="reserve">
               <th mat-header-cell *matHeaderCellDef></th>
               <td mat-cell *matCellDef="let table" class="reserved">
-                <button  *ngIf="!user?.reserved.cafeId" (click)="book(table, table.tablesNumber, table.booked)" mat-raised-button color="primary">Резерв</button>
+                <button *ngIf="!user?.reserved.cafeId" (click)="book(table, table.tablesNumber, table.booked)" mat-raised-button color="primary">Резерв</button>
               </td>
             </ng-container>
 
@@ -46,15 +71,22 @@
 
         <app-rating [cafeId]="cafeId"></app-rating>
 
-
-
+        <h2>{{timer }}</h2>
       </mat-card>
     </div>
-
     <div class="cafes clearfix">
       <div samehHeight="cafe__list">
         <app-cafe-list *ngFor="let key of (cafes | async )" [cafe]="key"></app-cafe-list>
       </div>
     </div>
+
+    <mat-card class="clearfix">
+      <div *ngIf="user && userReservedCafe">
+        <p>{{userReservedCafe.cafeName}}</p>
+        <p>{{user.reserved.reservationValidTill }}</p>
+        <button (click)="unbook(userReservedCafe.tables)" mat-raised-button color="primary">Відмінити резервацію</button>
+      </div>
+    </mat-card>
+
   </div>
 </div>

@@ -33,3 +33,48 @@ table {
 .reserved{
   text-align: center;
 }
+
+.mat-standard-chip.mat-chip-with-trailing-icon {
+  margin: 5px 9px;
+}
+
+.main__container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.main__photo {
+  float: left;
+}
+
+.main__photo img{
+  width: 220px;
+}
+
+.gallery-container{
+  margin-top: 30px;
+}
+
+.gallery li{
+  list-style-type: none;
+  display: inline-block;
+  margin: 0 10px;
+}
+
+.gallery li img {
+  width: 120px;
+  height: 90px;
+}
+
+.gallery li .mat-icon, .main__photo .mat-icon{
+  vertical-align: top;
+}
+
+.gallery li .material-icons, .main__photo .material-icons{
+  cursor: pointer;
+  font-size: 20px;
+  margin-top: -12px;
+  margin-left: -15px;
+}
+

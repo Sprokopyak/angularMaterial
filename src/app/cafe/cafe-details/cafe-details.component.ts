@@ -1,5 +1,6 @@
 import { ActivatedRoute } from '@angular/router';
 import { OnInit, Component } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import { CafeService } from '../../core/cafe-service/cafe.service';
 import { CAFE_TYPES } from '../constants';
@@ -7,6 +8,11 @@ import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation } from 'ngx-gal
 
 import { AuthService } from '../../core/auth-service/auth.service';
 import { User } from '../../core/models/user.model';
+import { ImageUploadService } from '../../core/image-upload/image-upload.service';
+import { Upload } from '../../core/models/image-upload.model';
+
+import { MatDialog } from '@angular/material';
+import { MessageDialog } from '../../commons/message-dialog/message-dialog.component';
 
 @Component({
   selector: 'app-cafe-details',
@@ -24,18 +30,41 @@ export class CafeDetails implements OnInit {
   displayedColumns = ['visitors', 'name', 'reserved', 'freeTables', 'reserve'];
   user: User;
   subscription;
+  progress$: Observable<number>;
+
+  userReservedCafe;
+  currentUpload: Upload;
 
   constructor(
+    public imageUploadService: ImageUploadService,
     private _cafeService: CafeService,
     private _authService: AuthService, 
-    private _route: ActivatedRoute) {
-  }
+    private _route: ActivatedRoute,
+    private _dialog: MatDialog) {
+      this.progress$ = this.imageUploadService.uploading$;
+      this.imageUploadService.completed$.subscribe((upload) => {
+              
+        this.currentUpload = upload;          
+        this.cafe.mainImgSrc = {
+          url: this.currentUpload.url,
+          fullPath: this.currentUpload.fullPath,
+          thumbnailUrl: this.currentUpload.thumbnailUrl,
+          thumbnailPath: this.currentUpload.thumbnailPath
+        }
+        this._cafeService.updateCafe(this.cafe)     
+      });
+    
+      
+    }
+
+    showMessageDialog(message: string): void {
+      this._dialog.open(MessageDialog, {
+        width: '450px',
+        data: message
+      });
+    }
 
   ngOnInit() {
-    this.subscription = this._authService.user.subscribe(val => {
-      this.user = val;
-    });
-
     this.galleryOptions = [{
       imageArrowsAutoHide: true,
       thumbnailsArrowsAutoHide: true,
@@ -74,27 +103,45 @@ export class CafeDetails implements OnInit {
         })
       })
     });
-    this.cafes = this._cafeService.getCafes()
+    this.cafes = this._cafeService.getCafes();
+
+    this.subscription = this._authService.user.subscribe(val => {
+      this.user = val;
+      if(this.user.reserved.cafeId !== '' && this.user.reserved.reservedTime !== ''){
+        this._cafeService.getCafe(this.user.reserved.cafeId).subscribe(cafe => {
+          this.userReservedCafe = cafe        
+        })
+      } 
+    });
   }
 
-  book(obj, tablesNumber, booked) {    
-    let index = this.cafe.tables.indexOf(obj);
+  unbook(tableArr){
+    tableArr.forEach(val => {
+      let indexOfUserId = val.users.indexOf(this.user.uid)
+      if(val.users.indexOf(this.user.uid) !== -1){
+        val.users.splice(indexOfUserId, 1);
+        let indexOfTableUserBooked = tableArr.indexOf(val)
+        tableArr[indexOfTableUserBooked].booked -= 1;        
+      }
+      this._authService.userBooking(this.user.uid, '', false, '', '')
+      this._cafeService.updateCafe(this.userReservedCafe)
+    });
+  }
+
+  book(tableObj, tablesNumber, booked) {    
+    let indexOfTableObj = this.cafe.tables.indexOf(tableObj);
+
     if (booked < tablesNumber) {
-      this.cafe.tables[index].booked += 1;
-      this.cafe.tables[index].users.indexOf(this.user.uid) === -1 
-      ? this.cafe.tables[index].users.push(this.user.uid) : console.log("This user already exists");
-      
-       console.log(this.user);
-       this._cafeService.getCafe(this.user.reserved.cafeId).subscribe(val=>{
-       let index = this.user.reserved.tableIndex
-       let a = val['tables'][index].users
-       
-        console.log(a);
-        
-      })
-      
-      // this._authService.updateUser(this.user.uid, this.cafe.id, index)
-      // this._cafeService.updateCafe(this.cafe)
+      this.cafe.tables[indexOfTableObj].booked += 1;
+
+      this.cafe.tables[indexOfTableObj].users.indexOf(this.user.uid) === -1 
+      ? this.cafe.tables[indexOfTableObj].users.push(this.user.uid) 
+      : console.log('This user already exists');
+      let reservationTime = new Date()
+      let reservationValidTill = new Date()
+      reservationValidTill.setMinutes(reservationTime.getMinutes()+30)      
+      this._authService.userBooking(this.user.uid, this.cafe.id, false, reservationTime.toString(), reservationValidTill.toString());
+      this._cafeService.updateCafe(this.cafe);
     } else {
       console.log('no free tables');
     }
@@ -112,5 +159,14 @@ export class CafeDetails implements OnInit {
 
   ngOnDestroy() {
     this.subscribtion.unsubscribe()
+  }
+
+  uploadSingle(event) {
+    if(this.cafe.mainImgSrc !== ''){
+      this.showMessageDialog('Спочатку видаліть старе фото закладу');
+    } else{
+      this.imageUploadService.uploadSingle(event);
+    }   
+
   }
 }
