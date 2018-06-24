@@ -2,19 +2,27 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { MessageDialog } from './message-dialog/message-dialog.component';
+import { PhoneNumberDialog } from './phone-number-dialog/phone-number-dialog.component';
 import { MaterialModule } from '../material/material.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
     CommonModule,
-    MaterialModule
+    MaterialModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   declarations: [
-    MessageDialog
+    MessageDialog,
+    PhoneNumberDialog
   ],
-  exports: [MessageDialog],
+  exports: [
+    MessageDialog,
+    PhoneNumberDialog],
   entryComponents: [
-    MessageDialog
+    MessageDialog,
+    PhoneNumberDialog
   ]
 })
 export class CommonsModule { }

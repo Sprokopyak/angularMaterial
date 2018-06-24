@@ -48,20 +48,6 @@ export class CafeService {
     return this._afs.doc(`cafes/${cafe.id}`).update(cafe);
   }
 
-  postRating(starObj: Star) {
-    const starPath = `stars/${starObj.userId}_${starObj.cafeId}`;
-    return this._afs.doc(starPath).set(starObj);
-  }
-
-  getCafeRating(cafeId) {
-    const starsRef = this._afs.collection('stars', ref => ref.where('cafeId', '==', cafeId));
-    return starsRef.valueChanges();
-  }
-
-  setCafeRating(cafeId, avRating) {
-    return this._afs.doc(`cafes/${cafeId}`).update({ avRating: avRating })
-  }
-
   searchCafe(start, end) {
     return this._afs.collection('cafes', ref => ref.limit(4).orderBy('cafeName').startAt(start).endAt(end)).valueChanges();
   }

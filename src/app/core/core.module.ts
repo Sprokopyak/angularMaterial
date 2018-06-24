@@ -6,6 +6,7 @@ import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireDatabase } from 'angularfire2/database-deprecated';
 
 import { AuthService } from './auth-service/auth.service';
+import { UserService } from './user-service/user.service';
 import { CafeService } from './cafe-service/cafe.service';
 import { AdminGuard } from './admin-guard/admin.guard';
 import { LoginGuard } from './login-guard/login.guard';
@@ -23,6 +24,7 @@ import { InfinityScrollService } from './infinity-scroll/infinity-scroll.service
     AdminGuard,
     LoginGuard,
     AuthService,
+    UserService,
     AngularFireDatabase,
     CafeService,
     ImageUploadService,

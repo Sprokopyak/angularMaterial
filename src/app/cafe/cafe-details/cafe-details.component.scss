@@ -21,9 +21,8 @@
 
 .table-container {
   position: relative;
-  max-height: 300px;
+  max-height: 400px;
   overflow: auto;
-
 }
 
 table {
@@ -78,3 +77,47 @@ table {
   margin-left: -15px;
 }
 
+.description .mat-form-field{
+  display: block;
+  width: 100%;
+}
+
+.mat-chip.mat-standard-chip.mat-chip-selected.mat-primary, mat-icon {
+  cursor: pointer;
+}
+
+.tables-quantity{
+  text-align: center;
+  width: 100%;
+  margin: 10px auto;
+}
+
+.tables-quantity .mat-form-field{
+  display: inline-block;
+}
+
+.tables-quantity .mat-form-field:first-child{
+  width: 40%;
+  margin-right: 11%;
+}
+
+.tables-quantity .mat-form-field:last-child{
+  width: 48%;
+}
+
+.tables-quantity .mat-chip.mat-standard-chip.mat-chip-selected.mat-primary{
+  margin-top: 25px;
+}
+
+
+tr.detail-row {
+  height: 0;
+}
+
+tr.table-row:not(.expanded-row):hover {
+  background: #747c80;
+}
+
+tr.table-row:not(.expanded-row):active {
+  background: #747c80;
+}

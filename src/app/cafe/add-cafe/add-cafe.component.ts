@@ -105,7 +105,12 @@ export class AddCafe implements OnInit {
   onAddTables(tablesNumber, visitorsNumber) {   
     if (tablesNumber.value !== '' && visitorsNumber.value !== '') {
 
-      this.tables.push({ tablesNumber: parseInt(tablesNumber.value), visitorsNumber: parseInt(visitorsNumber.value), booked: 0 });
+      this.tables.push({ 
+        tablesNumber: parseInt(tablesNumber.value), 
+        visitorsNumber: parseInt(visitorsNumber.value), 
+        booked: 0,
+        users: [] 
+      });
       tablesNumber.value = '';
       visitorsNumber.value = '';
     }

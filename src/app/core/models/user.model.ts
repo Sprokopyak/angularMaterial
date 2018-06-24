@@ -9,5 +9,6 @@ export interface User {
     reservedTime: string,
     reservationValidTill: string
   };
+  phoneNumber?: number;
   role: 'admin' | 'user';
 }

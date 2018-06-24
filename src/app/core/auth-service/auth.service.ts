@@ -69,6 +69,12 @@ export class AuthService {
       uid: user.uid,
       email: user.email || null,
       displayName: user.displayName || null,
+      reserved: {
+        cafeId: '',
+        approvedBoking: false,
+        reservedTime: '',
+        reservationValidTill: ''
+      },
       role: 'user'
     }
     return userRef.set(data, { merge: true });
