@@ -2,21 +2,20 @@ import { ActivatedRoute } from '@angular/router';
 import { OnInit, Component } from '@angular/core';
 import { Observable } from 'rxjs';
 
+import { User } from '../../core/models/user.model';
+import { Upload } from '../../core/models/image-upload.model';
 import { CafeService } from '../../core/cafe-service/cafe.service';
-import { CAFE_TYPES } from '../constants';
-import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation } from 'ngx-gallery';
-
 import { AuthService } from '../../core/auth-service/auth.service';
 import { UserService } from '../../core/user-service/user.service';
-import { User } from '../../core/models/user.model';
 import { ImageUploadService } from '../../core/image-upload/image-upload.service';
-import { Upload } from '../../core/models/image-upload.model';
+
+import { CAFE_TYPES } from '../constants';
+import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation } from 'ngx-gallery';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 import { MatDialog } from '@angular/material';
 import { MessageDialog } from '../../commons/message-dialog/message-dialog.component';
 import { PhoneNumberDialog } from '../../commons/phone-number-dialog/phone-number-dialog.component'
-
-import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-cafe-details',
@@ -37,20 +36,17 @@ export class CafeDetails implements OnInit {
   cafe;
   cafes;
   cafeId;
-  subscribtion;
-  displayedColumns = ['visitors', 'name', 'reserved', 'freeTables', 'reserve'];
+  displayedColumns = ['visitors', 'name', 'booked', 'freeTables', 'reserve'];
   user: User;
   subscription;
   progress$: Observable<number>;
-
-  userReservedCafe;
   currentUpload: Upload;
   userBooked= [];
 
   constructor(
     public imageUploadService: ImageUploadService,
+    public authService: AuthService,
     private _cafeService: CafeService,
-    private _authService: AuthService,
     private _userService: UserService, 
     private _route: ActivatedRoute,
     private _dialog: MatDialog) {
@@ -76,8 +72,7 @@ export class CafeDetails implements OnInit {
           thumbnailPath: this.currentUpload.thumbnailPath
         });  
         this._cafeService.updateCafe(this.cafe)        
-    });
-      
+      });
     }
 
     pushIfNew(array,  obj) {
@@ -129,8 +124,7 @@ export class CafeDetails implements OnInit {
 
     this._route.params.subscribe(param => {
       this.cafeId = param.id;
-      this.subscribtion = this._cafeService.getCafe(this.cafeId).subscribe(cafe => {
-        console.log(cafe);
+      this.subscription = this._cafeService.getCafe(this.cafeId).subscribe(cafe => {
         this.cafe = cafe;
         this.cafe.tables.sort((a,b)=> a.visitorsNumber > b.visitorsNumber);
         this.galleryImages = this.cafe.gallery.map(val => {
@@ -147,49 +141,16 @@ export class CafeDetails implements OnInit {
         })
       })
     });
+
     this.cafes = this._cafeService.getCafes();
 
-    this.subscription = this._authService.user.subscribe(val => {
+    this.authService.user.subscribe(val => {
       this.user = val;
-      if(this.user.reserved.cafeId !== '' && this.user.reserved.reservedTime !== ''){
-        this._cafeService.getCafe(this.user.reserved.cafeId).subscribe(cafe => {
-          this.userReservedCafe = cafe        
-        })
-      } 
     });
   }
 
-  unbook(tableArr){
-    tableArr.forEach(val => {
-      let indexOfUserId = val.users.indexOf(this.user.uid)
-      if(val.users.indexOf(this.user.uid) !== -1){
-        val.users.splice(indexOfUserId, 1);
-        let indexOfTableUserBooked = tableArr.indexOf(val)
-        tableArr[indexOfTableUserBooked].booked -= 1;        
-      }
-      this._userService.userBooking(this.user.uid, null, false, null, null)
-      this._cafeService.updateCafe(this.userReservedCafe)
-    });
-  }
-
-  book(tableObj, tablesNumber, booked) {
-    if(!this.user.phoneNumber){
-      this.openAddPhoneNumberDialog(); 
-    } else{   
-      let indexOfTableObj = this.cafe.tables.indexOf(tableObj);
-      if (booked < tablesNumber) {
-        this.cafe.tables[indexOfTableObj].booked += 1;
-
-        this.cafe.tables[indexOfTableObj].users.indexOf(this.user.uid) === -1 
-        ? this.cafe.tables[indexOfTableObj].users.push(this.user.uid) 
-        : console.log('This user already exists');
-        let reservationTime = new Date()
-        let reservationValidTill = new Date()
-        reservationValidTill.setMinutes(reservationTime.getMinutes()+30)      
-        this._userService.userBooking(this.user.uid, this.cafe.id, false, reservationTime.toString(), reservationValidTill.toString());
-        this._cafeService.updateCafe(this.cafe);
-      }
-    }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   getCafetype(type) {
@@ -202,11 +163,41 @@ export class CafeDetails implements OnInit {
     return typeName;
   }
 
-  ngOnDestroy() {
-    this.subscribtion.unsubscribe()
+  bookTable(tableObj, tablesNumber, booked) {
+    if(!this.user.phoneNumber){
+      this.openAddPhoneNumberDialog(); 
+    } else{   
+      let indexOfTableObj = this.cafe.tables.indexOf(tableObj);
+      if (booked < tablesNumber) {
+        this.cafe.tables[indexOfTableObj].booked += 1;
+
+        this.cafe.tables[indexOfTableObj].users.indexOf(this.user.uid) === -1 
+        ? this.cafe.tables[indexOfTableObj].users.push(this.user.uid) 
+        : console.log('This user already exists');
+
+        let reservationTime = new Date()
+        let reservationValidTill = new Date()
+        reservationValidTill.setMinutes(reservationTime.getMinutes()+30)      
+        this._userService.userBooking(this.user.uid, this.cafe.id, false, reservationTime.toString(), reservationValidTill.toString());
+        this._cafeService.updateCafe(this.cafe);
+      }
+    }
   }
 
-  uploadSingle(event) {
+  unbookTable(userId, tableArr){
+    tableArr.forEach(val => {
+      let indexOfUserId = val.users.indexOf(userId)
+      if(indexOfUserId !== -1){
+        val.users.splice(indexOfUserId, 1);
+        let indexOfTableUserBooked = tableArr.indexOf(val)
+        tableArr[indexOfTableUserBooked].booked -= 1;        
+      }
+      this._userService.userBooking(userId, null, false, null, null)
+      this._cafeService.updateCafe(this.cafe)
+    });    
+  }
+
+  uploadSingleImg(event) {
     if(this.cafe.mainImgSrc !== ''){
       this.showMessageDialog('Спочатку видаліть старе фото закладу');
     } else{
@@ -214,7 +205,7 @@ export class CafeDetails implements OnInit {
     }   
   }
 
-  uploadMulti(event) {
+  uploadMultiImg(event) {
     this.imageUploadService.uploadMulti(event);
   }
 
@@ -253,7 +244,7 @@ export class CafeDetails implements OnInit {
     }
   }
 
-  users(arr){    
+  showUsersBookedTable(arr){    
     this.userBooked = []
     arr.users.forEach(usersId=>{    
       this._userService.getUser(usersId).subscribe(user=>{
@@ -271,18 +262,5 @@ export class CafeDetails implements OnInit {
   approveReservation(user){
     user.reserved.approvedBoking = true;
     this._userService.approveReservation(user)
-  }
-
-  unbookTable(userId, tableArr){
-    tableArr.forEach(val => {
-      let indexOfUserId = val.users.indexOf(userId)
-      if(indexOfUserId !== -1){
-        val.users.splice(indexOfUserId, 1);
-        let indexOfTableUserBooked = tableArr.indexOf(val)
-        tableArr[indexOfTableUserBooked].booked -= 1;        
-      }
-      this._userService.userBooking(userId, null, false, null, null)
-      this._cafeService.updateCafe(this.cafe)
-    });    
   }
 }

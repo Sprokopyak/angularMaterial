@@ -1,5 +1,6 @@
 export interface Cafe {
   approved: boolean;
+  createdBy: string;
   mainImgSrc: any;
   gallery: any;
   cafeName: string;

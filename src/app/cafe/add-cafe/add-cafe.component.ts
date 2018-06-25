@@ -9,6 +9,8 @@ import { Upload } from '../../core/models/image-upload.model';
 
 import { Observable } from 'rxjs';
 import { CAFE_TYPES } from '../constants';
+import { AuthService } from '../../core/auth-service/auth.service';
+import { User } from '../../core/models/user.model';
 
 @Component({
   selector: 'app-add-cafe',
@@ -26,6 +28,8 @@ export class AddCafe implements OnInit {
   mainImgSrc: object;
   gallery = [];
   progress$: Observable<number>;
+  user: User;
+  subscribtion;
 
   @ViewChild('search') searchElementRef: ElementRef;
 
@@ -34,7 +38,8 @@ export class AddCafe implements OnInit {
     private _mapsAPILoader: MapsAPILoader, 
     private _ngZone: NgZone, 
     private _fb: FormBuilder,
-    private _cafeService: CafeService
+    private _cafeService: CafeService,
+    private _authService: AuthService
   ) {
       this.progress$ = this.imageUploadService.uploading$;
       this.imageUploadService.completed$.subscribe((upload) => {          
@@ -92,6 +97,14 @@ export class AddCafe implements OnInit {
         });
       });
     });
+
+    this.subscribtion = this._authService.user.subscribe(val => {
+      this.user = val;
+    });
+  }
+
+  ngOnDestroy() {
+    this.subscribtion.unsubscribe()
   }
 
   uploadSingle(event) {
@@ -136,6 +149,7 @@ export class AddCafe implements OnInit {
     let formsVlue = this.addCafeForm.getRawValue();
     let obj = {
       approved: false,
+      createdBy: this.user.uid,
       mainImgSrc: this.mainImgSrc || '',
       gallery: this.gallery || '',
       cafeName: formsVlue.cafeName.toLowerCase(),
