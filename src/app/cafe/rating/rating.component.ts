@@ -36,7 +36,6 @@ export class RatingComponent implements OnInit {
 
     if(this.cafeId){
       this._ratingService.getCafeComments(this.cafeId).subscribe((data) => {
-        console.log(data);
         this.comments = data;
       });
     }
@@ -47,8 +46,11 @@ export class RatingComponent implements OnInit {
   }
 
   submitComment() {
-    this._ratingService.postComments(this.commentsForm.value, this.cafeId);
-    this._ratingService.setCafeRating(this.cafeId, parseFloat(this.avRating.toFixed(1)));
+    this._ratingService.postComments(this.commentsForm.value, this.cafeId)
+    .then(()=>this.commentsForm.reset());
+    if(this.avRating){
+      this._ratingService.setCafeRating(this.cafeId, parseFloat(this.avRating.toFixed(1)));
+    }
   }
 
   pushRating(val) {

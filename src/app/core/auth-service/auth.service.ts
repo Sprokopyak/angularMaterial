@@ -44,22 +44,10 @@ export class AuthService {
     return this.authState !== null;
   }
 
-  userBooking(userId, cafeId, approvedBoking, reservedTime, reservationValidTill){
-    return this._afs.doc(`users/${userId}`)
-      .update({
-        reserved:{
-          cafeId,
-          approvedBoking,
-          reservedTime,
-          reservationValidTill
-        }
-      });
-  }
-
   emailSignUp(email: string, password: string) {
     return this._afAuth.auth.createUserWithEmailAndPassword(email, password)
       .then(user => {
-        return this.setUserDoc(user)
+        return this.setUserDoc(user.user)
       }).then(() => { this._router.navigate(['/home']) })
   }
 

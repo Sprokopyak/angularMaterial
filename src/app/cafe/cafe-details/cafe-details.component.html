@@ -41,7 +41,7 @@
             </li>
           </ul>
         </div>
-
+        <p>Номер телефону: +{{cafe?.phoneNumber}}</p>
         <button *ngIf="!editDesciption && editCafe" (click)="editDesciption = true" mat-raised-button color="accent">Редагувати опис</button>
         <p *ngIf="!editDesciption">{{cafe?.description}}</p>
 
