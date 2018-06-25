@@ -128,8 +128,6 @@
           </mat-chip-list>
           <mat-chip color="primary" selected="true" (click)="onAddTables(tablesNumber, visitorsNumber)">Додати</mat-chip>
         </div>
-
-        <app-rating [cafeId]="cafeId"></app-rating>
       </mat-card>
     </div>
 
@@ -138,5 +136,9 @@
         <app-cafe-list *ngFor="let key of (cafes | async )" [cafe]="key"></app-cafe-list>
       </div>
     </div>
+
+    <mat-card style="display: flex; width: 61%; margin-left: 15px;">
+      <app-rating [cafeId]="cafeId" style="width: 100%"></app-rating>
+    </mat-card>
   </div>
 </div>

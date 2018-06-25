@@ -3,6 +3,7 @@ import { RatingService } from '../../core/rating-service/rating.service';
 
 import { AuthService } from '../../core/auth-service/auth.service';
 import { User } from '../../core/models/user.model';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-rating',
@@ -14,21 +15,43 @@ export class RatingComponent implements OnInit {
   @Input() cafeRating;
   user: User;
   subscription;
+  avRating;
+  commentsForm: FormGroup;
+  comments = [];
 
-  constructor(private _ratingService: RatingService,
-    private _authService: AuthService,) {}
+  constructor(
+    private _ratingService: RatingService,
+    private _authService: AuthService,
+    private _fb: FormBuilder) {
+      this.commentsForm = this._fb.group({
+        username: ['', [Validators.required, Validators.minLength(2)]],
+        comment: ['', [Validators.required,  Validators.minLength(10)]]
+      });
+    }
 
   ngOnInit() {
     this.subscription = this._authService.user.subscribe(val => {
       this.user = val;
     });
+
+    if(this.cafeId){
+      this._ratingService.getCafeComments(this.cafeId).subscribe((data) => {
+        console.log(data);
+        this.comments = data;
+      });
+    }
   }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
 
-  pushRating(val) {        
+  submitComment() {
+    this._ratingService.postComments(this.commentsForm.value, this.cafeId);
+    this._ratingService.setCafeRating(this.cafeId, parseFloat(this.avRating.toFixed(1)));
+  }
+
+  pushRating(val) {
     this._ratingService.postRating({
       userId: this.user.uid,
       cafeId: this.cafeId,
@@ -37,10 +60,9 @@ export class RatingComponent implements OnInit {
 
     this._ratingService.getCafeRating(this.cafeId).subscribe(retVal => {
       const ratings = retVal.map(v => v['ratingValue']);
-      let avRating = ratings.length
+      this.avRating = ratings.length
         ? ratings.reduce((total, val) => total + val) / retVal.length
         : 0;
-      this._ratingService.setCafeRating(this.cafeId, parseFloat(avRating.toFixed(1)));
     });
   }
 }

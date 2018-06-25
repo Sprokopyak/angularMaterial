@@ -6,7 +6,6 @@ label {
 
 .rating {
   border: none;
-  float: left;
 }
 
 .rating>input {
@@ -34,14 +33,14 @@ label {
 .rating>input:checked~label,
 .rating:not(:checked)>label:hover,
 .rating:not(:checked)>label:hover~label {
-  color: #009FE3;
+  color: #FFD700;
 }
 
 .rating>input:checked+label:hover,
 .rating>input:checked~label:hover,
 .rating>label:hover~input:checked~label,
 selection .rating>input:checked~label:hover~label {
-  color: #009FE3;
+  color: #FFD700;
 }
 
 .rating_number{
@@ -70,3 +69,24 @@ span.stars span {
   margin-top: 15px;
   display: block;
 }
+
+.comments{
+  margin: 15px 0;
+  list-style-type: none;
+  background: #303030;
+  padding: 16px 20px;
+}
+
+.user, .date{
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+
+.user mat-icon, .date mat-icon{
+  margin-right: 5px;
+  font-size: 20px
+}
+
+
