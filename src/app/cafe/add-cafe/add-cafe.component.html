@@ -47,9 +47,9 @@
         </div>
 
         <mat-form-field>
-          <input type="text" autocomplete="off" matInput required placeholder="Назва кафе" formControlName="cafeName">
-          <mat-hint>Введіть назву кафе.</mat-hint>
-          <mat-error>Назва кафе повинна складатись не менше ніж з 2 символів.</mat-error>
+          <input type="text" autocomplete="off" matInput required placeholder="Назва закладу" formControlName="cafeName">
+          <mat-hint>Введіть назву закладу.</mat-hint>
+          <mat-error>Назва закладу повинна складатись не менше ніж з 2 символів.</mat-error>
         </mat-form-field>
 
         <mat-form-field>
@@ -102,7 +102,7 @@
           <mat-error>Короткий опис повинен складатись не менше ніж з 2 символів.</mat-error>
         </mat-form-field>
 
-        <button *ngIf="!isLoading" class="btn_submit" mat-raised-button [disabled]="addCafeForm.invalid" (click)="addCafe()" color="primary">Додати кафе</button>
+        <button *ngIf="!isLoading" class="btn_submit" mat-raised-button [disabled]="addCafeForm.invalid" (click)="addCafe()" color="primary">Додати заклад</button>
         <mat-spinner [diameter]="60" *ngIf="isLoading"></mat-spinner>
       </form>
     </div>

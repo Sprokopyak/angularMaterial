@@ -9,10 +9,7 @@
     </div>
 
     <mat-card-content class="cafe__list">
-      <span class="rating_number">{{cafe.avRating}}</span>
-      <span class="stars">
-        <span [ngStyle]="{ 'width': cafe?.avRating*20 + '%' }"></span>
-      </span>
+      <app-rating [cafeRating]="cafe.avRating" style="width: 100%"></app-rating>
       <a class="mobile" href="tel:+{{cafe.phoneNumber}}">Номер телефону: +{{cafe.phoneNumber}}</a>
       <p>Вільних столиків залишилось: {{ cafe.freeTables }}</p>
       <p>{{cafe.description | shorten: 125 }}</p>

@@ -2,8 +2,20 @@
   <div class="wrapper clearfix">
     <div class="cafe-list clearfix">
       <mat-card>
+        <mat-form-field>
+          <mat-icon matSuffix>search</mat-icon>
+          <input type="text" [(ngModel)]="searchterm" (keyup)="search($event)" matInput placeholder="Пошук" autocorrect="off" autocapitalize="off"
+            spellcheck="off" autocomplete="off">
+        </mat-form-field>
+        <mat-list *ngIf="searchCafes" class="search-list">
+          <mat-list-item (click)="cafeDetails(cafe)" *ngFor="let cafe of searchCafes | async">
+            {{cafe.cafeName}}
+            <mat-divider></mat-divider>
+          </mat-list-item>
+        </mat-list>
+
         <mat-list>
-          <p>Нові кафе</p>
+          <p>Нові заклади</p>
           <mat-list-item (click)="cafeDetails(cafe)" *ngFor="let cafe of notApprovedCafes | async">
             {{cafe.cafeName | uppercase}}
             <mat-divider></mat-divider>
@@ -14,7 +26,7 @@
 
     <div class="cafe-detail clearfix">
       <mat-card>
-        <h1>Admin page</h1>
+        <h1>Сторінка адміністратора</h1>
       </mat-card>
     </div>
     <div class="cafe-detail clearfix">
@@ -25,8 +37,8 @@
         <ngx-gallery *ngIf="cafe" [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
         <p>Номер телефону: +{{cafe?.phoneNumber}}</p>
         <p>{{cafe?.description}}</p>
-        <button class="btn_submit" mat-raised-button (click)="addCafe()" color="primary">Опублікувати кафе</button>
-        <button mat-raised-button class="btn_delete" (click)="deleteCafe(cafe)" color="accent">Видалити кафе</button>
+        <button class="btn_submit" mat-raised-button (click)="approveCafe(cafe)" color="primary">Опублікувати заклад</button>
+        <button mat-raised-button class="btn_delete" (click)="deleteCafe(cafe)" color="accent">Видалити заклад</button>
       </mat-card>
     </div>
   </div>

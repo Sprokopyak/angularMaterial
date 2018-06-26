@@ -4,8 +4,8 @@
 
       <mat-form-field>
         <mat-icon matSuffix>search</mat-icon>
-        <input type="text" [(ngModel)]="searchterm" (keyup)="search($event)" matInput placeholder="Пошук" autocorrect="off" autocapitalize="off"
-          spellcheck="off" autocomplete="off" class="form-control">
+        <input type="text" [(ngModel)]="searchterm" (keyup)="search($event)" matInput placeholder="Пошук" autocorrect="off" 
+        autocapitalize="off" spellcheck="off" autocomplete="off">
       </mat-form-field>
 
       <mat-form-field>
@@ -40,7 +40,7 @@
       </div>
       <mat-spinner [diameter]="80" *ngIf="infinityScrollService.loading | async"></mat-spinner>
       
-      <div *ngIf="infinityScrollService.done | async">Всі кафе загрузились</div>
+      <div *ngIf="infinityScrollService.done | async">Всі заклади загрузились</div>
     </div>
   </div>
   <div class="space"></div>

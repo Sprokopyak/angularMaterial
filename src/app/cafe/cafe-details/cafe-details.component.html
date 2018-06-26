@@ -3,7 +3,7 @@
     <div class="main_content clearfix">
       <mat-card>
         <button style="float: right;" class="edit" *ngIf="!editCafe && user?.uid === cafe?.createdBy" mat-button (click)="editCafe = true"
-          color="accent">Редагувати кафе</button>
+          color="accent">Редагувати заклад</button>
         <button style="float: right;" class="edit" *ngIf="editCafe" mat-button (click)="editCafe = false" color="accent">Завершити редагування</button>
 
         <h1>{{cafe?.cafeName | uppercase}}</h1>
