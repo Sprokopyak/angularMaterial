@@ -27,6 +27,7 @@
   </form>
 
   <mat-card class="comments" *ngFor="let comment of comments">
+    <mat-icon class="remove_comment" *ngIf="user && user.role === 'admin'" (click)="removeComment(comment)">cancel</mat-icon>
     <p class="user">
       <mat-icon>person</mat-icon> {{comment.username}}</p>
     <p class="date">

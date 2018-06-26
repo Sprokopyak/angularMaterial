@@ -40,7 +40,13 @@ export class RatingService {
       comment: comment.comment,
       cafeId: cafeId,
       date: new Date().toLocaleString()
-    });
+    }).then(docRef=>{
+      this._afs.collection("comments").doc(docRef.id).update({ commentId: docRef.id });
+    })
+  }
+
+  romoveComment(commentId){
+    this._afs.collection("comments").doc(commentId).delete();
   }
 
   postRating(starObj: Star) {

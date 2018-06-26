@@ -53,13 +53,18 @@ export class RatingComponent implements OnInit {
     }
   }
 
-  pushRating(val) {
-    this._ratingService.postRating({
-      userId: this.user.uid,
-      cafeId: this.cafeId,
-      ratingValue: val
-    });
+  removeComment(comment){
+    this._ratingService.romoveComment(comment.commentId)
+  }
 
+  pushRating(val) {
+    if(this.user){
+      this._ratingService.postRating({
+        userId: this.user.uid,
+        cafeId: this.cafeId,
+        ratingValue: val
+      });
+    }
     this._ratingService.getCafeRating(this.cafeId).subscribe(retVal => {
       const ratings = retVal.map(v => v['ratingValue']);
       this.avRating = ratings.length

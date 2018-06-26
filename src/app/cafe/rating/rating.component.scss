@@ -88,6 +88,11 @@ form{
   padding: 16px 20px;
 }
 
+.remove_comment{
+  float: right;
+  cursor: pointer;
+}
+
 .user, .date{
   font-size: 13px;
   display: flex;
