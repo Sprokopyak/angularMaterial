@@ -1,0 +1,7 @@
+<mat-dialog-content>
+  <h4 mat-dialog-title>{{confirmMessage}}</h4>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button type="submit" (click)="dialogRef.close(true)">Підтвердити</button>
+  <button mat-button type="button" mat-dialog-close (click)="dialogRef.close(false)">Відмінити</button>
+</mat-dialog-actions>

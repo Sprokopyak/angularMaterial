@@ -11,6 +11,7 @@ import { CommonsModule } from './commons/commons.module';
 import { LoginModule } from './login/login.module';
 import { CafeModule } from './cafe/cafe.module';
 import { AppRoutes } from './app.routes';
+import { NgxGalleryModule } from 'ngx-gallery';
 
 import { AppComponent } from './app.component';
 import { MainNavComponent } from './main-nav/main-nav.component';
@@ -46,7 +47,8 @@ import { PipesModule } from './pipes/pipes.module';
     CommonsModule,
     CafeModule,
     DirectivesModule,
-    PipesModule
+    PipesModule,
+    NgxGalleryModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,4 +1,82 @@
-h1 {
-  margin-top: 70px;
+.container{
+  background-image: url(../../assets/images/lviv.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50%;
+  overflow: auto;
+  height: 100vh;
+  width: 100vw;
+}
+.container:before {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: #3a0f1f9e;
+}
+
+.wrapper{
+  margin: 30px auto 100px auto;
+}
+
+.mat-card {
+  background: #0c0407b3;
+  border-radius: 5px;
+}
+
+.cafe-list{
+  width: 35%;
+  float: left;
+}
+
+.cafe-detail{
+  width: 60%;
+  margin-bottom: 20px;
+  float: right;
+}
+
+mat-list{
+  border: 1px solid #000;
+  border-radius: 20px;
+  padding: 0 0 15px 0;
+}
+
+.mat-list p{
   text-align: center;
+  background: #000;
+  margin: 0;
+  padding: 10px 0;
+  border-top-right-radius: 20px;
+  border-top-left-radius: 20px;
+  margin-bottom: 10px;
+}
+
+.mat-list .mat-list-item {
+  height: 30px;
+}
+
+.mat-list .mat-list-item:hover {
+  cursor: pointer;
+background: #747c80;
+}
+
+.image-thumb {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  height: 200px;
+  overflow: hidden;
+}
+
+.image-thumb img{
+  width: 100%;
+}
+
+.btn_delete{
+  float: right;
 }

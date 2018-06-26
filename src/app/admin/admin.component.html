@@ -1,1 +1,33 @@
-<h1>Admin page</h1>
+<div class="container">
+  <div class="wrapper clearfix">
+    <div class="cafe-list clearfix">
+      <mat-card>
+        <mat-list>
+          <p>Нові кафе</p>
+          <mat-list-item (click)="cafeDetails(cafe)" *ngFor="let cafe of notApprovedCafes | async">
+            {{cafe.cafeName | uppercase}}
+            <mat-divider></mat-divider>
+          </mat-list-item>
+        </mat-list>
+      </mat-card>
+    </div>
+
+    <div class="cafe-detail clearfix">
+      <mat-card>
+        <h1>Admin page</h1>
+      </mat-card>
+    </div>
+    <div class="cafe-detail clearfix">
+      <mat-card *ngIf="cafe">
+        <h1>{{cafe?.cafeName | uppercase}}</h1>
+        <p>Тип закладу: {{ getCafetype(cafe?.cafeType) }}</p>
+        <app-rating [cafeRating]="cafe?.avRating"></app-rating>
+        <ngx-gallery *ngIf="cafe" [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
+        <p>Номер телефону: +{{cafe?.phoneNumber}}</p>
+        <p>{{cafe?.description}}</p>
+        <button class="btn_submit" mat-raised-button (click)="addCafe()" color="primary">Опублікувати кафе</button>
+        <button mat-raised-button class="btn_delete" (click)="deleteCafe(cafe)" color="accent">Видалити кафе</button>
+      </mat-card>
+    </div>
+  </div>
+</div>

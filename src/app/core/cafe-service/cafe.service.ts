@@ -35,6 +35,10 @@ export class CafeService {
       .catch(error => this.showMessageDialog(error.message));
   }
 
+  getCafeList(){
+    return this._afs.collection('cafes', ref => ref.where('approved', '==', false)).valueChanges();
+  }
+
   getCafes() {
     return this._afs.collection('cafes', ref => ref.limit(2).orderBy('avRating', 'desc')).valueChanges();
   }
@@ -49,5 +53,9 @@ export class CafeService {
 
   searchCafe(start, end) {
     return this._afs.collection('cafes', ref => ref.limit(4).orderBy('cafeName').startAt(start).endAt(end)).valueChanges();
+  }
+
+  deleteCafe(cafeId){
+    return this._afs.collection('cafes').doc(cafeId).delete();
   }
 }
