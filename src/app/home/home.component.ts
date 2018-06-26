@@ -27,7 +27,7 @@ export class Home implements OnInit {
     let query = $event.target.value;
     if (query !== '') {
       this.startAt.next(query);
-      this.endAt.next(query + "\uf8ff");
+      this.endAt.next(query + '\uf8ff');
     } else {
       this.infinityScrollService.init('cafes', 'cafeName', { reverse: true, prepend: false })
     }

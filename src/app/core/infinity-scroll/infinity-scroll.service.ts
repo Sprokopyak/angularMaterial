@@ -75,7 +75,7 @@ export class InfinityScrollService {
       let query: any = ref;
       if (this.cafeTypeFilter$.value) { query = query.where('cafeType', '==', this.cafeTypeFilter$.value);}
       if (this.freeTablesFilter$.value) { query = query.where('freeTables', '!=', this.freeTablesFilter$.value); }
-      if (this.ratingFilter$.value) { query = query.where('avRating', ">=", this.ratingFilter$.value); }
+      if (this.ratingFilter$.value) { query = query.where('avRating', '>=', this.ratingFilter$.value); }
       query = query.orderBy(this.query.field, this.query.reverse ? 'desc' : 'asc')
       query = query.limit(this.query.limit)
       query = query.startAfter(cursor)
