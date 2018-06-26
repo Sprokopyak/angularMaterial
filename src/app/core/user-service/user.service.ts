@@ -1,9 +1,8 @@
-import { Injectable } from "@angular/core";
-import { AngularFirestore, AngularFirestoreDocument } from "angularfire2/firestore";
-import { User } from "../models/user.model";
-import { map,tap, switchMap } from 'rxjs/operators';
-
-import { Subject, Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { AngularFirestore } from 'angularfire2/firestore';
+import { User } from '../models/user.model';
+import { map } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Injectable()
 export class UserService {
@@ -11,7 +10,7 @@ export class UserService {
   constructor(private _afs: AngularFirestore) {}
 
   getUser(userId) {
-    return this._afs.collection("users", ref => ref.where('uid', '==', userId)).snapshotChanges().pipe(
+    return this._afs.collection('users', ref => ref.where('uid', '==', userId)).snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {
           const data = a.payload.doc.data() as User;
@@ -19,7 +18,6 @@ export class UserService {
         });
       })
     ) 
-    // return this._afs.collection('users', ref => ref.where('uid', '==', userId)).valueChanges();
   }
 
   updateUser(user: User) {
