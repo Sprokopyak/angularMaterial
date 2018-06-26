@@ -1,33 +1,32 @@
-import { Directive, HostListener, EventEmitter, Output, ElementRef } from "@angular/core";
+import { Directive, EventEmitter, Output, ElementRef, Input } from '@angular/core';
+import { fromEvent } from 'rxjs';
 
 @Directive({
   selector: '[scrollable]'
 })
 export class ScrollableDirective {
 
-  @Output() scrollPosition = new EventEmitter()
-  
-  constructor(public el: ElementRef) { }
+  @Output() scrollPosition = new EventEmitter();
 
-  @HostListener('scroll', ['$event'])
-  onScroll(event) {
-    
-    try {
-      const top = event.target.scrollTop
-      const height = this.el.nativeElement.scrollHeight
-      const offset = this.el.nativeElement.offsetHeight
+  constructor(private el: ElementRef) {
 
-      if (top > height - offset - 1) {
-        this.scrollPosition.emit('bottom')
+    fromEvent(this.el.nativeElement, 'scroll').subscribe((e: any) => {
+      try {
+        const top = e.target.scrollTop
+        const height = this.el.nativeElement.scrollHeight
+        const offset = this.el.nativeElement.offsetHeight
+
+        if (top > height - offset - 1) {
+          this.scrollPosition.emit('bottom')
+        }
+
+        if (top === 0) {
+          this.scrollPosition.emit('top')
+        }
+
+      } catch (err) {
+        console.error(err);
       }
-
-      if (top === 0) {
-        this.scrollPosition.emit('top')
-      }
-
-    } catch (err) {
-      console.error(err)
-    }
+    });
   }
-
 }

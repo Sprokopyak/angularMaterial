@@ -1,8 +1,7 @@
-import { ActivatedRoute } from "@angular/router";
-import { ElementRef, NgZone, OnInit, ViewChild, Component } from "@angular/core";
-import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { ElementRef, NgZone, OnInit, ViewChild, Component } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { } from 'googlemaps';
-import { MapsAPILoader } from "@agm/core";
+import { MapsAPILoader } from '@agm/core';
 
 import { ImageUploadService } from '../../core/image-upload/image-upload.service';
 import { CafeService } from '../../core/cafe-service/cafe.service';
@@ -10,11 +9,13 @@ import { Upload } from '../../core/models/image-upload.model';
 
 import { Observable } from 'rxjs';
 import { CAFE_TYPES } from '../constants';
+import { AuthService } from '../../core/auth-service/auth.service';
+import { User } from '../../core/models/user.model';
 
 @Component({
-  selector: "app-add-cafe",
-  templateUrl: "./add-cafe.component.html",
-  styleUrls: ["./add-cafe.component.scss"]
+  selector: 'app-add-cafe',
+  templateUrl: './add-cafe.component.html',
+  styleUrls: ['./add-cafe.component.scss']
 })
 export class AddCafe implements OnInit {
   isLoading = false;
@@ -27,15 +28,18 @@ export class AddCafe implements OnInit {
   mainImgSrc: object;
   gallery = [];
   progress$: Observable<number>;
+  user: User;
+  subscribtion;
 
   @ViewChild('search') searchElementRef: ElementRef;
 
   constructor(
+    public imageUploadService: ImageUploadService,
     private _mapsAPILoader: MapsAPILoader, 
     private _ngZone: NgZone, 
     private _fb: FormBuilder,
-    public imageUploadService: ImageUploadService,
-    private _cafeService: CafeService
+    private _cafeService: CafeService,
+    private _authService: AuthService
   ) {
       this.progress$ = this.imageUploadService.uploading$;
       this.imageUploadService.completed$.subscribe((upload) => {          
@@ -77,11 +81,11 @@ export class AddCafe implements OnInit {
     this._mapsAPILoader.load().then(() => {
       const autocomplete = new google.maps.places.Autocomplete(
         this.searchElementRef.nativeElement, {
-          types: ["address"]
+          types: ['address']
         }
       );
 
-      autocomplete.addListener("place_changed", () => {
+      autocomplete.addListener('place_changed', () => {
         this._ngZone.run(() => {
           const place: google.maps.places.PlaceResult = autocomplete.getPlace();
           
@@ -93,6 +97,14 @@ export class AddCafe implements OnInit {
         });
       });
     });
+
+    this.subscribtion = this._authService.user.subscribe(val => {
+      this.user = val;
+    });
+  }
+
+  ngOnDestroy() {
+    this.subscribtion.unsubscribe()
   }
 
   uploadSingle(event) {
@@ -106,7 +118,12 @@ export class AddCafe implements OnInit {
   onAddTables(tablesNumber, visitorsNumber) {   
     if (tablesNumber.value !== '' && visitorsNumber.value !== '') {
 
-      this.tables.push({ tablesNumber: parseInt(tablesNumber.value), visitorsNumber: parseInt(visitorsNumber.value), booked: 0 });
+      this.tables.push({ 
+        tablesNumber: parseInt(tablesNumber.value), 
+        visitorsNumber: parseInt(visitorsNumber.value), 
+        booked: 0,
+        users: [] 
+      });
       tablesNumber.value = '';
       visitorsNumber.value = '';
     }
@@ -132,6 +149,7 @@ export class AddCafe implements OnInit {
     let formsVlue = this.addCafeForm.getRawValue();
     let obj = {
       approved: false,
+      createdBy: this.user.uid,
       mainImgSrc: this.mainImgSrc || '',
       gallery: this.gallery || '',
       cafeName: formsVlue.cafeName.toLowerCase(),

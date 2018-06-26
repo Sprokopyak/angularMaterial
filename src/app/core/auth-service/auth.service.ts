@@ -25,7 +25,7 @@ export class AuthService {
       switchMap(user => {
         this.authState = user
         if (user) {
-          return this._afs.doc<User>(`users/${user.uid}`).valueChanges()
+          return this._afs.doc<User>(`users/${user.uid}`).valueChanges();
         } else {
           return of(null)
         }
@@ -47,7 +47,7 @@ export class AuthService {
   emailSignUp(email: string, password: string) {
     return this._afAuth.auth.createUserWithEmailAndPassword(email, password)
       .then(user => {
-        return this.setUserDoc(user)
+        return this.setUserDoc(user.user)
       }).then(() => { this._router.navigate(['/home']) })
   }
 
@@ -57,20 +57,21 @@ export class AuthService {
       uid: user.uid,
       email: user.email || null,
       displayName: user.displayName || null,
-      photoURL: 'https://goo.gl/Fz9nrQ',
+      reserved: {
+        cafeId: '',
+        approvedBoking: false,
+        reservedTime: '',
+        reservationValidTill: ''
+      },
       role: 'user'
     }
-    return userRef.set(data, { merge: true })
+    return userRef.set(data, { merge: true });
   }
 
   emailLogin(email: string, password: string) {
     return this._afAuth.auth.signInWithEmailAndPassword(email, password)
-      .then(() => {
-        this._router.navigate(['/home']);
-      })
-      .catch((error) => {
-        this.showMessageDialog('Ви ввели невірний емейл або пароль')
-      })
+      .then(() => this._router.navigate(['/home']))
+      .catch(() => this.showMessageDialog('Ви ввели невірний емейл або пароль'));
   }
 
   resetPassword(email: string) {
@@ -82,35 +83,35 @@ export class AuthService {
 
   signOut() {
     this._afAuth.auth.signOut()
-      .then(() => { this._router.navigate(['/home']) })
+      .then(() => this._router.navigate(['/home']))
       .catch(error => this.showMessageDialog(error.message));
   }
 
   googleSignUp() {
-    const provider = new firebase.auth.GoogleAuthProvider()
+    const provider = new firebase.auth.GoogleAuthProvider();
     return this.oAuthSignUp(provider)
-      .then(() => { this._router.navigate(['/home']) })
+      .then(() => this._router.navigate(['/home']))
       .catch(error => this.showMessageDialog(error.message));
   }
 
   googleLogin() {
-    const provider = new firebase.auth.GoogleAuthProvider()
+    const provider = new firebase.auth.GoogleAuthProvider();
     return this.oAuthLogin(provider)
-      .then(() => { this._router.navigate(['/home']) })
+      .then(() => this._router.navigate(['/home']))
       .catch(error => this.showMessageDialog(error.message));
   }
 
   facebookSignUp() {
-    const provider = new firebase.auth.FacebookAuthProvider()
+    const provider = new firebase.auth.FacebookAuthProvider();
     return this.oAuthSignUp(provider)
-      .then(() => { this._router.navigate(['/home']) })
+      .then(() => this._router.navigate(['/home']))
       .catch(error => this.showMessageDialog(error.message));
   }
 
   facebookLogin() {
     const provider = new firebase.auth.FacebookAuthProvider()
     return this.oAuthLogin(provider)
-      .then(() => { this._router.navigate(['/home']) })
+      .then(() => this._router.navigate(['/home']))
       .catch(error => this.showMessageDialog(error.message));
   }
 

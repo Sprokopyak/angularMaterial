@@ -1,107 +1,132 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { take,tap, scan } from 'rxjs/operators';
-
-
-interface QueryConfig {
-  path: string, 
-  field: string, 
-  limit?: number, 
-  reverse?: boolean, 
-  prepend?: boolean 
-}
+import { take, tap, scan } from 'rxjs/operators';
 
 @Injectable()
 export class InfinityScrollService {
   private _done = new BehaviorSubject(false);
   private _loading = new BehaviorSubject(false);
   private _data = new BehaviorSubject([]);
-  private _query: QueryConfig;
-
+  query;
   data: Observable<any>;
   done: Observable<boolean> = this._done.asObservable();
   loading: Observable<boolean> = this._loading.asObservable();
+  cafeTypeFilter$ = new BehaviorSubject(null);
+  ratingFilter$ = new BehaviorSubject(null);
+  freeTablesFilter$ = new BehaviorSubject(null);
 
-  constructor( private afs: AngularFirestore ) { }
+  constructor(private _afs: AngularFirestore) {}
 
   init(path, field, opts?) {
-    this._query = { 
+    this.query = {
       path,
       field,
-      limit: 4,
+      limit: 6,
       reverse: false,
       prepend: false,
       ...opts
-    }
+    };
 
-    const first = this.afs.collection(this._query.path, ref => {
+    const first = this._afs.collection(this.query.path, ref => {
       return ref
-              .orderBy(this._query.field, this._query.reverse ? 'desc' : 'asc')
-              .limit(this._query.limit)
+        .orderBy(this.query.field, this.query.reverse ? 'desc' : 'asc')
+        .limit(this.query.limit);
     })
 
-    this.mapAndUpdate(first)
+    this.mapAndUpdate(first);
 
-    this.data = this._data.asObservable()
-      .pipe(
-        scan( (acc, val) => { 
-          return this._query.prepend ? val.concat(acc) : acc.concat(val)
-        })
-      )
+    this.data = this._data.asObservable().pipe(
+      scan((acc, val) => {
+        return this.query.prepend ? val.concat(acc) : acc.concat(val);
+      })
+    );
   }
 
-  more() {
-    const cursor = this.getCursor()
+  filters(path, field){
+    this.reset()
+ 
+    if (this.ratingFilter$.value){
+      this.query.field =field
+    }
 
-    const more = this.afs.collection(this._query.path, ref => {
-      return ref
-              .orderBy(this._query.field, this._query.reverse ? 'desc' : 'asc')
-              .limit(this._query.limit)
-              .startAfter(cursor)
+    const first = this._afs.collection(this.query.path, ref => {
+      let query: any = ref;
+      if (this.cafeTypeFilter$.value) { query = query.where('cafeType', '==', this.cafeTypeFilter$.value);}
+      if (this.freeTablesFilter$.value) { query = query.where('freeTables', '!=', this.freeTablesFilter$.value); }
+      if (this.ratingFilter$.value) { query = query.where('avRating', '>=', this.ratingFilter$.value); }
+      query = query.orderBy(this.query.field, this.query.reverse ? 'desc' : 'asc')
+      query = query.limit(this.query.limit)
+      return query;
     })
-    this.mapAndUpdate(more)
+
+    this.mapAndUpdate(first);
+
+    this.data= this._data.asObservable().pipe(
+      scan((acc, val) => {
+        return this.query.prepend ? val.concat(acc) : acc.concat(val);
+      })
+    );
+  }
+
+  more() {    
+    const cursor = this.getCursor();
+    const more =  this._afs.collection(this.query.path, ref => {
+      let query: any = ref;
+      if (this.cafeTypeFilter$.value) { query = query.where('cafeType', '==', this.cafeTypeFilter$.value);}
+      if (this.freeTablesFilter$.value) { query = query.where('freeTables', '!=', this.freeTablesFilter$.value); }
+      if (this.ratingFilter$.value) { query = query.where('avRating', ">=", this.ratingFilter$.value); }
+      query = query.orderBy(this.query.field, this.query.reverse ? 'desc' : 'asc')
+      query = query.limit(this.query.limit)
+      query = query.startAfter(cursor)
+      return query;
+    })
+    this.mapAndUpdate(more);
   }
 
   private getCursor() {
-    const current = this._data.value
+    const current = this._data.value;
     if (current.length) {
-      return this._query.prepend ? current[0].doc : current[current.length - 1].doc 
+      return this.query.prepend
+        ? current[0].doc
+        : current[current.length - 1].doc;
     }
-    return null
+    return null;
   }
 
-
   private mapAndUpdate(col: AngularFirestoreCollection<any>) {
-    if (this._done.value || this._loading.value) { return };
+    if (this._done.value || this._loading.value) {
+      return;
+    }
 
-    this._loading.next(true)
+    this._loading.next(true);
 
-    return col.snapshotChanges()
+    return col
+      .snapshotChanges()
       .pipe(
-            tap(arr => {              
-              let values = arr.map(snap => {
-                const data = snap.payload.doc.data()
-                const doc = snap.payload.doc
-                return { ...data, doc }
-              })
-        
-              values = this._query.prepend ? values.reverse() : values
+        tap(arr => {
+          let values = arr.map(snap => {
+            const data = snap.payload.doc.data();
+            const doc = snap.payload.doc;
+            return { ...data, doc };
+          });
 
-              this._data.next(values)
-              this._loading.next(false)
+          values = this.query.prepend ? values.reverse() : values;
 
-              if (!values.length) {
-                this._done.next(true)
-              }
-          }),
-          take(1)
+          this._data.next(values);
+          this._loading.next(false);
+
+          if (!values.length) {
+            this._done.next(true);
+          }
+        }),
+        take(1)
       )
-      .subscribe()
+      .subscribe();
   }
 
   reset() {
-    this._data.next([])
-    this._done.next(false)
+    this._data.next([]);
+    this._done.next(false);
   }
 }
