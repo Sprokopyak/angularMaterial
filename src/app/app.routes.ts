@@ -1,6 +1,7 @@
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 
 import { Home } from './home/home.component';
+import { UserComponent } from './user/user.component';
 import { SignUp } from './login/sign-up/sign-up.component';
 import { SignIn } from './login/sign-in/sign-in.component';
 import { Admin } from './admin/admin.component';
@@ -15,6 +16,9 @@ export const AppRoutes = RouterModule.forRoot([
     path: 'home',
     component: Home
   }, {
+    path: 'user/:id',
+    component: UserComponent
+  }, {
     path: 'sign-up',
     component: SignUp,
     canActivate: [LoginGuard]
@@ -26,10 +30,10 @@ export const AppRoutes = RouterModule.forRoot([
     path: 'admin',
     component: Admin,
     canActivate: [AdminGuard]
-  },{
+  }, {
     path: 'add-cafe',
     component: AddCafe
-  },{
+  }, {
     path: 'cafe/:id',
     component: CafeDetails
   }, {

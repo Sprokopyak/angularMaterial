@@ -16,6 +16,7 @@ import { NgxGalleryModule } from 'ngx-gallery';
 import { AppComponent } from './app.component';
 import { MainNavComponent } from './main-nav/main-nav.component';
 import { Home } from './home/home.component';
+import { UserComponent } from './user/user.component';
 import { Admin } from './admin/admin.component';
 
 import { AgmCoreModule } from '@agm/core';
@@ -27,7 +28,8 @@ import { PipesModule } from './pipes/pipes.module';
     AppComponent,
     MainNavComponent,
     Home,
-    Admin
+    Admin,
+    UserComponent
   ],
   imports: [
     AgmCoreModule.forRoot({

@@ -1,0 +1,40 @@
+<div class="container">
+    <div class="wrapper clearfix">
+      <div class="cafe-list clearfix">
+        <mat-card>
+          <mat-form-field>
+            <mat-icon matSuffix>search</mat-icon>
+            <input type="text" [(ngModel)]="searchterm" (keyup)="search($event)" matInput placeholder="Пошук" autocorrect="off" autocapitalize="off"
+              spellcheck="off" autocomplete="off">
+          </mat-form-field>
+          <mat-list *ngIf="searchCafes" class="search-list">
+            <mat-list-item (click)="cafeDetails(cafe)" *ngFor="let cafe of searchCafes | async">
+              {{cafe.cafeName}}
+              <mat-divider></mat-divider>
+            </mat-list-item>
+          </mat-list>
+  
+          <mat-list>
+            <p>Заклади які ви оцінили</p>
+            <!-- <mat-list-item (click)="cafeDetails(cafe)" *ngFor="let cafe of notApprovedCafes | async">
+              {{cafe.cafeName | uppercase}}
+              <mat-divider></mat-divider>
+            </mat-list-item> -->
+          </mat-list>
+        </mat-card>
+      </div>
+  
+      <div class="cafe-detail clearfix">
+        <mat-card>
+          <h1>Особистий кабінет</h1>
+        </mat-card>
+      </div>
+      <div class="cafe-detail clearfix">
+        <mat-card *ngIf="user">
+          <h1>{{cafe?.cafeName | uppercase}}</h1>
+          
+        </mat-card>
+      </div>
+    </div>
+  </div>
+  

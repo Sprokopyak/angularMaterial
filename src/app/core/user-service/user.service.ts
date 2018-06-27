@@ -38,4 +38,11 @@ export class UserService {
       }
     });
   }
+
+  getUserStars(userId) {
+    const starsRef = this._afs.collection('stars', ref =>
+      ref.where('userId', '==', userId)
+    );
+    return starsRef.valueChanges();
+  }
 }

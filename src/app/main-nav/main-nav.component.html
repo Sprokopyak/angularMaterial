@@ -3,11 +3,12 @@
     [mode]="(isHandset | async)!.matches ? 'over' : 'side'" [opened]="!(isHandset | async)!.matches">
     <mat-toolbar color="primary">Menu</mat-toolbar>
     <mat-nav-list>
-      <a mat-list-item *ngIf="auth.isLogedIn" routerLink="/add-cafe" routerLinkActive="active">Додати заклад</a>
+      <a mat-list-item *ngIf="authService.isLogedIn && user?.uid" [routerLink]="['/user', user?.uid]" routerLinkActive="active">Мій профіль</a>
+      <a mat-list-item *ngIf="authService.isLogedIn" routerLink="/add-cafe" routerLinkActive="active">Додати заклад</a>
       <a mat-list-item routerLink="admin" routerLinkActive="admin">Admin</a>
-      <a mat-list-item *ngIf="!auth.isLogedIn" routerLink="/sign-up" routerLinkActive="active">Зареєструватись</a>
-      <a mat-list-item *ngIf="!auth.isLogedIn" routerLink="/sign-in" routerLinkActive="active">Увійти</a>
-      <a mat-list-item *ngIf="auth.user | async as user" (click)="auth.signOut()">Вийти
+      <a mat-list-item *ngIf="!authService.isLogedIn" routerLink="/sign-up" routerLinkActive="active">Зареєструватись</a>
+      <a mat-list-item *ngIf="!authService.isLogedIn" routerLink="/sign-in" routerLinkActive="active">Увійти</a>
+      <a mat-list-item *ngIf="authService.user | async as user" (click)="auth.signOut()">Вийти
         <mat-icon>exit_to_app</mat-icon>
       </a>
     </mat-nav-list>
@@ -21,11 +22,12 @@
         <a id="logo" routerLink="home" routerLinkActive="active">Application Title</a>
         <span class="spacer"></span>
         <p class="nav clearfix" *ngIf="!(isHandset | async)!.matches">
-          <a *ngIf="auth.isLogedIn" routerLink="/add-cafe" routerLinkActive="active">Додати заклад</a>
+          <a *ngIf="authService.isLogedIn && user?.uid" [routerLink]="['/user', user?.uid]" routerLinkActive="active">Мій профіль</a>
+          <a *ngIf="authService.isLogedIn" routerLink="/add-cafe" routerLinkActive="active">Додати заклад</a>
           <a routerLink="admin" routerLinkActive="admin">Admin</a>
-          <a *ngIf="!auth.isLogedIn" routerLink="/sign-up" routerLinkActive="active">Зареєструватись</a>
-          <a *ngIf="!auth.isLogedIn" routerLink="/sign-in" routerLinkActive="active">Увійти</a>
-          <a *ngIf="auth.isLogedIn" (click)="auth.signOut()" matTooltip="Вийти">
+          <a *ngIf="!authService.isLogedIn" routerLink="/sign-up" routerLinkActive="active">Зареєструватись</a>
+          <a *ngIf="!authService.isLogedIn" routerLink="/sign-in" routerLinkActive="active">Увійти</a>
+          <a *ngIf="authService.isLogedIn" (click)="authService.signOut()" matTooltip="Вийти">
             <mat-icon>exit_to_app</mat-icon>
           </a>
         </p>
