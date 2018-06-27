@@ -1,11 +1,9 @@
 .details-page__wrapper-dark {
   background: linear-gradient(#fc7db8, #C2185B); 
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   position: relative; 
-  margin-top: -64px;
+  overflow: auto;
+  height: 100vh;
+  width: 100vw;
 }
 
 .background-gradient__circle {
@@ -19,11 +17,7 @@
 }
 
 .container {
-  display: flex;
-  justify-content: center;
   position: relative;
-  margin-top: 290px;
-  margin-bottom: 50px;
   width: 800px;
   padding-bottom: 50px;
   background: rgba(4, 4, 4, 0.8);
@@ -31,8 +25,10 @@
   z-index: 2;
 }
 
-.content-container {
-  width: 100%;
+.wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 30px auto 100px auto;
   text-align: center;
 }
 
@@ -133,10 +129,4 @@ mat-spinner{
 
 .btn_submit{
   margin-top: 30px;
-}
-
-.details-page__wrapper-dark  {
-  overflow: auto !important;
-  max-height: 100vh;
-  width: 100vw;
 }

@@ -27,7 +27,7 @@ export class Admin implements OnInit {
     private _dialog: MatDialog) { }
 
   search($event) {
-    let query = $event.target.value;
+    let query = $event.target.value.toLowerCase();
     if (query !== '') {
       this.startAt.next(query);
       this.endAt.next(query + '\uf8ff');
@@ -64,6 +64,7 @@ export class Admin implements OnInit {
 
   cafeDetails(cafe) {
     this.cafe = cafe;
+    
     this.galleryImages = this.cafe.gallery.map(val => {
       return {
         small: val.thumbnailUrl,

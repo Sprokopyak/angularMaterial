@@ -24,7 +24,7 @@ export class Home implements OnInit {
   ) {}
 
   search($event) {
-    let query = $event.target.value;
+    let query = $event.target.value.toLowerCase();
     if (query !== '') {
       this.startAt.next(query);
       this.endAt.next(query + '\uf8ff');

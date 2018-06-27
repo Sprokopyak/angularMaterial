@@ -36,7 +36,7 @@ export class CafeDetails implements OnInit {
   cafe;
   cafes;
   cafeId;
-  displayedColumns = ['visitors', 'name', 'booked', 'freeTables', 'reserve'];
+  displayedColumns = ['visitors', 'name', 'booked', 'freeTables', 'reserve', 'reserves'];
   user: User;
   subscription;
   progress$: Observable<number>;
@@ -53,7 +53,7 @@ export class CafeDetails implements OnInit {
       this.progress$ = this.imageUploadService.uploading$;
 
       this.imageUploadService.completed$.subscribe((upload) => {
-        this.currentUpload = upload;          
+        this.currentUpload = upload;    
         this.cafe.mainImgSrc = {
           url: this.currentUpload.url,
           fullPath: this.currentUpload.fullPath,
@@ -125,7 +125,7 @@ export class CafeDetails implements OnInit {
     this._route.params.subscribe(param => {
       this.cafeId = param.id;
       this.subscription = this._cafeService.getCafe(this.cafeId).subscribe(cafe => {
-        this.cafe = cafe;
+        this.cafe = cafe;        
         this.cafe.tables.sort((a,b)=> a.visitorsNumber > b.visitorsNumber);
         this.galleryImages = this.cafe.gallery.map(val => {
           return {
@@ -163,6 +163,22 @@ export class CafeDetails implements OnInit {
     return typeName;
   }
 
+  bookAdminTable(tableObj, tablesNumber, booked){
+    let indexOfTableObj = this.cafe.tables.indexOf(tableObj);
+    if (booked < tablesNumber) {
+      this.cafe.tables[indexOfTableObj].booked += 1;
+      this.cafe.freeTables -= 1;
+      this._cafeService.updateCafe(this.cafe);
+    }
+  }
+
+  unBookAdminTable(tableObj){
+    let indexOfTableObj = this.cafe.tables.indexOf(tableObj);
+      this.cafe.tables[indexOfTableObj].booked -= 1;
+      this.cafe.freeTables += 1;
+      this._cafeService.updateCafe(this.cafe);
+  }
+
   bookTable(tableObj, tablesNumber, booked) {
     if(!this.user.phoneNumber){
       this.openAddPhoneNumberDialog(); 
@@ -179,12 +195,14 @@ export class CafeDetails implements OnInit {
         let reservationValidTill = new Date()
         reservationValidTill.setMinutes(reservationTime.getMinutes()+30)      
         this._userService.userBooking(this.user.uid, this.cafe.id, false, reservationTime.toString(), reservationValidTill.toString());
+        this.cafe.freeTables -= 1;
         this._cafeService.updateCafe(this.cafe);
       }
     }
   }
 
   unbookTable(userId, tableArr){
+    this.cafe.freeTables += 1;
     tableArr.forEach(val => {
       let indexOfUserId = val.users.indexOf(userId)
       if(indexOfUserId !== -1){
@@ -203,6 +221,12 @@ export class CafeDetails implements OnInit {
     } else{
       this.imageUploadService.uploadSingle(event);
     }   
+  }
+
+  removeSingleImg(cafe, fullPath, thumbnailPath){
+    cafe.mainImgSrc = '';
+    this.imageUploadService.removeImg(fullPath, thumbnailPath);
+    this._cafeService.updateCafe(cafe)
   }
 
   uploadMultiImg(event) {

@@ -10,7 +10,7 @@
         <p>Тип закладу: {{ getCafetype(cafe?.cafeType) }}</p>
         <app-rating [cafeRating]="cafe?.avRating"></app-rating>
 
-        <ngx-gallery *ngIf="cafe && !editCafe" [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
+        <ngx-gallery *ngIf="cafe && !editCafe && cafe.gallery.length !==0 && cafe.mainImgSrc !==''" [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
 
         <div class="progress " *ngIf="progress$ | async as progress ">
           {{progress}} %
@@ -19,7 +19,7 @@
         <div *ngIf="editCafe" class="main__container">
           <div class="main__photo">
             <img [src]="cafe?.mainImgSrc.url">
-            <mat-icon (click)="imageUploadService.removeImg(cafe?.mainImgSrc.fullPath, cafe?.mainImgSrc.thumbnailPath); cafe.mainImgSrc =''">cancel</mat-icon>
+            <mat-icon (click)="removeSingleImg(cafe, cafe?.mainImgSrc.fullPath, cafe?.mainImgSrc.thumbnailPath); cafe.mainImgSrc =''">cancel</mat-icon>
           </div>
           <button mat-button color="accent" mat-mini-fab (click)="imgFileInput.click()">
             <mat-icon>attachment</mat-icon>
@@ -80,10 +80,19 @@
             <ng-container matColumnDef="reserve">
               <th mat-header-cell *matHeaderCellDef></th>
               <td mat-cell *matCellDef="let table" class="reserved">
-                <button *ngIf="authService.isLogedIn && !user?.reserved.cafeId && !editCafe && table.tablesNumber - table.booked !== 0" (click)="bookTable(table, table.tablesNumber, table.booked)"
-                  mat-raised-button color="primary">Резерв</button>
+                <button *ngIf="authService.isLogedIn && !user?.reserved.cafeId && !editCafe && table.tablesNumber - table.booked !== 0 && user?.uid !== cafe?.createdBy"
+                  (click)="bookTable(table, table.tablesNumber, table.booked)" mat-raised-button color="primary">Резерв</button>
+                <button *ngIf="authService.isLogedIn && !editCafe && table.tablesNumber - table.booked !== 0 && user?.uid === cafe?.createdBy"
+                  (click)="bookAdminTable(table, table.tablesNumber, table.booked)" mat-raised-button color="primary">Резерв Адмін</button>
                 <p *ngIf="table.tablesNumber - table.booked === 0 && !editCafe">Немає вільних</p>
                 <mat-icon *ngIf="editCafe" (click)="removeTable(table)">cancel</mat-icon>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="reserves">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td mat-cell *matCellDef="let table" class="reserved">
+                <mat-icon *ngIf="authService.isLogedIn && !editCafe && table.booked !== 0 && user?.uid === cafe?.createdBy" (click)="unBookAdminTable(table)">cancel</mat-icon>
               </td>
             </ng-container>
 
@@ -116,18 +125,22 @@
         <div class="tables-quantity" *ngIf="editCafe">
           <mat-chip-list #chipList>
             <mat-form-field>
-              <input type="number" autocomplete="off" matInput required #tablesNumber placeholder="Кількість столів">
-              <mat-hint>Введіть кількість столів.</mat-hint>
+              <input type="number" autocomplete="off" matInput required #visitorsNumber placeholder="Кількість гостей">
+              <mat-hint>Введіть кількість гостей, яку вміщає один такий стіл.</mat-hint>
             </mat-form-field>
 
             <mat-form-field>
-              <input type="number" autocomplete="off" matInput required #visitorsNumber placeholder="Кількість гостей">
-              <mat-hint>Введіть кількість гостей, яку вміщає один такий стіл.</mat-hint>
+              <input type="number" autocomplete="off" matInput required #tablesNumber placeholder="Кількість столів">
+              <mat-hint>Введіть кількість столів.</mat-hint>
             </mat-form-field>
 
           </mat-chip-list>
           <mat-chip color="primary" selected="true" (click)="onAddTables(tablesNumber, visitorsNumber)">Додати</mat-chip>
         </div>
+      </mat-card>
+
+      <mat-card class="comment_block">
+        <app-rating [cafeId]="cafeId"></app-rating>
       </mat-card>
     </div>
 
@@ -136,9 +149,5 @@
         <app-cafe-list *ngFor="let key of (cafes | async )" [cafe]="key"></app-cafe-list>
       </div>
     </div>
-
-    <mat-card class="comment_block">
-      <app-rating [cafeId]="cafeId" style="width: 100%"></app-rating>
-    </mat-card>
   </div>
 </div>

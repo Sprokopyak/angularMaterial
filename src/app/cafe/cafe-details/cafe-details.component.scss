@@ -110,7 +110,6 @@ table {
   margin-top: 25px;
 }
 
-
 tr.detail-row {
   height: 0;
 }
@@ -124,7 +123,7 @@ tr.table-row:not(.expanded-row):active {
 }
 
 .comment_block{
+  margin-top: 15px;
+  flex-direction: column;
   display: flex; 
-  width: 61%; 
-  margin-left: 15px;
 }

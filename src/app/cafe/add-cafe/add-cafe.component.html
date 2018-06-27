@@ -1,4 +1,4 @@
-<div class="details-page__wrapper-dark">
+<div class="details-page__wrapper-dark clearfix">
   <svg class="background-gradient__circle" viewBox="4572 73 1328 1328">
     <defs>
       <linearGradient gradientUnits="objectBoundingBox" id="gradient" x2="0" y2="1">
@@ -8,9 +8,9 @@
     </defs>
     <circle cx="664" cy="664" fill="url(#gradient)" r="664" transform="translate(4572 73)"></circle>
   </svg>
-
+  <div class="wrapper clearfix">
   <div class="container">
-    <div class="content-container">
+
       <div class="title-container">
       </div>
       <form [formGroup]="addCafeForm" >
@@ -99,7 +99,7 @@
         <mat-form-field>
           <textarea matInput placeholder="Опис закладу" formControlName="description"></textarea>
           <mat-hint>Введіть короткий опис закладу</mat-hint>
-          <mat-error>Короткий опис повинен складатись не менше ніж з 2 символів.</mat-error>
+          <mat-error>Короткий опис повинен складатись не менше ніж з 12 символів.</mat-error>
         </mat-form-field>
 
         <button *ngIf="!isLoading" class="btn_submit" mat-raised-button [disabled]="addCafeForm.invalid" (click)="addCafe()" color="primary">Додати заклад</button>
