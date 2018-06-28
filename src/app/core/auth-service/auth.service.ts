@@ -61,9 +61,11 @@ export class AuthService {
         cafeId: '',
         approvedBoking: false,
         reservedTime: '',
-        reservationValidTill: ''
+        reservationValidTill: '',
+        visitorsNumber: ''
       },
-      role: 'user'
+      role: 'user',
+      selectedCafes: []
     }
     return userRef.set(data, { merge: true });
   }

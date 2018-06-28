@@ -1,4 +1,4 @@
-.container{
+.container {
   background-image: url(../../assets/images/lviv2.jpg);
   background-repeat: no-repeat;
   background-size: cover;
@@ -8,7 +8,7 @@
   width: 100vw;
 }
 
-.wrapper{
+.wrapper {
   margin: 30px auto 100px auto;
 }
 
@@ -17,33 +17,28 @@
   border-radius: 5px;
 }
 
-.cafe-list{
+.spacer {
+  flex: 1 1 auto;
+}
+
+.cafe-list {
   width: 35%;
   float: left;
 }
 
-.cafe-detail{
+.cafe-detail {
   width: 60%;
   margin-bottom: 20px;
   float: right;
 }
 
-mat-list{
+mat-list {
   border: 1px solid #000;
   border-radius: 20px;
   padding: 0 0 15px 0;
 }
 
-.search-list{
-  padding: 12px 0 20px 0;
-  margin-bottom: 20px;
-}
-
-.mat-form-field {
-  width: 100%;
-}
-
-.mat-list p{
+.mat-list p {
   text-align: center;
   background: #000;
   margin: 0;
@@ -57,8 +52,42 @@ mat-list{
   height: 30px;
 }
 
-.mat-list .mat-list-item:hover {
+.rated-items:hover {
   cursor: pointer;
-background: #747c80;
+  background: #747c80;
 }
 
+.selected{
+  margin-top: 50px;
+}
+
+.btn_reject {
+  float: right;
+}
+
+.approved{
+  padding: 5px;
+  border-radius: 20px;
+  background: #5CB85C;
+  font-size: 12px;
+  float: right;
+}
+
+.not-approved{
+  padding: 6px;
+  border-radius: 15px;
+  background: #D9534F;
+  font-size: 12px;
+  float: right;
+}
+mat-chip-list{
+  margin: 4px 8px;
+}
+
+mat-chip, mat-icon{
+  cursor: pointer;
+}
+
+.mat-standard-chip {
+  padding: 4px 12px;
+}

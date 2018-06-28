@@ -194,7 +194,7 @@ export class CafeDetails implements OnInit {
         let reservationTime = new Date()
         let reservationValidTill = new Date()
         reservationValidTill.setMinutes(reservationTime.getMinutes()+30)      
-        this._userService.userBooking(this.user.uid, this.cafe.id, false, reservationTime.toString(), reservationValidTill.toString());
+        this._userService.userBooking(this.user.uid, this.cafe.id, false, reservationTime.toLocaleString(), reservationValidTill.toLocaleString(), tableObj.visitorsNumber);
         this.cafe.freeTables -= 1;
         this._cafeService.updateCafe(this.cafe);
       }
@@ -210,7 +210,7 @@ export class CafeDetails implements OnInit {
         let indexOfTableUserBooked = tableArr.indexOf(val)
         tableArr[indexOfTableUserBooked].booked -= 1;        
       }
-      this._userService.userBooking(userId, null, false, null, null)
+      this._userService.userBooking(userId, null, false, null, null, null)
       this._cafeService.updateCafe(this.cafe)
     });    
   }
@@ -277,10 +277,6 @@ export class CafeDetails implements OnInit {
         }
       })
     })
-  }
-
-  dateFormat(date){
-    return new Date(date).toLocaleString();
   }
 
   approveReservation(user){

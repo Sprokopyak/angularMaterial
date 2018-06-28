@@ -7,8 +7,10 @@ export interface User {
     cafeId: string,
     approvedBoking: boolean,
     reservedTime: string,
-    reservationValidTill: string
+    reservationValidTill: string,
+    visitorsNumber: string
   };
   phoneNumber?: number;
   role: 'admin' | 'user';
+  selectedCafes: Array<any>;
 }

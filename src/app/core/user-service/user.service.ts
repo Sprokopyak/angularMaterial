@@ -28,13 +28,14 @@ export class UserService {
     return this._afs.doc(`users/${user.uid}`).update(user)
   }
 
-  userBooking(userId, cafeId, approvedBoking, reservedTime, reservationValidTill) {
+  userBooking(userId, cafeId, approvedBoking, reservedTime, reservationValidTill, visitorsNumber) {
     return this._afs.doc(`users/${userId}`).update({
       reserved: {
         cafeId,
         approvedBoking,
         reservedTime,
-        reservationValidTill
+        reservationValidTill,
+        visitorsNumber
       }
     });
   }

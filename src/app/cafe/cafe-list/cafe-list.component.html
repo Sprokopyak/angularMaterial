@@ -13,7 +13,8 @@
       <a class="mobile" href="tel:+{{cafe.phoneNumber}}">Номер телефону: +{{cafe.phoneNumber}}</a>
       <p>Вільних столиків залишилось: {{ cafe.freeTables }}</p>
       <p>{{cafe.description | shorten: 125 }}</p>
-    </mat-card-content>
-    <button mat-raised-button color="primary" [routerLink]="['/cafe', cafe.id]">Детальніше</button>
+      <button mat-raised-button color="primary" [routerLink]="['/cafe', cafe.id]">Детальніше</button>
+      <button class="selected" mat-raised-button color="accent" (click)="toSelected(cafe.id, cafe.cafeName)">В обрані</button>
+    </mat-card-content> 
   </mat-card>
 </div>
