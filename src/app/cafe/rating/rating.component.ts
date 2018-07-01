@@ -29,7 +29,7 @@ export class RatingComponent implements OnInit {
       });
     }
 
-  ngOnInit() {
+  ngOnInit() {    
     this.subscription = this._authService.user.subscribe(val => {
       this.user = val;
     });

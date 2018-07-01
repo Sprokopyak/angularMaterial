@@ -4,9 +4,14 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { Cafe } from '../models/cafe.model';
 import { MatDialog } from '@angular/material';
 import { MessageDialog } from '../../commons/message-dialog/message-dialog.component';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable()
 export class CafeService {
+  cafeTypeFilter$ = new BehaviorSubject(null);
+  ratingFilter$ = new BehaviorSubject(null);
+  freeTablesFilter$ = new BehaviorSubject(null);
+
   constructor(private _afs: AngularFirestore,
     private _dialog: MatDialog) {
   }
@@ -45,6 +50,16 @@ export class CafeService {
 
   searchCafe(start, end) {
     return this._afs.collection('cafes', ref => ref.limit(4).orderBy('cafeName').startAt(start).endAt(end)).valueChanges();
+  }
+
+  filters(){
+    return this._afs.collection('cafes', ref => {
+      let query: any = ref;
+      if (this.cafeTypeFilter$.value) { query = query.where('cafeType', '==', this.cafeTypeFilter$.value);}
+      if (this.freeTablesFilter$.value) { query = query.where('freeTables', '!=', this.freeTablesFilter$.value); }
+      if (this.ratingFilter$.value) { query = query.where('avRating', '>=', this.ratingFilter$.value); }
+      return query;
+    }).valueChanges();
   }
 
   deleteCafe(cafeId){

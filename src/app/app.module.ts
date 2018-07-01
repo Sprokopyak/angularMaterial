@@ -18,6 +18,7 @@ import { MainNavComponent } from './main-nav/main-nav.component';
 import { Home } from './home/home.component';
 import { UserComponent } from './user/user.component';
 import { Admin } from './admin/admin.component';
+import { CafeMap } from './cafe-map/cafe-map.component';
 
 import { AgmCoreModule } from '@agm/core';
 import { DirectivesModule } from './directives/directives.module';
@@ -29,12 +30,13 @@ import { PipesModule } from './pipes/pipes.module';
     MainNavComponent,
     Home,
     Admin,
-    UserComponent
+    UserComponent,
+    CafeMap
   ],
   imports: [
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyAaWrqJxjZiw7BTzD9wDLybddkb1ktedKQ',
-      libraries: ['places'],
+      libraries: ['places', 'geometry'],
       language: 'uk-UA',
       region: 'UA'
     }),

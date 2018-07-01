@@ -131,7 +131,10 @@ form a,
     padding: 0 15px;
   }
   .sign-container {
-    height: 440px;
+    height: 460px;
+  }
+  mat-form-field.mat-form-field {
+    font-size: 13px;
   }
   .social-icons-container {
     margin: -20px auto 35px auto;

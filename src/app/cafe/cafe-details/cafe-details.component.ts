@@ -16,7 +16,6 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { MatDialog } from '@angular/material';
 import { MessageDialog } from '../../commons/message-dialog/message-dialog.component';
 import { PhoneNumberDialog } from '../../commons/phone-number-dialog/phone-number-dialog.component';
-import { MapsAPILoader } from '@agm/core';
 
 @Component({
   selector: 'app-cafe-details',
@@ -50,7 +49,6 @@ export class CafeDetails implements OnInit {
     private _cafeService: CafeService,
     private _userService: UserService, 
     private _route: ActivatedRoute,
-    private _mapsAPILoader: MapsAPILoader,
     private _dialog: MatDialog) {
       this.progress$ = this.imageUploadService.uploading$;
 
@@ -122,13 +120,10 @@ export class CafeDetails implements OnInit {
       height: '250px'
     }];
 
-    this._mapsAPILoader.load();
-
     this._route.params.subscribe(param => {
       this.cafeId = param.id;
       this.subscription = this._cafeService.getCafe(this.cafeId).subscribe(cafe => {
         this.cafe = cafe;  
-        this.map(this.cafe);
               
         this.cafe.tables.sort((a,b)=> a.visitorsNumber > b.visitorsNumber);
         this.galleryImages = this.cafe.gallery.map(val => {
@@ -152,18 +147,6 @@ export class CafeDetails implements OnInit {
       this.user = val;
     });
 
-  }
-
-  map(cafe) {
-    let address;	
-    let latlng = new google.maps.LatLng(cafe.location.latitude, cafe.location.longitude);	
-    const geocoder = new google.maps.Geocoder();	
-    geocoder.geocode({ location: latlng }, (results, status) => {	
-      if (status == google.maps.GeocoderStatus.OK) {	
-        address = results[0].formatted_address;	
-        console.log(address);	
-      }	
-    });
   }
 
   ngOnDestroy() {

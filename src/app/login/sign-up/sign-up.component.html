@@ -14,7 +14,7 @@
 
       <form [formGroup]="signupForm" (ngSubmit)="signup()">
         <mat-form-field>
-          <input type="text" matInput required placeholder="Ваше ім'я" formControlName="name">
+          <input type="text" autocomplete="off" matInput required placeholder="Ваше ім'я" formControlName="name">
           <mat-hint>Введіть ваше ім'я.</mat-hint>
           <mat-error>Введіть ваше ім'я.</mat-error>
         </mat-form-field>
