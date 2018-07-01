@@ -1,6 +1,7 @@
 import { ElementRef, NgZone, OnInit, ViewChild, Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MapsAPILoader } from '@agm/core';
+import { AgmCoreModule, MapsAPILoader } from '@agm/core';
+import {} from '@types/googlemaps';
 
 import { ImageUploadService } from '../../core/image-upload/image-upload.service';
 import { CafeService } from '../../core/cafe-service/cafe.service';

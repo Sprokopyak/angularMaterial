@@ -4,6 +4,7 @@ import { CafeService } from "../core/cafe-service/cafe.service";
 import { AgmCoreModule, MapsAPILoader } from "@agm/core";
 import { CAFE_TYPES } from "./../cafe/constants";
 
+declare var google;
 @Component({
   selector: "app-cafe-map",
   templateUrl: "./cafe-map.component.html",
