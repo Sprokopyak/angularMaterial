@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CafeService } from '../core/cafe-service/cafe.service';
+import { UserService } from '../core/user-service/user.service';
 import { Observable, Subject, combineLatest, empty } from 'rxjs';
 import { CAFE_TYPES } from '../cafe/constants';
 import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation } from 'ngx-gallery';
@@ -21,16 +22,19 @@ export class Admin implements OnInit {
   cafeTypes = CAFE_TYPES;
   dialogRef: MatDialogRef<ConfirmDialog>;
   searchCafes: Observable<any[]>;
+  searchQuery;
+  createdBy: Observable<any>;
 
   constructor(
     private _cafeService: CafeService,
-    private _dialog: MatDialog) { }
+    private _dialog: MatDialog,
+    private _userService: UserService) { }
 
   search($event) {
-    let query = $event.target.value.toLowerCase();
-    if (query !== '') {
-      this.startAt.next(query);
-      this.endAt.next(query + '\uf8ff');
+    this.searchQuery = $event.target.value.toLowerCase();
+    if (this.searchQuery !== '') {
+      this.startAt.next(this.searchQuery);
+      this.endAt.next(this.searchQuery + '\uf8ff');
     } else {
       this.searchCafes = empty() 
     }
@@ -46,24 +50,20 @@ export class Admin implements OnInit {
     this.galleryOptions = [{
       imageArrowsAutoHide: true,
       thumbnailsArrowsAutoHide: true,
-      width: '600px',
+      width: '100%',
       height: '400px',
       thumbnailsColumns: 4,
       imageAnimation: NgxGalleryAnimation.Slide
     }, {
-      breakpoint: 800,
-      width: '100%',
-      height: '600px',
-      imagePercent: 80,
-      thumbnailsPercent: 20
-    }, {
-      breakpoint: 400,
+      breakpoint: 680,
+      height: '250px',
       preview: false
     }];
   }
 
   cafeDetails(cafe) {
     this.cafe = cafe;
+    this.createdBy = this._userService.getUser(cafe.createdBy)
     
     this.galleryImages = this.cafe.gallery.map(val => {
       return {

@@ -40,3 +40,9 @@ mat-toolbar a mat-icon {
 .nav{
   float: right;
 }
+
+@media(max-width: 768px){
+  #logo{
+    margin-top: 0;
+  }
+}

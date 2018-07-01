@@ -13,15 +13,19 @@ import { User } from '../core/models/user.model';
 export class MainNavComponent implements OnInit {
   user: User;
   isHandset: Observable<BreakpointState> = this._breakpointObserver.observe(Breakpoints.Handset);
-
+subscribtion
   constructor(
     public authService: AuthService,
     private _breakpointObserver: BreakpointObserver) {
   }
 
   ngOnInit() {
-    this.authService.user.subscribe(val => {
+   this.subscribtion = this.authService.user.subscribe(val => {
       this.user = val;
     });
+  }
+
+  ngOnDestroy(){
+    this.subscribtion.unsubscribe()
   }
 }

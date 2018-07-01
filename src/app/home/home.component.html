@@ -1,47 +1,46 @@
 <div class="content" scrollable (scrollPosition)="onScroll($event)">
   <div samehHeight="cafe__list">
-    <div class="wrapper">
+    <div class="wrapper clearfix">
+      <div class="filters clearfix">
+        <mat-form-field>
+          <mat-icon matSuffix>search</mat-icon>
+          <input type="text" [(ngModel)]="searchterm" (keyup)="search($event)" matInput placeholder="Пошук" autocorrect="off" autocapitalize="off"
+            spellcheck="off" autocomplete="off">
+        </mat-form-field>
 
-      <mat-form-field>
-        <mat-icon matSuffix>search</mat-icon>
-        <input type="text" [(ngModel)]="searchterm" (keyup)="search($event)" matInput placeholder="Пошук" autocorrect="off" 
-        autocapitalize="off" spellcheck="off" autocomplete="off">
-      </mat-form-field>
+        <mat-form-field>
+          <mat-select placeholder="Тип закладу" [(ngModel)]="selectedType" (ngModelChange)="filterByCafeType(selectedType)">
+            <mat-option>Всі заклади</mat-option>
+            <mat-option *ngFor="let cafe of cafeTypes" [value]="cafe.value">
+              {{cafe.viewValue}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-      <mat-form-field>
-        <mat-select placeholder="Тип закладу" [(ngModel)]="selectedType" (ngModelChange)="filterByCafeType(selectedType)">
-          <mat-option>Всі заклади</mat-option>
-          <mat-option *ngFor="let cafe of cafeTypes" [value]="cafe.value">
-            {{cafe.viewValue}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+        <mat-form-field>
+          <mat-select placeholder="Вільні столики" [(ngModel)]="selectedFreeTables" (ngModelChange)="filterByFreeTables(selectedFreeTables)">
+            <mat-option>Всі заклади</mat-option>
+            <mat-option [value]="0">Заклади з вільними столиками</mat-option>
+          </mat-select>
+        </mat-form-field>
 
-      <mat-form-field>
-        <mat-select placeholder="Вільні столики" [(ngModel)]="selectedFreeTables" (ngModelChange)="filterByFreeTables(selectedFreeTables)">
-          <mat-option>Всі заклади</mat-option>
-          <mat-option [value]="0">Заклади з вільними столиками</mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-select placeholder="Сортувати за рейтигом" [(ngModel)]="selectedRating" (ngModelChange)="filterByRating(selectedRating)">
-          <mat-option>Всі заклади</mat-option>
-          <mat-option [value]="1">Заклади з рейтингом 1 і більше</mat-option>
-          <mat-option [value]="2">Заклади з рейтингом 2 і більше</mat-option>
-          <mat-option [value]="3">Заклади з рейтингом 3 і більше</mat-option>
-          <mat-option [value]="4">Заклади з рейтингом 4 і більше</mat-option>
-          <mat-option [value]="5">Заклади з рейтингом 5</mat-option>
-        </mat-select>
-      </mat-form-field>
-
+        <mat-form-field>
+          <mat-select placeholder="Сортувати за рейтигом" [(ngModel)]="selectedRating" (ngModelChange)="filterByRating(selectedRating)">
+            <mat-option>Всі заклади</mat-option>
+            <mat-option [value]="1">Заклади з рейтингом 1 і більше</mat-option>
+            <mat-option [value]="2">Заклади з рейтингом 2 і більше</mat-option>
+            <mat-option [value]="3">Заклади з рейтингом 3 і більше</mat-option>
+            <mat-option [value]="4">Заклади з рейтингом 4 і більше</mat-option>
+            <mat-option [value]="5">Заклади з рейтингом 5</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
       <div samehHeight="cafe__list">
         <app-cafe-list *ngFor="let cafe of (infinityScrollService.data | async )" [cafe]="cafe"></app-cafe-list>
       </div>
       <mat-spinner [diameter]="80" *ngIf="infinityScrollService.loading | async"></mat-spinner>
-      
+
       <div *ngIf="infinityScrollService.done | async">Всі заклади загрузились</div>
     </div>
   </div>
-  <div class="space"></div>
 </div>

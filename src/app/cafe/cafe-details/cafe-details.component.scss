@@ -1,7 +1,11 @@
 .container  {
   overflow: auto;
-  max-height: 100vh;
+  height: 100vh;
   width: 100vw;
+  background-image: url(../../../assets/images/cafe2.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50%;
 }
 
 .wrapper{
@@ -20,10 +24,18 @@
   margin-bottom: 20px;
 }
 
+.mat-card {
+  background: #0c0407db;
+}
+
 .table-container {
   position: relative;
   max-height: 400px;
   overflow: auto;
+}
+
+table.mat-table {
+  background: #30303042;
 }
 
 table {
@@ -126,8 +138,98 @@ tr.table-row:not(.expanded-row):active {
   background: #747c80;
 }
 
+td.mat-cell:last-child,
+th.mat-header-cell:last-child {
+  padding-right: 4px;
+}
+
 .comment_block{
   margin-top: 15px;
   flex-direction: column;
   display: flex; 
+}
+
+@media(max-width: 1175px){
+  .main_content{
+    width: 64%;
+  }
+}
+
+@media(max-width: 1000px){
+  .main_content{
+    margin-top: 10px;
+  }
+}
+
+@media(max-width: 882px){
+  .main_content{
+    width: 96%;
+  }
+
+  app-cafe-list{
+    display: none;
+  }
+}
+
+@media(max-width: 882px){
+  .main_content{
+    width: 95%;
+  }
+}
+
+@media(max-width: 550px){
+  .main_content{
+    width: 94%;
+  }
+}
+
+@media(max-width: 430px){
+  .main_content{
+    width: 92%;
+  }
+
+  .mat-card h1{
+    font-size: 25px;
+    padding: 0;
+    margin: 0;
+  } 
+
+  .mat-card p {
+    font-size: 13px;
+  }
+
+  th.mat-header-cell:first-child {
+    padding-left: 10px;
+  }
+
+  .mat-raised-button {
+    min-width: 66px;
+    line-height: 30px;
+    padding: 0 5px;
+    font-size: 12px;
+  }
+}
+
+@media(max-width: 380px){
+  .mat-header-cell {
+    font-size: 11px;
+  }
+}
+
+@media(max-width: 340px){
+  .main_content{
+    margin-left: 10px;
+  }
+  
+  .main_content{
+    width: 93%;
+  }
+
+  th.mat-header-cell:first-child {
+    padding-left: 5px;
+  }
+
+  .mat-raised-button {
+    min-width: 55px;
+  }
 }

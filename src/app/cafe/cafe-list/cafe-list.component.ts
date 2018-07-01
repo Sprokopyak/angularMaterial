@@ -40,7 +40,7 @@ export class CafeList implements OnInit {
     return typeName;
   }
 
-  ngOnInit() {
+  ngOnInit() {    
    this.subscription = this._authService.user.subscribe((user: User) => {
       this.user = user;
     });

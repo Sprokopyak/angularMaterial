@@ -17,6 +17,10 @@
   border-radius: 5px;
 }
 
+.header{
+  margin-bottom: 20px;
+}
+
 .cafe-list{
   width: 35%;
   float: left;
@@ -78,4 +82,53 @@ background: #747c80;
 
 .btn_delete{
   float: right;
+}
+
+@media(max-width: 1140px){
+  .cafe-detail {
+    width: 62%;
+  }
+
+  .cafe-list{
+    width: 36%;
+  }
+
+  .content-container{
+    margin: 0 15px;
+  }
+
+  ngx-gallery{
+    width: 300px;
+  }
+}
+
+@media(max-width: 680px){
+  .cafe-list{
+    margin-bottom: 20px;
+  }
+  
+  .cafe-detail, .cafe-list {
+    width: 100%;
+  }
+}
+
+@media(max-width: 470px){
+  .mat-card h1{
+    font-size: 20px;
+  }
+
+  .mat-card p {
+    font-size: 13px;
+  }
+
+  .mat-raised-button {
+    padding: 0 5px;
+    font-size: 12px;
+  }
+}
+
+@media(max-width: 325px){
+  .mat-raised-button {
+    font-size: 11px;
+  }
 }

@@ -1,37 +1,10 @@
 <div class="container">
   <div class="wrapper clearfix">
-    <div class="cafe-list clearfix">
-      <mat-card>
-        <mat-list>
-          <p>Заклади які ви оцінили</p>
-          <mat-list-item class="rated-items" *ngFor="let cafe of visitedCafe">
-            <span>{{cafe.cafeName | uppercase | shorten: 14}}</span>
-            <span class="spacer"></span>
-            <app-rating style="float: right;" [cafeRating]="cafe?.avRating"></app-rating>
-            <mat-divider></mat-divider>
-          </mat-list-item>
-        </mat-list>
 
-        <mat-list class="selected">
-          <p>Список обраних закладів</p>
-          <mat-list-item *ngFor="let cafe of selectedCafe">
-            <span>{{cafe.cafeName | uppercase | shorten: 14}}</span>
-            <span class="spacer"></span>
-            <mat-chip-list>
-              <mat-chip color="primary" [routerLink]="['/cafe', cafe.id]" selected="true">Детальніше</mat-chip>
-            </mat-chip-list>
-            <mat-icon (click)="removeFormSelected(cafe.id)">cancel</mat-icon>
-            <mat-divider></mat-divider>
-          </mat-list-item>
-        </mat-list>
-      </mat-card>
-    </div>
+    <mat-card class="header">
+      <h1>Особистий кабінет</h1>
+    </mat-card>
 
-    <div class="cafe-detail clearfix">
-      <mat-card>
-        <h1>Особистий кабінет</h1>
-      </mat-card>
-    </div>
     <div class="cafe-detail clearfix">
       <mat-card>
         <h3>Зарезервовані столики:</h3>
@@ -47,6 +20,33 @@
           <button mat-raised-button color="primary" [routerLink]="['/cafe', userReservedCafe.id]">Детальніше</button>
           <button class="btn_reject" (click)="unbookCafe(userReservedCafe.tables)" mat-raised-button color="accent">Відмінити резервацію</button>
         </div>
+      </mat-card>
+    </div>
+
+    <div class="cafe-list clearfix">
+      <mat-card>
+        <mat-list>
+          <p>Заклади які ви оцінили</p>
+          <mat-list-item class="rated-items" *ngFor="let cafe of (visitedCafe | async)">
+            <span>{{cafe.cafeName | uppercase | shorten: 14}}</span>
+            <span class="spacer"></span>
+            <app-rating style="float: right;" [cafeRating]="cafe?.avRating"></app-rating>
+            <mat-divider></mat-divider>
+          </mat-list-item>
+        </mat-list>
+
+        <mat-list class="selected">
+          <p>Список обраних закладів</p>
+          <mat-list-item *ngFor="let cafe of (selectedCafe | async)">
+            <span>{{cafe.cafeName | uppercase | shorten: 14}}</span>
+            <span class="spacer"></span>
+            <mat-chip-list>
+              <mat-chip color="primary" [routerLink]="['/cafe', cafe.id]" selected="true">Детальніше</mat-chip>
+            </mat-chip-list>
+            <mat-icon (click)="removeFormSelected(cafe.id)">cancel</mat-icon>
+            <mat-divider></mat-divider>
+          </mat-list-item>
+        </mat-list>
       </mat-card>
     </div>
   </div>

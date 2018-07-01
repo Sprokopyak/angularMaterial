@@ -15,6 +15,8 @@ export class InfinityScrollService {
   cafeTypeFilter$ = new BehaviorSubject(null);
   ratingFilter$ = new BehaviorSubject(null);
   freeTablesFilter$ = new BehaviorSubject(null);
+  searchStartAt = new BehaviorSubject(null);
+  searchEndAt = new BehaviorSubject(null);
 
   constructor(private _afs: AngularFirestore) {}
 
@@ -37,6 +39,21 @@ export class InfinityScrollService {
     this.mapAndUpdate(first);
 
     this.data = this._data.asObservable().pipe(
+      scan((acc, val) => {
+        return this.query.prepend ? val.concat(acc) : acc.concat(val);
+      })
+    );
+  }
+
+  searchCafe() {
+    this.reset();
+
+    const first = this._afs.collection('cafes', ref => ref.limit(4).orderBy('cafeName')
+    .startAt(this.searchStartAt.value).endAt(this.searchEndAt.value));
+    
+    this.mapAndUpdate(first);
+
+    this.data= this._data.asObservable().pipe(
       scan((acc, val) => {
         return this.query.prepend ? val.concat(acc) : acc.concat(val);
       })

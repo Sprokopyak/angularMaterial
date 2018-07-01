@@ -84,7 +84,7 @@ form{
 .comments{
   margin: 15px 0;
   list-style-type: none;
-  background: #303030;
+  background: #3030309e;
   padding: 16px 20px;
 }
 
@@ -103,4 +103,22 @@ form{
 .user mat-icon, .date mat-icon{
   margin-right: 5px;
   font-size: 20px
+}
+
+@media(max-width: 430px){
+  .mat-form-field {
+    font-size: 12px;
+  }
+
+  .comments{
+    padding: 5px 8px;
+  }
+
+  .user, .date {
+    font-size: 11px;
+  }
+
+  .mat-card>:last-child:not(.mat-card-footer) {
+    margin-top: 8px;
+  }
 }

@@ -1,6 +1,6 @@
 import { ActivatedRoute } from '@angular/router';
 import { OnInit, Component } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
 
 import { User } from '../../core/models/user.model';
 import { Upload } from '../../core/models/image-upload.model';
@@ -15,7 +15,8 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 
 import { MatDialog } from '@angular/material';
 import { MessageDialog } from '../../commons/message-dialog/message-dialog.component';
-import { PhoneNumberDialog } from '../../commons/phone-number-dialog/phone-number-dialog.component'
+import { PhoneNumberDialog } from '../../commons/phone-number-dialog/phone-number-dialog.component';
+import { MapsAPILoader } from '@agm/core';
 
 @Component({
   selector: 'app-cafe-details',
@@ -41,7 +42,7 @@ export class CafeDetails implements OnInit {
   subscription;
   progress$: Observable<number>;
   currentUpload: Upload;
-  userBooked= [];
+  userBooked: Observable<any>;
 
   constructor(
     public imageUploadService: ImageUploadService,
@@ -49,6 +50,7 @@ export class CafeDetails implements OnInit {
     private _cafeService: CafeService,
     private _userService: UserService, 
     private _route: ActivatedRoute,
+    private _mapsAPILoader: MapsAPILoader,
     private _dialog: MatDialog) {
       this.progress$ = this.imageUploadService.uploading$;
 
@@ -107,25 +109,27 @@ export class CafeDetails implements OnInit {
     this.galleryOptions = [{
       imageArrowsAutoHide: true,
       thumbnailsArrowsAutoHide: true,
-      width: '600px',
+      width: '100%',
       height: '400px',
       thumbnailsColumns: 4,
       imageAnimation: NgxGalleryAnimation.Slide
     }, {
-      breakpoint: 800,
-      width: '100%',
-      height: '600px',
-      imagePercent: 80,
-      thumbnailsPercent: 20
-    }, {
-      breakpoint: 400,
+      breakpoint: 430,
+      height: '300px',
       preview: false
+    },{
+      breakpoint: 340,
+      height: '250px'
     }];
+
+    this._mapsAPILoader.load();
 
     this._route.params.subscribe(param => {
       this.cafeId = param.id;
       this.subscription = this._cafeService.getCafe(this.cafeId).subscribe(cafe => {
-        this.cafe = cafe;        
+        this.cafe = cafe;  
+        this.map(this.cafe);
+              
         this.cafe.tables.sort((a,b)=> a.visitorsNumber > b.visitorsNumber);
         this.galleryImages = this.cafe.gallery.map(val => {
           return {
@@ -146,6 +150,19 @@ export class CafeDetails implements OnInit {
 
     this.authService.user.subscribe(val => {
       this.user = val;
+    });
+
+  }
+
+  map(cafe) {
+    let address;	
+    let latlng = new google.maps.LatLng(cafe.location.latitude, cafe.location.longitude);	
+    const geocoder = new google.maps.Geocoder();	
+    geocoder.geocode({ location: latlng }, (results, status) => {	
+      if (status == google.maps.GeocoderStatus.OK) {	
+        address = results[0].formatted_address;	
+        console.log(address);	
+      }	
     });
   }
 
@@ -268,15 +285,9 @@ export class CafeDetails implements OnInit {
     }
   }
 
-  showUsersBookedTable(arr){    
-    this.userBooked = []
-    arr.users.forEach(usersId=>{    
-      this._userService.getUser(usersId).subscribe(user=>{
-        if (!this.userBooked.find(val => val.uid === usersId)){
-          this.userBooked.push(...user)
-        }
-      })
-    })
+  showUsersBookedTable(arr){
+    const observables = arr.users.map(usersId => this._userService.getUser(usersId));
+    this.userBooked = combineLatest(observables);
   }
 
   approveReservation(user){

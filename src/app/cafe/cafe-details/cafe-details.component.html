@@ -99,7 +99,7 @@
             <ng-container matColumnDef="expandedDetail">
               <td mat-cell *matCellDef="let table" [attr.colspan]="displayedColumns.length">
                 <div *ngIf="authService.isLogedIn && !editCafe && user?.uid === cafe?.createdBy" [@detailExpand]="table == expandedElement ? 'expanded' : 'collapsed'">
-                  <div *ngFor="let user of userBooked ">
+                  <div *ngFor="let user of (userBooked | async)">
                     <div class="clearfix reservation-detail">
                       <p class="clearfix" style="float: left;">{{user.displayName}}
                         <span>- {{user.phoneNumber}}</span>

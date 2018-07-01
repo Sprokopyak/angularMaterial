@@ -17,6 +17,10 @@
   border-radius: 5px;
 }
 
+.header {
+  margin-bottom: 20px;
+}
+
 .spacer {
   flex: 1 1 auto;
 }
@@ -57,7 +61,7 @@ mat-list {
   background: #747c80;
 }
 
-.selected{
+.selected {
   margin-top: 50px;
 }
 
@@ -65,7 +69,7 @@ mat-list {
   float: right;
 }
 
-.approved{
+.approved {
   padding: 5px;
   border-radius: 20px;
   background: #5CB85C;
@@ -73,21 +77,84 @@ mat-list {
   float: right;
 }
 
-.not-approved{
+.not-approved {
   padding: 6px;
   border-radius: 15px;
   background: #D9534F;
   font-size: 12px;
   float: right;
 }
-mat-chip-list{
+
+mat-chip-list {
   margin: 4px 8px;
 }
 
-mat-chip, mat-icon{
+mat-chip,
+mat-icon {
   cursor: pointer;
 }
 
 .mat-standard-chip {
   padding: 4px 12px;
+}
+
+@media(max-width:1130px) {
+  .header {
+    margin: 0 15px 20px 15px;
+  }
+  .cafe-detail {
+    margin-right: 15px;
+  }
+  .cafe-list {
+    margin-left: 15px;
+  }
+}
+
+@media(max-width:930px) {
+  .cafe-list {
+    width: 40%;
+  }
+
+  .cafe-detail {
+    width: 55%;
+  }
+}
+
+@media(max-width:730px) {
+  .cafe-list, .cafe-detail {
+    width: 96%;
+  }
+}
+
+@media(max-width:650px) {
+  .cafe-list, .cafe-detail {
+    width: 95%;
+  }
+}
+
+@media(max-width:550px) {
+  .cafe-list, .cafe-detail {
+    width: 94%;
+  }
+}
+
+@media(max-width:450px) {
+  mat-card h1{
+    font-size: 21px;
+  }
+
+  .cafe-list, .cafe-detail {
+    width: 93%;
+  }
+}
+
+@media(max-width:370px) {
+  .mat-raised-button {
+    padding: 0 6px;
+    font-size: 12px;
+  }
+
+  .cafe-list, .cafe-detail {
+    width: 92%;
+  }
 }
