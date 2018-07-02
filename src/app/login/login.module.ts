@@ -2,10 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../material/material.module';
-import { AppRoutes } from './../app.routes';
 
 import { SignUp } from './sign-up/sign-up.component';
 import { SignIn } from './sign-in/sign-in.component';
+import { LoginRoutes } from './login.routes'
 
 @NgModule({
   imports: [
@@ -13,7 +13,7 @@ import { SignIn } from './sign-in/sign-in.component';
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,
-    AppRoutes
+    LoginRoutes
   ],
   declarations: [
     SignUp,

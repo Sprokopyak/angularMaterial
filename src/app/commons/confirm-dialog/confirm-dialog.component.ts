@@ -9,7 +9,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 export class ConfirmDialog {
   public confirmMessage:string;
-  constructor(private dialogRef: MatDialogRef<ConfirmDialog>) {
+  constructor(public dialogRef: MatDialogRef<ConfirmDialog>) {
 
   }
 

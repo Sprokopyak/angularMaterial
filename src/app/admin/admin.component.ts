@@ -24,6 +24,7 @@ export class Admin implements OnInit {
   searchCafes: Observable<any[]>;
   searchQuery;
   createdBy: Observable<any>;
+  searchterm: string;
 
   constructor(
     private _cafeService: CafeService,

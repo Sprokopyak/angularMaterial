@@ -25,7 +25,7 @@
         <input required hidden type="file" #imgFileInput (change)="uploadSingle($event)" accept=".png,.jpg" />
         <mat-hint> Додати основне фото закладу.</mat-hint>
 
-        <div class="main__photo" *ngIf="mainImgSrc?.url">
+        <div class="main__photo" *ngIf="mainImgSrc">
           <img [src]="mainImgSrc?.url" [alt]="currentUpload?.name">
           <mat-icon (click)="imageUploadService.removeImg(currentUpload.fullPath, currentUpload.thumbnailPath); mainImgSrc =''">cancel</mat-icon>
         </div>

@@ -15,6 +15,10 @@ export class Home implements OnInit {
   cafeTypeFilter$ = new BehaviorSubject(null);
   ratingFilter$ = new BehaviorSubject(null);
   freeTablesFilter$ = new BehaviorSubject(null);
+  searchterm: string;
+  selectedType: string;
+  selectedRating: number;
+  selectedFreeTables;
 
   constructor(
     public infinityScrollService: InfinityScrollService

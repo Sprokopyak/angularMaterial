@@ -19,6 +19,10 @@ export class CafeMap implements OnInit {
   cafeTypes = CAFE_TYPES;
   startAt = new Subject();
   endAt = new Subject();
+  selectedRating: number;
+  searchterm: string;
+  selectedType: string;
+  selectedFreeTables;
 
   constructor(
     private _cafeService: CafeService,

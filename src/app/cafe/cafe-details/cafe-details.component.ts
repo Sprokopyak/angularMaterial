@@ -42,6 +42,8 @@ export class CafeDetails implements OnInit {
   progress$: Observable<number>;
   currentUpload: Upload;
   userBooked: Observable<any>;
+  editCafe: boolean;
+  editDesciption: boolean;
 
   constructor(
     public imageUploadService: ImageUploadService,
