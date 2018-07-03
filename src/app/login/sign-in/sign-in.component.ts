@@ -12,17 +12,22 @@ export class SignIn implements OnInit {
   public loginForm: FormGroup;
   public resetPass: FormGroup;
   showResetPassword = false;
+  submitted = false;
 
   constructor(
     public fb: FormBuilder,
     public auth: AuthService) {
+    this.createLoginForm();
+    this.resetPass = this.fb.group({
+      email: ['', [Validators.required, Validators.email]]
+    })
+  }
+
+  createLoginForm(){
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(25)]]
     });
-    this.resetPass = this.fb.group({
-      email: ['', [Validators.required, Validators.email]]
-    })
   }
 
   ngOnInit() { }
@@ -34,7 +39,8 @@ export class SignIn implements OnInit {
     return this.loginForm.get('password')
   }
 
-  signin() {
+  signIn() {
+    this.submitted = true;
     this.isLoading = true;
     return this.auth.emailLogin(this.email.value, this.password.value)
       .then(() => {

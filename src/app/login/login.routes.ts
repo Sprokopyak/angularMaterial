@@ -5,7 +5,6 @@ import { SignUp } from './sign-up/sign-up.component';
 import { SignIn } from './sign-in/sign-in.component';
 import { LoginGuard } from '../core/login-guard/login.guard';
 
-
 const routes: Routes = [{
     path: 'sign-up',
     component: SignUp,

@@ -7,7 +7,7 @@
       </div>
       <div *ngIf="!showResetPassword; then logIn else resetPassword"></div>
       <ng-template #logIn>
-        <form class="sign" [formGroup]="loginForm" (ngSubmit)="signin()">
+        <form class="sign" [formGroup]="loginForm" (ngSubmit)="signIn()" novalidate>
           <mat-form-field>
             <input type="email" matInput required placeholder="Ваш емейл" formControlName="email">
             <mat-hint>Введіть ваш емейл.</mat-hint>
