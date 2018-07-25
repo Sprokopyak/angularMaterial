@@ -11,11 +11,14 @@ import { CommonsModule } from './commons/commons.module';
 import { LoginModule } from './login/login.module';
 import { CafeModule } from './cafe/cafe.module';
 import { AppRoutes } from './app.routes';
+import { NgxGalleryModule } from 'ngx-gallery';
 
 import { AppComponent } from './app.component';
 import { MainNavComponent } from './main-nav/main-nav.component';
 import { Home } from './home/home.component';
+import { UserComponent } from './user/user.component';
 import { Admin } from './admin/admin.component';
+import { CafeMap } from './cafe-map/cafe-map.component';
 
 import { AgmCoreModule } from '@agm/core';
 import { DirectivesModule } from './directives/directives.module';
@@ -26,12 +29,14 @@ import { PipesModule } from './pipes/pipes.module';
     AppComponent,
     MainNavComponent,
     Home,
-    Admin
+    Admin,
+    UserComponent,
+    CafeMap
   ],
   imports: [
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyAaWrqJxjZiw7BTzD9wDLybddkb1ktedKQ',
-      libraries: ['places'],
+      libraries: ['places', 'geometry'],
       language: 'uk-UA',
       region: 'UA'
     }),
@@ -46,7 +51,8 @@ import { PipesModule } from './pipes/pipes.module';
     CommonsModule,
     CafeModule,
     DirectivesModule,
-    PipesModule
+    PipesModule,
+    NgxGalleryModule
   ],
   providers: [],
   bootstrap: [AppComponent]

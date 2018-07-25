@@ -1,7 +1,12 @@
 @import '~@angular/material/theming';
 @import url('//fonts.googleapis.com/icon?family=Material+Icons');
 @import '~@angular/material/prebuilt-themes/pink-bluegrey.css';
-@include mat-core();
+@import url('https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&subset=cyrillic,cyrillic-ext');
+
+$custom-typography: mat-typography-config(
+    $font-family: 'Lora'
+);
+@include mat-core($custom-typography);
 body,
 html {
   height: 100%;
@@ -12,7 +17,7 @@ body {
   font-weight: normal;
 }
 
-a{
+a {
   text-decoration: none;
   color: #fff;
 }
@@ -23,7 +28,8 @@ a{
   display: table;
 }
 
-.mat-drawer-container, .mat-drawer-content  {
+.mat-drawer-container,
+.mat-drawer-content {
   overflow: hidden !important;
 }
 
@@ -52,7 +58,7 @@ select:-webkit-autofill:focus {
   transition: background-color 5000s ease-in-out 0s;
 }
 
-.wrapper{
+.wrapper {
   margin: 0 auto;
   width: 100%;
   position: relative;

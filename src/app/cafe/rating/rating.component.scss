@@ -46,7 +46,6 @@ selection .rating>input:checked~label:hover~label {
 
 .rating_number{
   float: left;
-  margin-top: 2px;
 }
 
 .stars{
@@ -56,7 +55,7 @@ selection .rating>input:checked~label:hover~label {
 span.stars,
 span.stars span {
   display: block;
-  background: url("../../../assets/images/stars2.png") 0 -16px repeat-x;
+  background: url("../../../assets/images/stars.png") 0 -16px repeat-x;
   width: 80px;
   height: 16px;
 }
@@ -84,7 +83,7 @@ form{
 .comments{
   margin: 15px 0;
   list-style-type: none;
-  background: #303030;
+  background: #3030309e;
   padding: 16px 20px;
 }
 
@@ -105,4 +104,20 @@ form{
   font-size: 20px
 }
 
+@media(max-width: 430px){
+  .mat-form-field {
+    font-size: 12px;
+  }
 
+  .comments{
+    padding: 5px 8px;
+  }
+
+  .user, .date {
+    font-size: 11px;
+  }
+
+  .mat-card>:last-child:not(.mat-card-footer) {
+    margin-top: 8px;
+  }
+}

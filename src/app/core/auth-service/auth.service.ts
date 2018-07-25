@@ -44,26 +44,28 @@ export class AuthService {
     return this.authState !== null;
   }
 
-  emailSignUp(email: string, password: string) {
+  emailSignUp(name, email: string, password: string) {
     return this._afAuth.auth.createUserWithEmailAndPassword(email, password)
       .then(user => {
-        return this.setUserDoc(user.user)
+        return this.setUserDoc(user.user, name)
       }).then(() => { this._router.navigate(['/home']) })
   }
 
-  private setUserDoc(user: any) {
+  private setUserDoc(user: any, name?) {
     const userRef: AngularFirestoreDocument<User> = this._afs.doc(`users/${user.uid}`);
     const data: User = {
       uid: user.uid,
       email: user.email || null,
-      displayName: user.displayName || null,
+      displayName: user.displayName || name || null,
       reserved: {
         cafeId: '',
         approvedBoking: false,
         reservedTime: '',
-        reservationValidTill: ''
+        reservationValidTill: '',
+        visitorsNumber: ''
       },
-      role: 'user'
+      role: 'user',
+      selectedCafes: []
     }
     return userRef.set(data, { merge: true });
   }

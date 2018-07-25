@@ -1,22 +1,19 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
+import { AngularFirestore } from 'angularfire2/firestore';
 
-import { Observable } from 'rxjs';
 import { Cafe } from '../models/cafe.model';
-
 import { MatDialog } from '@angular/material';
 import { MessageDialog } from '../../commons/message-dialog/message-dialog.component';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable()
 export class CafeService {
-  cafeRef: AngularFirestoreCollection<Cafe> = this._afs.collection('cafes');
-  cafes$: Observable<any>;
-  cafe$: Observable<any>;
-  cafeDoc: AngularFirestoreDocument<Cafe>;
+  cafeTypeFilter$ = new BehaviorSubject(null);
+  ratingFilter$ = new BehaviorSubject(null);
+  freeTablesFilter$ = new BehaviorSubject(null);
 
   constructor(private _afs: AngularFirestore,
     private _dialog: MatDialog) {
-    this.cafes$ = this.cafeRef.valueChanges();
   }
 
   showMessageDialog(message: string): void {
@@ -27,12 +24,16 @@ export class CafeService {
   }
 
   pushCafe(obj: Cafe) {
-    return this.cafeRef.add(obj)
+    return this._afs.collection('cafes').add(obj)
       .then(docRef => {
-        this.cafeRef.doc(docRef.id).update({ id: docRef.id });
+        this._afs.collection('cafes').doc(docRef.id).update({ id: docRef.id });
       })
       .then(() => this.showMessageDialog('Ваш заклад буде опубліковано на нашому сайті, після того як адміністратор його перевірить'))
       .catch(error => this.showMessageDialog(error.message));
+  }
+
+  getCafeList(){
+    return this._afs.collection('cafes', ref => ref.where('approved', '==', false)).valueChanges();
   }
 
   getCafes() {
@@ -40,7 +41,7 @@ export class CafeService {
   }
 
   getCafe(id: string) {
-    return this.cafe$ = this._afs.doc(`cafes/${id}`).valueChanges();
+    return this._afs.doc(`cafes/${id}`).valueChanges();
   }
 
   updateCafe(cafe: Cafe) {
@@ -49,5 +50,19 @@ export class CafeService {
 
   searchCafe(start, end) {
     return this._afs.collection('cafes', ref => ref.limit(4).orderBy('cafeName').startAt(start).endAt(end)).valueChanges();
+  }
+
+  filters(){
+    return this._afs.collection('cafes', ref => {
+      let query: any = ref;
+      if (this.cafeTypeFilter$.value) { query = query.where('cafeType', '==', this.cafeTypeFilter$.value);}
+      if (this.freeTablesFilter$.value) { query = query.where('freeTables', '!=', this.freeTablesFilter$.value); }
+      if (this.ratingFilter$.value) { query = query.where('avRating', '>=', this.ratingFilter$.value); }
+      return query;
+    }).valueChanges();
+  }
+
+  deleteCafe(cafeId){
+    return this._afs.collection('cafes').doc(cafeId).delete();
   }
 }

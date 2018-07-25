@@ -36,7 +36,7 @@
   </mat-card>
 </div>
 
-<p *ngIf="cafeRating">
+<p *ngIf="cafeRating || cafeRating === 0">
   <span class="rating_number">{{cafeRating}}</span>
   <span class="stars">
     <span [ngStyle]="{ 'width': cafeRating*20 + '%' }"></span>

@@ -8,13 +8,6 @@ import { map } from 'rxjs/operators';
 export class RatingService {
   constructor(private _afs: AngularFirestore) {}
 
-  getUserStars(userId) {
-    const starsRef = this._afs.collection('stars', ref =>
-      ref.where('userId', '==', userId)
-    );
-    return starsRef.valueChanges();
-  }
-
   getCafeComments(cafeId) {
     return this._afs
       .collection('comments', ref => {

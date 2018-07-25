@@ -1,7 +1,7 @@
 import { ElementRef, NgZone, OnInit, ViewChild, Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { } from 'googlemaps';
-import { MapsAPILoader } from '@agm/core';
+import { AgmCoreModule, MapsAPILoader } from '@agm/core';
+import {} from '@types/googlemaps';
 
 import { ImageUploadService } from '../../core/image-upload/image-upload.service';
 import { CafeService } from '../../core/cafe-service/cafe.service';
@@ -30,6 +30,8 @@ export class AddCafe implements OnInit {
   progress$: Observable<number>;
   user: User;
   subscribtion;
+  imgUploadSbscribtion;
+  imgMultiUploadSbscribtion;
 
   @ViewChild('search') searchElementRef: ElementRef;
 
@@ -42,7 +44,7 @@ export class AddCafe implements OnInit {
     private _authService: AuthService
   ) {
       this.progress$ = this.imageUploadService.uploading$;
-      this.imageUploadService.completed$.subscribe((upload) => {          
+      this.imgUploadSbscribtion = this.imageUploadService.completed$.subscribe((upload) => {          
           this.currentUpload = upload;          
           this.mainImgSrc = {
             url: this.currentUpload.url,
@@ -52,7 +54,7 @@ export class AddCafe implements OnInit {
           }           
       });
      
-      this.imageUploadService.completedMulti$.subscribe((upload) => {
+      this.imgMultiUploadSbscribtion = this.imageUploadService.completedMulti$.subscribe((upload) => {
           this.currentUpload = upload;
           this.pushIfNew(this.gallery, {
             url: this.currentUpload.url,
@@ -104,7 +106,9 @@ export class AddCafe implements OnInit {
   }
 
   ngOnDestroy() {
-    this.subscribtion.unsubscribe()
+    this.subscribtion.unsubscribe();
+    this.imgUploadSbscribtion.unsubscribe();
+    this.imgMultiUploadSbscribtion.unsubscribe();
   }
 
   uploadSingle(event) {

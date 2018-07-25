@@ -1,25 +1,3 @@
-.rating_number{
-  float: left;
-  margin-top: 2px;
-}
-
-.stars{
-  margin-left: 25px;
-}
-
-span.stars,
-span.stars span {
-  display: block;
-  background: url("../../../assets/images/stars2.png") 0 -16px repeat-x;
-  width: 80px;
-  height: 16px;
-}
-
-span.stars span {
-  background-position: 0 0;
-  width: 50%;
-}
-
 .mat-progress-spinner {
   margin: 0 auto;
   display: flex;
@@ -32,10 +10,13 @@ span.stars span {
 
 .content-card {
   margin: 15px;
+  background: #0c0407db;
+  padding: 24px 0 0 0;
 }
 
 .mat-card {
-  padding: 24px 0;
+  padding: 24px 0 0 0;
+  background: #0c0407db;
 }
 
 .image-thumb {
@@ -59,10 +40,46 @@ label {
 }
 
 .cafe__list{
-  padding: 8px;
+  padding: 8px 20px;
+}
+
+mat-card-header {
+  margin: 0 12px;
 }
 
 .mobile{
   margin-top: 15px;
   display: block;
+}
+
+.selected{
+  float: right;
+}
+
+@media(max-width:1000px){
+  .content-card {
+    margin: 10px;
+  }
+}
+
+@media(max-width:880px){
+  .list {
+    width: 50%;
+  }
+}
+
+@media(max-width:570px){
+  .list {
+    width: 100%;
+  }
+}
+
+@media(max-width:340px){
+  .cafe__list{
+    padding: 0 8px 8px 8px;
+  }
+  
+  mat-card-header {
+    margin: 0;
+  }
 }

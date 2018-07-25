@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { CafeService } from '../core/cafe-service/cafe.service';
-
 import { Subject, combineLatest, BehaviorSubject } from 'rxjs';
 import { InfinityScrollService } from '../core/infinity-scroll/infinity-scroll.service';
 import { CAFE_TYPES } from './../cafe/constants';
@@ -17,18 +15,22 @@ export class Home implements OnInit {
   cafeTypeFilter$ = new BehaviorSubject(null);
   ratingFilter$ = new BehaviorSubject(null);
   freeTablesFilter$ = new BehaviorSubject(null);
+  searchterm: string;
+  selectedType: string;
+  selectedRating: number;
+  selectedFreeTables;
 
   constructor(
-    private _cafeService: CafeService,
     public infinityScrollService: InfinityScrollService
   ) {}
 
   search($event) {
-    let query = $event.target.value;
+    let query = $event.target.value.toLowerCase();
     if (query !== '') {
-      this.startAt.next(query);
-      this.endAt.next(query + '\uf8ff');
+      this.infinityScrollService.searchStartAt.next(query)
+      this.infinityScrollService.searchEndAt.next(query + '\uf8ff')
     } else {
+      this.infinityScrollService.reset()
       this.infinityScrollService.init('cafes', 'cafeName', { reverse: true, prepend: false })
     }
   }
@@ -44,8 +46,8 @@ export class Home implements OnInit {
       this.infinityScrollService.filters('cafes', 'avRating')      
     )
 
-    combineLatest(this.startAt, this.endAt).subscribe(value => {
-      this.infinityScrollService.data = this._cafeService.searchCafe(value[0], value[1]);
+    combineLatest(this.infinityScrollService.searchStartAt, this.infinityScrollService.searchEndAt).subscribe(value => {
+      this.infinityScrollService.searchCafe();
     });
   }
 

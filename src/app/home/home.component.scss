@@ -1,12 +1,15 @@
 .content {
   overflow: auto;
-  max-height: 100vh;
+  height: 100vh;
   width: 100vw;
+  background-image: url(../../assets/images/activity2.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50%;
 }
-.space{
-  display: flex;
-  width: 100%;
-  height: 100px;
+
+.wrapper{
+  margin: 10px auto 130px auto;
 }
 
 .mat-progress-spinner {
@@ -22,6 +25,37 @@
   right: 0;
 }
 
+.filters{
+  margin: 0 5px;
+}
+
 .mat-form-field {
-  margin: 0 3%;
+  float: left;
+  width: 21%;
+  margin: 0 2%;
+}
+
+@media(max-width:800px){
+  .mat-form-field {
+    width: 46%;
+    margin: 0 2%;
+  }
+}
+
+@media(max-width:650px){
+  .wrapper{
+    margin: 10px auto 140px auto;
+  }
+}
+
+@media(max-width:550px){
+  .mat-form-field {
+    width: 96%;
+    margin: 0 2%;
+    font-size: 11px;
+  }
+
+  .wrapper{
+    margin: 10px auto 160px auto;
+  }
 }

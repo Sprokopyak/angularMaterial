@@ -1,6 +1,6 @@
 import { ActivatedRoute } from '@angular/router';
 import { OnInit, Component } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
 
 import { User } from '../../core/models/user.model';
 import { Upload } from '../../core/models/image-upload.model';
@@ -15,7 +15,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 
 import { MatDialog } from '@angular/material';
 import { MessageDialog } from '../../commons/message-dialog/message-dialog.component';
-import { PhoneNumberDialog } from '../../commons/phone-number-dialog/phone-number-dialog.component'
+import { PhoneNumberDialog } from '../../commons/phone-number-dialog/phone-number-dialog.component';
 
 @Component({
   selector: 'app-cafe-details',
@@ -36,12 +36,14 @@ export class CafeDetails implements OnInit {
   cafe;
   cafes;
   cafeId;
-  displayedColumns = ['visitors', 'name', 'booked', 'freeTables', 'reserve'];
+  displayedColumns = ['visitors', 'name', 'booked', 'freeTables', 'reserve', 'reserves'];
   user: User;
   subscription;
   progress$: Observable<number>;
   currentUpload: Upload;
-  userBooked= [];
+  userBooked: Observable<any>;
+  editCafe: boolean;
+  editDesciption: boolean;
 
   constructor(
     public imageUploadService: ImageUploadService,
@@ -53,7 +55,7 @@ export class CafeDetails implements OnInit {
       this.progress$ = this.imageUploadService.uploading$;
 
       this.imageUploadService.completed$.subscribe((upload) => {
-        this.currentUpload = upload;          
+        this.currentUpload = upload;    
         this.cafe.mainImgSrc = {
           url: this.currentUpload.url,
           fullPath: this.currentUpload.fullPath,
@@ -107,25 +109,24 @@ export class CafeDetails implements OnInit {
     this.galleryOptions = [{
       imageArrowsAutoHide: true,
       thumbnailsArrowsAutoHide: true,
-      width: '600px',
+      width: '100%',
       height: '400px',
       thumbnailsColumns: 4,
       imageAnimation: NgxGalleryAnimation.Slide
     }, {
-      breakpoint: 800,
-      width: '100%',
-      height: '600px',
-      imagePercent: 80,
-      thumbnailsPercent: 20
-    }, {
-      breakpoint: 400,
+      breakpoint: 430,
+      height: '300px',
       preview: false
+    },{
+      breakpoint: 340,
+      height: '250px'
     }];
 
     this._route.params.subscribe(param => {
       this.cafeId = param.id;
       this.subscription = this._cafeService.getCafe(this.cafeId).subscribe(cafe => {
-        this.cafe = cafe;
+        this.cafe = cafe;  
+              
         this.cafe.tables.sort((a,b)=> a.visitorsNumber > b.visitorsNumber);
         this.galleryImages = this.cafe.gallery.map(val => {
           return {
@@ -147,6 +148,7 @@ export class CafeDetails implements OnInit {
     this.authService.user.subscribe(val => {
       this.user = val;
     });
+
   }
 
   ngOnDestroy() {
@@ -161,6 +163,22 @@ export class CafeDetails implements OnInit {
       }
     });
     return typeName;
+  }
+
+  bookAdminTable(tableObj, tablesNumber, booked){
+    let indexOfTableObj = this.cafe.tables.indexOf(tableObj);
+    if (booked < tablesNumber) {
+      this.cafe.tables[indexOfTableObj].booked += 1;
+      this.cafe.freeTables -= 1;
+      this._cafeService.updateCafe(this.cafe);
+    }
+  }
+
+  unBookAdminTable(tableObj){
+    let indexOfTableObj = this.cafe.tables.indexOf(tableObj);
+      this.cafe.tables[indexOfTableObj].booked -= 1;
+      this.cafe.freeTables += 1;
+      this._cafeService.updateCafe(this.cafe);
   }
 
   bookTable(tableObj, tablesNumber, booked) {
@@ -178,13 +196,15 @@ export class CafeDetails implements OnInit {
         let reservationTime = new Date()
         let reservationValidTill = new Date()
         reservationValidTill.setMinutes(reservationTime.getMinutes()+30)      
-        this._userService.userBooking(this.user.uid, this.cafe.id, false, reservationTime.toString(), reservationValidTill.toString());
+        this._userService.userBooking(this.user.uid, this.cafe.id, false, reservationTime.toLocaleString(), reservationValidTill.toLocaleString(), tableObj.visitorsNumber);
+        this.cafe.freeTables -= 1;
         this._cafeService.updateCafe(this.cafe);
       }
     }
   }
 
   unbookTable(userId, tableArr){
+    this.cafe.freeTables += 1;
     tableArr.forEach(val => {
       let indexOfUserId = val.users.indexOf(userId)
       if(indexOfUserId !== -1){
@@ -192,7 +212,7 @@ export class CafeDetails implements OnInit {
         let indexOfTableUserBooked = tableArr.indexOf(val)
         tableArr[indexOfTableUserBooked].booked -= 1;        
       }
-      this._userService.userBooking(userId, null, false, null, null)
+      this._userService.userBooking(userId, null, false, null, null, null)
       this._cafeService.updateCafe(this.cafe)
     });    
   }
@@ -203,6 +223,12 @@ export class CafeDetails implements OnInit {
     } else{
       this.imageUploadService.uploadSingle(event);
     }   
+  }
+
+  removeSingleImg(cafe, fullPath, thumbnailPath){
+    cafe.mainImgSrc = '';
+    this.imageUploadService.removeImg(fullPath, thumbnailPath);
+    this._cafeService.updateCafe(cafe)
   }
 
   uploadMultiImg(event) {
@@ -244,19 +270,9 @@ export class CafeDetails implements OnInit {
     }
   }
 
-  showUsersBookedTable(arr){    
-    this.userBooked = []
-    arr.users.forEach(usersId=>{    
-      this._userService.getUser(usersId).subscribe(user=>{
-        if (!this.userBooked.find(val => val.uid === usersId)){
-          this.userBooked.push(...user)
-        }
-      })
-    })
-  }
-
-  dateFormat(date){
-    return new Date(date).toLocaleString();
+  showUsersBookedTable(arr){
+    const observables = arr.users.map(usersId => this._userService.getUser(usersId));
+    this.userBooked = combineLatest(observables);
   }
 
   approveReservation(user){

@@ -1,7 +1,7 @@
 <div class="login-page-body">
   <div class="sign-container">
     <div class="sign-info-container">
-      <h3>Easy book</h3>
+      <h3>CafeSpace</h3>
       <button routerLinkActive="active" routerLink="/sign-in" mat-raised-button color="primary">Увійти</button>
       <p>Вже маєте аккаунт?</p>
     </div>
@@ -13,6 +13,11 @@
       </div>
 
       <form [formGroup]="signupForm" (ngSubmit)="signup()">
+        <mat-form-field>
+          <input type="text" autocomplete="off" matInput required placeholder="Ваше ім'я" formControlName="name">
+          <mat-hint>Введіть ваше ім'я.</mat-hint>
+          <mat-error>Введіть ваше ім'я.</mat-error>
+        </mat-form-field>
         <mat-form-field>
           <input type="email" matInput required placeholder="Ваш емейл" formControlName="email">
           <mat-hint>Введіть ваш емейл.</mat-hint>
@@ -26,7 +31,7 @@
         <mat-form-field>
           <input type="password" matInput required placeholder="Підтвердити пароль" formControlName="confirmPassword">
           <mat-hint>Введіть ваш пароль ще раз.</mat-hint>
-          <mat-error >Паролі не збігаються</mat-error>
+          <mat-error>Паролі не збігаються</mat-error>
         </mat-form-field>
         <button id="send" *ngIf="!isLoading" type="submit" mat-raised-button color="primary" [disabled]="signupForm.invalid">Зареєструватись</button>
         <mat-spinner [diameter]="60" *ngIf="isLoading"></mat-spinner>
