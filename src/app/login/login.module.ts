@@ -5,7 +5,7 @@ import { MaterialModule } from '../material/material.module';
 
 import { SignUp } from './sign-up/sign-up.component';
 import { SignIn } from './sign-in/sign-in.component';
-import { LoginRoutes } from './login.routes'
+import { AppRoutes } from './../app.routes';
 
 @NgModule({
   imports: [
@@ -13,7 +13,7 @@ import { LoginRoutes } from './login.routes'
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,
-    LoginRoutes
+    AppRoutes
   ],
   declarations: [
     SignUp,

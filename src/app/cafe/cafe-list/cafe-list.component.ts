@@ -18,7 +18,7 @@ export class CafeList implements OnInit {
   subscription;
 
   constructor(
-    private _authService: AuthService,
+    public authService: AuthService,
     private _userService: UserService,
     private _dialog: MatDialog
   ) {}
@@ -41,7 +41,7 @@ export class CafeList implements OnInit {
   }
 
   ngOnInit() {    
-   this.subscription = this._authService.user.subscribe((user: User) => {
+   this.subscription = this.authService.user.subscribe((user: User) => {
       this.user = user;
     });
   }

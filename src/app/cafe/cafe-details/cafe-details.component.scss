@@ -24,7 +24,7 @@
   margin-bottom: 20px;
 }
 
-.mat-card {
+.card {
   background: #0c0407db;
 }
 
@@ -34,7 +34,7 @@
   overflow: auto;
 }
 
-table.mat-table {
+.table {
   background: #30303042;
 }
 
@@ -147,6 +147,7 @@ th.mat-header-cell:last-child {
   margin-top: 15px;
   flex-direction: column;
   display: flex; 
+  background: #0c0407db;
 }
 
 @media(max-width: 1175px){

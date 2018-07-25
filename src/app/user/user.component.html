@@ -6,7 +6,7 @@
     </mat-card>
 
     <div class="cafe-detail clearfix">
-      <mat-card>
+      <mat-card class="card">
         <h3>Зарезервовані столики:</h3>
         <div *ngIf="!userReservedCafe">
           <p>У вас немає жодного зарезервованого столика.</p>
@@ -24,7 +24,7 @@
     </div>
 
     <div class="cafe-list clearfix">
-      <mat-card>
+      <mat-card class="card">
         <mat-list>
           <p>Заклади які ви оцінили</p>
           <mat-list-item class="rated-items" *ngFor="let cafe of (visitedCafe | async)">

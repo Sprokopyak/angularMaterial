@@ -2,12 +2,12 @@
   <div class="wrapper clearfix">
     <div class="content-container">
       <div class="header clearfix">
-        <mat-card>
+        <mat-card class="card">
           <h1>Сторінка адміністратора</h1>
         </mat-card>
       </div>
       <div class="cafe-list clearfix">
-        <mat-card>
+        <mat-card class="card">
           <mat-form-field>
             <mat-icon matSuffix>search</mat-icon>
             <input type="text" [(ngModel)]="searchterm" (keyup)="search($event)" matInput placeholder="Пошук" autocorrect="off" autocapitalize="off"
@@ -31,7 +31,7 @@
       </div>
 
       <div class="cafe-detail clearfix">
-        <mat-card *ngIf="cafe">
+        <mat-card class="card" *ngIf="cafe">
           <h1>{{cafe?.cafeName | uppercase}}</h1>
           <p>Тип закладу: {{ getCafetype(cafe?.cafeType) }}</p>
           <app-rating [cafeRating]="cafe?.avRating"></app-rating>
