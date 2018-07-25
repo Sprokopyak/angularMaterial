@@ -15,9 +15,10 @@ export class SignUp implements OnInit {
     public fb: FormBuilder,
     public auth: AuthService) {
     this.signupForm = this.fb.group({
-      'email': ['', [Validators.required, Validators.email]],
-      'password': ['', [Validators.required, Validators.minLength(6)]],
-      'confirmPassword': ['', [Validators.required, Validators.minLength(6), this.passwordConfirming]]
+      name: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', [Validators.required, Validators.minLength(6), this.passwordConfirming]]
     })
   }
 
@@ -33,7 +34,10 @@ export class SignUp implements OnInit {
       return { invalid: true };
     }
   }
-
+  
+  get name() {
+    return this.signupForm.get('name')
+  }
   get email() {
     return this.signupForm.get('email')
   }
@@ -43,7 +47,7 @@ export class SignUp implements OnInit {
 
   signup() {
     this.isLoading = true;
-    return this.auth.emailSignUp(this.email.value, this.password.value)
+    return this.auth.emailSignUp(this.name.value,this.email.value, this.password.value)
       .then(() => {
         this.isLoading = false;
       })

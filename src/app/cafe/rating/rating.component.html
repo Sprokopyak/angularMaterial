@@ -1,0 +1,44 @@
+<div *ngIf="cafeId">
+  <div class="rating-container">
+    <div class="rating">
+      <ng-container *ngFor="let num of [5, 4, 3, 2, 1]">
+        <input (click)="pushRating(num)" [id]="'star'+num" [value]="num-0.5" name="rating" type="radio" />
+        <label class="full" [for]="'star'+num"></label>
+
+        <input (click)="pushRating(num-0.5)" [value]="num-0.5" [id]="'halfstar'+num" name="rating" type="radio" />
+        <label class="half" [for]="'halfstar'+num"></label>
+      </ng-container>
+    </div>
+  </div>
+  <form [formGroup]="commentsForm">
+    <mat-form-field appearance="fill">
+      <mat-label>Введіть ваше ім'я.</mat-label>
+      <input autocomplete="off" matInput formControlName="username" placeholder="Введіть ваше ім'я">
+      <mat-error>Ім'я повинно складатись не менше ніж з 2 символів.</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Введіть ваша коментар.</mat-label>
+      <input autocomplete="off" matInput formControlName="comment" placeholder="Введіть ваша коментар">
+      <mat-error>Коментар повинен складатись не менше ніж з 10 символів.</mat-error>
+    </mat-form-field>
+
+    <button mat-raised-button class="btn_submit" (click)="submitComment(commentsForm)" color="primary" [disabled]="commentsForm.invalid">Відправити</button>
+  </form>
+
+  <mat-card class="comments" *ngFor="let comment of comments">
+    <mat-icon class="remove_comment" *ngIf="user && user.role === 'admin'" (click)="removeComment(comment)">cancel</mat-icon>
+    <p class="user">
+      <mat-icon>person</mat-icon> {{comment.username}}</p>
+    <p class="date">
+      <mat-icon>access_time</mat-icon> {{comment.date}}</p>
+    <p>{{comment.comment}}</p>
+  </mat-card>
+</div>
+
+<p *ngIf="cafeRating || cafeRating === 0">
+  <span class="rating_number">{{cafeRating}}</span>
+  <span class="stars">
+    <span [ngStyle]="{ 'width': cafeRating*20 + '%' }"></span>
+  </span>
+</p>

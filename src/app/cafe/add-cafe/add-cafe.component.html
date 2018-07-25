@@ -1,4 +1,4 @@
-<div class="details-page__wrapper-dark">
+<div class="details-page__wrapper-dark clearfix">
   <svg class="background-gradient__circle" viewBox="4572 73 1328 1328">
     <defs>
       <linearGradient gradientUnits="objectBoundingBox" id="gradient" x2="0" y2="1">
@@ -8,9 +8,9 @@
     </defs>
     <circle cx="664" cy="664" fill="url(#gradient)" r="664" transform="translate(4572 73)"></circle>
   </svg>
-
+  <div class="wrapper clearfix">
   <div class="container">
-    <div class="content-container">
+
       <div class="title-container">
       </div>
       <form [formGroup]="addCafeForm" >
@@ -22,10 +22,10 @@
         <button mat-button color="accent" mat-mini-fab (click)="imgFileInput.click()">
           <mat-icon>attachment</mat-icon>
         </button>
-        <input hidden type="file" #imgFileInput (change)="uploadSingle($event)" accept=".png,.jpg" />
+        <input required hidden type="file" #imgFileInput (change)="uploadSingle($event)" accept=".png,.jpg" />
         <mat-hint> Додати основне фото закладу.</mat-hint>
 
-        <div class="main__photo" *ngIf="mainImgSrc?.url">
+        <div class="main__photo" *ngIf="mainImgSrc">
           <img [src]="mainImgSrc?.url" [alt]="currentUpload?.name">
           <mat-icon (click)="imageUploadService.removeImg(currentUpload.fullPath, currentUpload.thumbnailPath); mainImgSrc =''">cancel</mat-icon>
         </div>
@@ -47,13 +47,13 @@
         </div>
 
         <mat-form-field>
-          <input type="text" matInput required placeholder="Назва кафе" formControlName="cafeName">
-          <mat-hint>Введіть назву кафе.</mat-hint>
-          <mat-error>Назва кафе повинна складатись не менше ніж з 2 символів.</mat-error>
+          <input type="text" autocomplete="off" matInput required placeholder="Назва закладу" formControlName="cafeName">
+          <mat-hint>Введіть назву закладу.</mat-hint>
+          <mat-error>Назва закладу повинна складатись не менше ніж з 2 символів.</mat-error>
         </mat-form-field>
 
         <mat-form-field>
-          <input type="tel" matInput required placeholder="Номер телефону" formControlName="phoneNumber">
+          <input type="tel" autocomplete="off" matInput required placeholder="Номер телефону" formControlName="phoneNumber">
           <mat-hint>Введіть номер телефону.</mat-hint>
           <mat-error>Номер телефону повинен складатись з 12 цифр.</mat-error>
         </mat-form-field>
@@ -78,12 +78,12 @@
         <div class="tables-quantity">
           <mat-chip-list #chipList>
             <mat-form-field>
-              <input type="number" matInput required #tablesNumber placeholder="Кількість столів">
+              <input type="number" autocomplete="off" matInput required #tablesNumber placeholder="Кількість столів">
               <mat-hint>Введіть кількість столів.</mat-hint>
             </mat-form-field>
 
             <mat-form-field>
-              <input type="number" matInput required #visitorsNumber placeholder="Кількість гостей">
+              <input type="number" autocomplete="off" matInput required #visitorsNumber placeholder="Кількість гостей">
               <mat-hint>Введіть кількість гостей, яку вміщає один такий стіл.</mat-hint>
             </mat-form-field>
 
@@ -99,10 +99,10 @@
         <mat-form-field>
           <textarea matInput placeholder="Опис закладу" formControlName="description"></textarea>
           <mat-hint>Введіть короткий опис закладу</mat-hint>
-          <mat-error>Короткий опис повинен складатись не менше ніж з 2 символів.</mat-error>
+          <mat-error>Короткий опис повинен складатись не менше ніж з 12 символів.</mat-error>
         </mat-form-field>
 
-        <button *ngIf="!isLoading" class="btn_submit" mat-raised-button [disabled]="addCafeForm.invalid" (click)="addCafe()" color="primary">Додати кафе</button>
+        <button *ngIf="!isLoading" class="btn_submit" mat-raised-button [disabled]="addCafeForm.invalid" (click)="addCafe()" color="primary">Додати заклад</button>
         <mat-spinner [diameter]="60" *ngIf="isLoading"></mat-spinner>
       </form>
     </div>

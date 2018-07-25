@@ -1,0 +1,123 @@
+fieldset,
+label {
+  margin: 0;
+  padding: 0;
+}
+
+.rating-container{
+  display: flex;
+  margin-bottom: 15px;
+}
+
+.rating>input {
+  display: none;
+}
+
+.rating>label:before {
+  margin: 5px;
+  font-size: 1.25em;
+  font-family: FontAwesome;
+  display: inline-block;
+  content: "\f005";
+}
+
+.rating>.half:before {
+  content: "\f089";
+  position: absolute;
+}
+
+.rating>label {
+  color: #ddd;
+  float: right;
+}
+
+.rating>input:checked~label,
+.rating:not(:checked)>label:hover,
+.rating:not(:checked)>label:hover~label {
+  color: #FFD700;
+}
+
+.rating>input:checked+label:hover,
+.rating>input:checked~label:hover,
+.rating>label:hover~input:checked~label,
+selection .rating>input:checked~label:hover~label {
+  color: #FFD700;
+}
+
+.rating_number{
+  float: left;
+}
+
+.stars{
+  margin-left: 25px;
+}
+
+span.stars,
+span.stars span {
+  display: block;
+  background: url("../../../assets/images/stars.png") 0 -16px repeat-x;
+  width: 80px;
+  height: 16px;
+}
+
+span.stars span {
+  background-position: 0 0;
+  width: 50%;
+}
+
+form{
+  display: flex;
+  flex-direction: column;
+}
+
+.btn_submit{
+  width: 150px;
+  margin: 0 auto;
+}
+
+.mobile{
+  margin-top: 15px;
+  display: block;
+}
+
+.comments{
+  margin: 15px 0;
+  list-style-type: none;
+  background: #3030309e;
+  padding: 16px 20px;
+}
+
+.remove_comment{
+  float: right;
+  cursor: pointer;
+}
+
+.user, .date{
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+
+.user mat-icon, .date mat-icon{
+  margin-right: 5px;
+  font-size: 20px
+}
+
+@media(max-width: 430px){
+  .mat-form-field {
+    font-size: 12px;
+  }
+
+  .comments{
+    padding: 5px 8px;
+  }
+
+  .user, .date {
+    font-size: 11px;
+  }
+
+  .mat-card>:last-child:not(.mat-card-footer) {
+    margin-top: 8px;
+  }
+}

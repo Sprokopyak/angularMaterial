@@ -1,0 +1,20 @@
+<div class="list clearfix">
+  <mat-card class="content-card">
+    <mat-card-header>
+      <mat-card-title>{{cafe.cafeName | uppercase}}</mat-card-title>
+      <mat-card-subtitle>Тип закладу: {{ getCafetype(cafe.cafeType) }}</mat-card-subtitle>
+    </mat-card-header>
+    <div class="image-thumb">
+      <img class="img img-responsive" mat-card-image [src]="cafe.mainImgSrc.thumbnailUrl">
+    </div>
+
+    <mat-card-content class="cafe__list">
+      <app-rating [cafeRating]="cafe.avRating" style="width: 100%"></app-rating>
+      <a class="mobile" href="tel:+{{cafe.phoneNumber}}">Номер телефону: +{{cafe.phoneNumber}}</a>
+      <p>Вільних столиків залишилось: {{ cafe.freeTables }}</p>
+      <p>{{cafe.description | shorten: 133 }}</p>
+      <button mat-raised-button color="primary" [routerLink]="['/cafe', cafe.id]">Детальніше</button>
+      <button *ngIf="authService.isLogedIn" class="selected" mat-raised-button color="accent" (click)="toSelected(cafe.id, cafe.cafeName)">В обрані</button>
+    </mat-card-content> 
+  </mat-card>
+</div>

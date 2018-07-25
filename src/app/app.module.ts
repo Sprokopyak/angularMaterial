@@ -4,7 +4,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AngularFireModule } from 'angularfire2';
 import { FirebaseConfig } from '../environments/firebase.config';
-import { AngularFirestore } from 'angularfire2/firestore';
 
 import { MaterialModule } from './material/material.module';
 import { CoreModule } from './core/core.module';
@@ -12,25 +11,34 @@ import { CommonsModule } from './commons/commons.module';
 import { LoginModule } from './login/login.module';
 import { CafeModule } from './cafe/cafe.module';
 import { AppRoutes } from './app.routes';
+import { NgxGalleryModule } from 'ngx-gallery';
 
 import { AppComponent } from './app.component';
 import { MainNavComponent } from './main-nav/main-nav.component';
 import { Home } from './home/home.component';
+import { UserComponent } from './user/user.component';
 import { Admin } from './admin/admin.component';
+import { CafeMap } from './cafe-map/cafe-map.component';
 
 import { AgmCoreModule } from '@agm/core';
+import { DirectivesModule } from './directives/directives.module';
+import { PipesModule } from './pipes/pipes.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     MainNavComponent,
     Home,
-    Admin
+    Admin,
+    UserComponent,
+    CafeMap
   ],
   imports: [
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyAaWrqJxjZiw7BTzD9wDLybddkb1ktedKQ',
-      libraries: ['places']
+      libraries: ['places', 'geometry'],
+      language: 'uk-UA',
+      region: 'UA'
     }),
     BrowserModule,
     ReactiveFormsModule,
@@ -41,7 +49,10 @@ import { AgmCoreModule } from '@agm/core';
     CoreModule,
     LoginModule,
     CommonsModule,
-    CafeModule
+    CafeModule,
+    DirectivesModule,
+    PipesModule,
+    NgxGalleryModule
   ],
   providers: [],
   bootstrap: [AppComponent]

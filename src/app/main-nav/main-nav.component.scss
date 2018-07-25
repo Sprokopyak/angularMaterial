@@ -32,3 +32,17 @@ mat-toolbar a mat-icon {
   margin-top: -10px;
   vertical-align: middle;
 }
+
+#logo{
+  margin-top: 20px;
+}
+
+.nav{
+  float: right;
+}
+
+@media(max-width: 768px){
+  #logo{
+    margin-top: 0;
+  }
+}

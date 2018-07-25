@@ -17,11 +17,11 @@ export class SignIn implements OnInit {
     public fb: FormBuilder,
     public auth: AuthService) {
     this.loginForm = this.fb.group({
-      'email': ['', [Validators.required, Validators.email]],
-      'password': ['', [Validators.required, Validators.minLength(6), Validators.maxLength(25)]]
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(25)]]
     });
     this.resetPass = this.fb.group({
-      'email': ['', [Validators.required, Validators.email]]
+      email: ['', [Validators.required, Validators.email]]
     })
   }
 

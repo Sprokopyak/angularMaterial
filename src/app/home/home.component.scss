@@ -1,13 +1,61 @@
-.main {
-  padding: 1em;
-  font-family: Arial, Helvetica, sans-serif;
-  text-align: center;
-  margin-top: 50px;
-  display: block;
+.content {
+  overflow: auto;
+  height: 100vh;
+  width: 100vw;
+  background-image: url(../../assets/images/activity2.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50%;
 }
 
-$red: red;
+.wrapper{
+  margin: 10px auto 130px auto;
+}
 
-h1 {
-  color: $red;
+.mat-progress-spinner {
+  position: fixed;
+  z-index: 999;
+  height: 2em;
+  width: 2em;
+  overflow: show;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.filters{
+  margin: 0 5px;
+}
+
+.mat-form-field {
+  float: left;
+  width: 21%;
+  margin: 0 2%;
+}
+
+@media(max-width:800px){
+  .mat-form-field {
+    width: 46%;
+    margin: 0 2%;
+  }
+}
+
+@media(max-width:650px){
+  .wrapper{
+    margin: 10px auto 140px auto;
+  }
+}
+
+@media(max-width:550px){
+  .mat-form-field {
+    width: 96%;
+    margin: 0 2%;
+    font-size: 11px;
+  }
+
+  .wrapper{
+    margin: 10px auto 160px auto;
+  }
 }

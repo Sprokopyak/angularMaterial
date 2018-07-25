@@ -1,1 +1,50 @@
-<h1>Admin page</h1>
+<div class="container">
+  <div class="wrapper clearfix">
+    <div class="content-container">
+      <div class="header clearfix">
+        <mat-card class="card">
+          <h1>Сторінка адміністратора</h1>
+        </mat-card>
+      </div>
+      <div class="cafe-list clearfix">
+        <mat-card class="card">
+          <mat-form-field>
+            <mat-icon matSuffix>search</mat-icon>
+            <input type="text" [(ngModel)]="searchterm" (keyup)="search($event)" matInput placeholder="Пошук" autocorrect="off" autocapitalize="off"
+              spellcheck="off" autocomplete="off">
+          </mat-form-field>
+          <mat-list *ngIf="searchCafes && searchQuery !== ''" class="search-list">
+            <mat-list-item (click)="cafeDetails(cafe)" *ngFor="let cafe of searchCafes | async">
+              {{cafe.cafeName}}
+              <mat-divider></mat-divider>
+            </mat-list-item>
+          </mat-list>
+
+          <mat-list>
+            <p>Нові заклади</p>
+            <mat-list-item (click)="cafeDetails(cafe)" *ngFor="let cafe of notApprovedCafes | async">
+              {{cafe.cafeName | uppercase}}
+              <mat-divider></mat-divider>
+            </mat-list-item>
+          </mat-list>
+        </mat-card>
+      </div>
+
+      <div class="cafe-detail clearfix">
+        <mat-card class="card" *ngIf="cafe">
+          <h1>{{cafe?.cafeName | uppercase}}</h1>
+          <p>Тип закладу: {{ getCafetype(cafe?.cafeType) }}</p>
+          <app-rating [cafeRating]="cafe?.avRating"></app-rating>
+          <ngx-gallery *ngIf="cafe && cafe.gallery.length !==0" [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
+          <p>Номер телефону: +{{cafe?.phoneNumber}}</p>
+          <p>{{cafe?.description}}</p>
+
+          <p>Додав: {{(createdBy | async)?.displayName}}</p>
+          <p>Номер телефону: {{(createdBy | async)?.phoneNumber}}</p>
+          <button class="btn_submit" mat-raised-button (click)="approveCafe(cafe)" color="primary">Опублікувати заклад</button>
+          <button mat-raised-button class="btn_delete" (click)="deleteCafe(cafe)" color="accent">Видалити заклад</button>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>

@@ -8,18 +8,18 @@ import { map, take, tap } from 'rxjs/operators';
 @Injectable()
 export class LoginGuard implements CanActivate {
 
-  constructor(private auth: AuthService, private router: Router) { }
+  constructor(private _auth: AuthService, private _router: Router) { }
 
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | boolean {
-    return this.auth.user.pipe(
+    return this._auth.user.pipe(
       take(1),
-      map(users => !this.auth.isLogedIn),
+      map(users => !this._auth.isLogedIn),
       tap(isLogedIn => {
         if (!isLogedIn) {
           console.error('Access denied')
-          this.router.navigate(['/home']);
+          this._router.navigate(['/home']);
         }
       })
     )

@@ -4,12 +4,10 @@ import { Router } from '@angular/router';
 import * as firebase from 'firebase/app';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
-import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database-deprecated';
 
-import { Observable, pipe } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { User } from '../models/user.model';
-import { of } from 'rxjs';
 
 import { MatDialog } from '@angular/material';
 import { MessageDialog } from '../../commons/message-dialog/message-dialog.component';
@@ -18,37 +16,25 @@ import { MessageDialog } from '../../commons/message-dialog/message-dialog.compo
 export class AuthService {
   user: Observable<User>;
   authState: any = null;
-  currentUser: User;
-  constructor(public afAuth: AngularFireAuth,
-    public afs: AngularFirestore,
-    public db: AngularFireDatabase,
-    private router: Router,
-    private dialog: MatDialog) {
+  constructor(private _afAuth: AngularFireAuth,
+    private _afs: AngularFirestore,
+    private _router: Router,
+    private _dialog: MatDialog) {
 
-
-    this.user = this.afAuth.authState.pipe(
+    this.user = this._afAuth.authState.pipe(
       switchMap(user => {
+        this.authState = user
         if (user) {
-          return this.afs.doc<User>(`users/${user.uid}`).valueChanges()
+          return this._afs.doc<User>(`users/${user.uid}`).valueChanges();
         } else {
           return of(null)
         }
       })
-    )
-
-    this.afAuth.authState.subscribe((auth) => {
-      if (auth) {
-        firebase.auth().currentUser.getIdToken()
-          .then(idToken => {
-            return localStorage.setItem('userToken', idToken);
-          })
-      }
-      this.authState = auth
-    });
+    )   
   }
 
   showMessageDialog(message: string): void {
-    this.dialog.open(MessageDialog, {
+    this._dialog.open(MessageDialog, {
       width: '450px',
       data: message
     });
@@ -58,33 +44,36 @@ export class AuthService {
     return this.authState !== null;
   }
 
-  emailSignUp(email: string, password: string) {
-    return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
+  emailSignUp(name, email: string, password: string) {
+    return this._afAuth.auth.createUserWithEmailAndPassword(email, password)
       .then(user => {
-        return this.setUserDoc(user)
-      }).then(() => { this.router.navigate(['/home']) })
+        return this.setUserDoc(user.user, name)
+      }).then(() => { this._router.navigate(['/home']) })
   }
 
-  private setUserDoc(user: any) {
-    const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${user.uid}`);
+  private setUserDoc(user: any, name?) {
+    const userRef: AngularFirestoreDocument<User> = this._afs.doc(`users/${user.uid}`);
     const data: User = {
       uid: user.uid,
       email: user.email || null,
-      displayName: user.displayName || null,
-      photoURL: 'https://goo.gl/Fz9nrQ',
-      role: 'user'
+      displayName: user.displayName || name || null,
+      reserved: {
+        cafeId: '',
+        approvedBoking: false,
+        reservedTime: '',
+        reservationValidTill: '',
+        visitorsNumber: ''
+      },
+      role: 'user',
+      selectedCafes: []
     }
-    return userRef.set(data, { merge: true })
+    return userRef.set(data, { merge: true });
   }
 
   emailLogin(email: string, password: string) {
-    return this.afAuth.auth.signInWithEmailAndPassword(email, password)
-      .then(() => {
-        this.router.navigate(['/home']);
-      })
-      .catch((error) => {
-        this.showMessageDialog('Ви ввели невірний емейл або пароль')
-      })
+    return this._afAuth.auth.signInWithEmailAndPassword(email, password)
+      .then(() => this._router.navigate(['/home']))
+      .catch(() => this.showMessageDialog('Ви ввели невірний емейл або пароль'));
   }
 
   resetPassword(email: string) {
@@ -95,45 +84,45 @@ export class AuthService {
   }
 
   signOut() {
-    this.afAuth.auth.signOut()
-      .then(() => { this.router.navigate(['/home']) })
+    this._afAuth.auth.signOut()
+      .then(() => this._router.navigate(['/home']))
       .catch(error => this.showMessageDialog(error.message));
   }
 
   googleSignUp() {
-    const provider = new firebase.auth.GoogleAuthProvider()
+    const provider = new firebase.auth.GoogleAuthProvider();
     return this.oAuthSignUp(provider)
-      .then(() => { this.router.navigate(['/home']) })
+      .then(() => this._router.navigate(['/home']))
       .catch(error => this.showMessageDialog(error.message));
   }
 
   googleLogin() {
-    const provider = new firebase.auth.GoogleAuthProvider()
+    const provider = new firebase.auth.GoogleAuthProvider();
     return this.oAuthLogin(provider)
-      .then(() => { this.router.navigate(['/home']) })
+      .then(() => this._router.navigate(['/home']))
       .catch(error => this.showMessageDialog(error.message));
   }
 
   facebookSignUp() {
-    const provider = new firebase.auth.FacebookAuthProvider()
+    const provider = new firebase.auth.FacebookAuthProvider();
     return this.oAuthSignUp(provider)
-      .then(() => { this.router.navigate(['/home']) })
+      .then(() => this._router.navigate(['/home']))
       .catch(error => this.showMessageDialog(error.message));
   }
 
   facebookLogin() {
     const provider = new firebase.auth.FacebookAuthProvider()
     return this.oAuthLogin(provider)
-      .then(() => { this.router.navigate(['/home']) })
+      .then(() => this._router.navigate(['/home']))
       .catch(error => this.showMessageDialog(error.message));
   }
 
   private oAuthLogin(provider: any) {
-    return this.afAuth.auth.signInWithPopup(provider)
+    return this._afAuth.auth.signInWithPopup(provider)
   }
 
   private oAuthSignUp(provider: any) {
-    return this.afAuth.auth.signInWithPopup(provider)
+    return this._afAuth.auth.signInWithPopup(provider)
       .then((credential) => {
         this.setUserDoc(credential.user)
       })

@@ -1,0 +1,14 @@
+<form [formGroup]="form" (ngSubmit)="submit(form)">
+  <h4 mat-dialog-title>Для резервації необхідно вказати ваш номер телефону</h4>
+  <mat-dialog-content>
+    <mat-form-field>
+      <input matInput formControlName="phoneNumber" autocomplete="off" placeholder="Введіть ваш номер телефону">
+      <mat-hint>Введіть номер телефону.</mat-hint>
+      <mat-error>Номер телефону повинен складатись з 12 цифр.</mat-error>
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button type="submit" [disabled]="form.invalid">Зберегти</button>
+    <button mat-button type="button" mat-dialog-close>Відмінити</button>
+  </mat-dialog-actions>
+</form>

@@ -1,5 +1,6 @@
 export interface Cafe {
   approved: boolean;
+  createdBy: string;
   mainImgSrc: any;
   gallery: any;
   cafeName: string;
@@ -10,5 +11,8 @@ export interface Cafe {
     longitude: number;
   };
   tables: any;
+  freeTables: number;
   description: string;
+  id?: string;
+  avRating?:number;
 }
