@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Subject, combineLatest } from "rxjs";
 import { CafeService } from "../core/cafe-service/cafe.service";
-import { AgmCoreModule, MapsAPILoader } from "@agm/core";
+import { MapsAPILoader } from "@agm/core";
 import { CAFE_TYPES } from "./../cafe/constants";
 
 declare var google;

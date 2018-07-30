@@ -3,22 +3,23 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../material/material.module';
 
-import { SignUp } from './sign-up/sign-up.component';
-import { SignIn } from './sign-in/sign-in.component';
-import { AppRoutes } from './../app.routes';
+import { UserComponent } from './user.component';
+import { UserRoute } from './user.route';
+import { PipesModule } from '../pipes/pipes.module';
+import { CafeModule } from '../cafe/cafe.module'
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    CafeModule,
     MaterialModule,
-    AppRoutes
+    PipesModule,
+    UserRoute
   ],
   declarations: [
-    SignUp,
-    SignIn
-  ],
-  exports: [SignUp, SignIn]
+    UserComponent
+  ]
 })
-export class LoginModule { }
+export class UserModule { }
