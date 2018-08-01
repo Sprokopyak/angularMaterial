@@ -3,14 +3,14 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AgmCoreModule, MapsAPILoader } from '@agm/core';
 import {} from '@types/googlemaps';
 
-import { ImageUploadService } from '../../core/image-upload/image-upload.service';
-import { CafeService } from '../../core/cafe-service/cafe.service';
-import { Upload } from '../../core/models/image-upload.model';
+import { ImageUploadService } from '../core/image-upload/image-upload.service';
+import { CafeService } from '../core/cafe-service/cafe.service';
+import { Upload } from '../core/models/image-upload.model';
 
 import { Observable } from 'rxjs';
-import { CAFE_TYPES } from '../constants';
-import { AuthService } from '../../core/auth-service/auth.service';
-import { User } from '../../core/models/user.model';
+import { CAFE_TYPES } from '../cafe/constants';
+import { AuthService } from '../core/auth-service/auth.service';
+import { User } from '../core/models/user.model';
 
 @Component({
   selector: 'app-add-cafe',

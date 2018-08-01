@@ -34,7 +34,7 @@
         <mat-card class="card" *ngIf="cafe">
           <h1>{{cafe?.cafeName | uppercase}}</h1>
           <p>Тип закладу: {{ getCafetype(cafe?.cafeType) }}</p>
-          <app-rating [cafeRating]="cafe?.avRating"></app-rating>
+          <!-- <app-rating [cafeRating]="cafe?.avRating"></app-rating> -->
           <ngx-gallery *ngIf="cafe && cafe.gallery.length !==0" [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
           <p>Номер телефону: +{{cafe?.phoneNumber}}</p>
           <p>{{cafe?.description}}</p>
