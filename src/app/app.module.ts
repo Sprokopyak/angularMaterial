@@ -16,6 +16,7 @@ import { Home } from './home/home.component';
 import { DirectivesModule } from './directives/directives.module';
 import { PipesModule } from './pipes/pipes.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CommonsModule } from './commons/commons.module'
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     DirectivesModule,
     PipesModule,
     CafeModule,
+    CommonsModule,
     AppRoutes,
   ],
   providers: [],

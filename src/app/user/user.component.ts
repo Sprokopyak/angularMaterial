@@ -44,20 +44,20 @@ export class UserComponent implements OnInit {
 
     this.subscriptionSecond = this._authService.user.subscribe(user => {
       if (this.uid === user.uid) {
-          this.user = user;
+          this.user = user;          
         if (this.user.reserved.cafeId !== "" && this.user.reserved.reservedTime !== "") {
           this.subscriptionThird = this._cafeService.getCafe(this.user.reserved.cafeId).subscribe(cafe => {
-              this.userReservedCafe = cafe;
+              this.userReservedCafe = cafe;              
           });
-          }
+        }
         if (this.user.selectedCafes.length !== 0) {
           const observables = this.user.selectedCafes.map(cafeId =>this._cafeService.getCafe(cafeId));
           this.selectedCafe = combineLatest(observables);
-          } 
-        } else {
+        } 
+      } else {
         this._router.navigate(["/home"]);
-        }
-      });
+      }
+    });
 
       if (this.uid) {
         this.subscriptionFour = this._userService.getUserStars(this.uid).subscribe(arr => {
@@ -83,10 +83,8 @@ export class UserComponent implements OnInit {
         const indexOfTableUserBooked = tableArr.indexOf(val);
         tableArr[indexOfTableUserBooked].booked -= 1;        
       }
-     let a = this._userService.userBooking(this.user.uid, null, false, null, null, null)
-     console.log(a);
-     
-      this._cafeService.updateCafe(this.userReservedCafe)
+      this._userService.userBooking(this.user.uid, null, false, null, null, null);
+      this._cafeService.updateCafe(this.userReservedCafe);
     });
   }
 

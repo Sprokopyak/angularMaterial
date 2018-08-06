@@ -25,7 +25,7 @@
 }
 
 .card {
-  background: #0c0407db;
+  background-color: #0c0407db;
 }
 
 .table-container {
@@ -35,7 +35,7 @@
 }
 
 .table {
-  background: #30303042;
+  background-color: #30303042;
 }
 
 table {
@@ -131,11 +131,11 @@ tr.detail-row {
 }
 
 tr.table-row:not(.expanded-row):hover {
-  background: #747c80;
+  background-color: #747c80;
 }
 
 tr.table-row:not(.expanded-row):active {
-  background: #747c80;
+  background-color: #747c80;
 }
 
 td.mat-cell:last-child,
@@ -147,7 +147,7 @@ th.mat-header-cell:last-child {
   margin-top: 15px;
   flex-direction: column;
   display: flex; 
-  background: #0c0407db;
+  background-color: #0c0407db;
 }
 
 @media(max-width: 1175px){

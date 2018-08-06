@@ -4,7 +4,7 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { Cafe } from '../models/cafe.model';
 import { MatDialog } from '@angular/material';
 import { MessageDialog } from '../../commons/message-dialog/message-dialog.component';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class CafeService {

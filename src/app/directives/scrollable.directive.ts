@@ -1,4 +1,4 @@
-import { Directive, EventEmitter, Output, ElementRef, Input } from '@angular/core';
+import { Directive, EventEmitter, Output, ElementRef } from '@angular/core';
 import { fromEvent } from 'rxjs';
 
 @Directive({

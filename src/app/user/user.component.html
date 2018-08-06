@@ -12,8 +12,8 @@
           <p>У вас немає жодного зарезервованого столика.</p>
         </div>
         <div *ngIf="user && userReservedCafe">
-          <span class="approved" *ngIf="userReservedCafe.approved">Підтверджено</span>
-          <span class="not-approved" *ngIf="!userReservedCafe.approved">Не підтверджено</span>
+          <span class="approved" *ngIf="user.reserved.approvedBoking">Підтверджено</span>
+          <span class="not-approved" *ngIf="!user.reserved.approvedBoking">Не підтверджено</span>
           <p>Заклад: {{userReservedCafe.cafeName | uppercase}}</p>
           <p>Резервація дійсна до: {{user.reserved.reservationValidTill }}</p>
           <p>Столик вміщає {{user.reserved.visitorsNumber }} - ох гостей</p>

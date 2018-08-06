@@ -13,12 +13,12 @@
 }
 
 .card {
-  background: #0c0407b3;
+  background-color: #0c0407b3;
   border-radius: 5px;
 }
 
 .header {
-  background: #0c0407b3;
+  background-color: #0c0407b3;
   margin-bottom: 20px;
 }
 
@@ -45,7 +45,7 @@ mat-list {
 
 .mat-list p {
   text-align: center;
-  background: #000;
+  background-color: #000;
   margin: 0;
   padding: 10px 0;
   border-top-right-radius: 20px;
@@ -59,7 +59,7 @@ mat-list {
 
 .rated-items:hover {
   cursor: pointer;
-  background: #747c80;
+  background-color: #747c80;
 }
 
 .selected {
@@ -73,7 +73,7 @@ mat-list {
 .approved {
   padding: 5px;
   border-radius: 20px;
-  background: #5CB85C;
+  background-color: #5CB85C;
   font-size: 12px;
   float: right;
 }
@@ -81,7 +81,7 @@ mat-list {
 .not-approved {
   padding: 6px;
   border-radius: 15px;
-  background: #D9534F;
+  background-color: #D9534F;
   font-size: 12px;
   float: right;
 }
