@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { MaterialModule } from '../material/material.module';
 
 import { CafeMap } from './cafe-map.component';
@@ -12,7 +12,6 @@ import { AgmCoreModule } from '@agm/core';
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule,
     CafeModule,
     MaterialModule,
     AgmCoreModule.forRoot({

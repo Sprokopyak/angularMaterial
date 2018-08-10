@@ -70,7 +70,9 @@ export class UserComponent implements OnInit {
   ngOnDestroy() {
     this.subscription.unsubscribe();
     this.subscriptionSecond.unsubscribe();
-    this.subscriptionThird.unsubscribe();
+    if (this.user.reserved.cafeId !== "" && this.user.reserved.reservedTime !== "") {
+      this.subscriptionThird.unsubscribe();
+    }
     this.subscriptionFour.unsubscribe();
   }
 
